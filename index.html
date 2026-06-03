@@ -2,37 +2,14 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내 홈페이지</title>
-    <link rel="stylesheet" href="style.css">
+    <title>QR 이동 페이지</title>
 </head>
-<body>
-    <h1>환영합니다!</h1>
-    <p>첫 번째 홈페이지입니다.</p>
+<body style="text-align:center; margin-top:100px;">
 
-    <script src="script.js"></script>
-</body>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>QR 테스트</title>
-</head>
-<body>
+    <h1>QR 코드로 들어온 페이지입니다</h1>
+    <p>이곳은 qrcode.html 화면입니다.</p>
 
-    <h2>QR 코드를 스캔하세요</h2>
-
-    <div id="qrcode"></div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-    <script>
-        new QRCode(document.getElementById("qrcode"), {
-            text: "https://mywebsite.com/event.html",
-            width: 250,
-            height: 250
-        });
-    </script>
+    <a href="index.html">홈으로 이동</a>
 
 </body>
-</html>
 </html>
