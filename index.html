@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 홈페이지</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>환영합니다!</h1>
+    <p>첫 번째 홈페이지입니다.</p>
+
+    <script src="script.js"></script>
+</body>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR 테스트</title>
+</head>
+<body>
+
+    <h2>QR 코드를 스캔하세요</h2>
+
+    <div id="qrcode"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        new QRCode(document.getElementById("qrcode"), {
+            text: "https://mywebsite.com/event.html",
+            width: 250,
+            height: 250
+        });
+    </script>
+
+</body>
+</html>
+</html>
