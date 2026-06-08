@@ -12,9 +12,9 @@
     <style>
         /* 1. 디자인 시스템 & 초기화 */
         :root {
-            --primary-color: #0ea5e9;       /* 메인 스카이블루 */
+            --primary-color: #0ea5e9;       
             --primary-dark: #0284c7;
-            --secondary-color: #0f172a;     /* 딥 네이비 */
+            --secondary-color: #0f172a;     
             --text-color: #334155;
             --bg-light: #f8fafc;
             --white: #ffffff;
@@ -26,6 +26,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -188,7 +189,7 @@
 
         /* 테이블 스타일 */
         .table-wrapper {
-            overflow-x: auto;
+            overflow-x: auto; /* 모바일에서 표가 넘치면 스크롤이 생기도록 처리 */
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             border-radius: 12px;
             border: 1px solid var(--border-color);
@@ -196,6 +197,7 @@
 
         table {
             width: 100%;
+            min-width: 600px; /* 모바일에서 표의 글자가 뭉개지지 않도록 최소 너비 유지 */
             border-collapse: collapse;
             text-align: center;
             background-color: var(--white);
@@ -357,7 +359,7 @@
             text-decoration: underline;
         }
 
-        /* 6. 조그만 고정형 QR코드 UI (추가된 부분) */
+        /* 6. 조그만 고정형 QR코드 UI */
         .qr-floating-zone {
             position: fixed;
             bottom: 30px;
@@ -373,10 +375,10 @@
             background-color: var(--white);
             padding: 15px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.15);
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
             border: 1px solid var(--border-color);
             text-align: center;
-            display: none; /* 기본 상태는 숨김 */
+            display: none; 
             animation: fadeInUp 0.3s ease;
         }
 
@@ -391,14 +393,12 @@
             margin-top: 8px;
         }
 
-        /* 크기를 작게(120px) 구성하기 위한 래퍼 */
         #qrcode {
             display: inline-block;
             padding: 4px;
             background-color: #fff;
         }
 
-        /* QR 열기 토글 버튼 */
         .btn-qr-toggle {
             background-color: var(--secondary-color);
             color: var(--white);
@@ -437,6 +437,73 @@
 
         footer strong {
             color: var(--white);
+        }
+
+
+        /* ==========================================================================
+           ⭐ [모바일 전용 최적화 스타일에 반응형 미디어 쿼리 추가] ⭐
+           스마트폰/태블릿 등 가로 너비가 768px 이하인 기기에서 아래 디자인이 자동 적용됩니다.
+           ========================================================================== */
+        @media (max-width: 768px) {
+            /* 헤더 메뉴 숨김 및 정렬 변경 */
+            .navbar {
+                height: 70px;
+            }
+            .nav-menu {
+                display: none; /* 모바일에서는 복잡한 메뉴 바를 우선 숨깁니다. */
+            }
+            .logo {
+                font-size: 20px;
+            }
+            .btn {
+                padding: 8px 14px;
+                font-size: 14px;
+            }
+
+            /* 히어로 섹션 축소 및 텍스트 중앙화 */
+            .hero {
+                padding: 60px 0;
+                text-align: center;
+            }
+            .hero h1 {
+                font-size: 30px; /* 모바일 화면에 맞춰 메인 타이틀 크기 축소 */
+            }
+            .hero p {
+                font-size: 15px;
+                margin-bottom: 25px;
+            }
+
+            /* 섹션 타이틀 크기 축소 */
+            .membership-section {
+                padding: 60px 0;
+            }
+            .section-title {
+                margin-bottom: 30px;
+            }
+            .section-title h2 {
+                font-size: 24px;
+            }
+
+            /* 테이블 셀 간격 조정 (작은 화면 대응) */
+            th, td {
+                padding: 14px 10px;
+                font-size: 14px;
+            }
+
+            /* 로그인/회원가입 모달창이 화면을 벗어나지 않게 여백 조정 */
+            .modal-box {
+                padding: 30px 20px;
+                width: 90%;
+                margin: 0 auto;
+            }
+            .modal-title {
+                font-size: 20px;
+            }
+
+            /* 모바일에서는 floating QR코드 버튼이 방해될 수 있으므로 숨김 */
+            .qr-floating-zone {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -536,7 +603,7 @@
     <footer>
         <div class="container">
             <p style="margin-bottom: 10px;"><strong>(주)벨루나펫 애견멤버쉽 PLATFORM</strong></p>
-            <p>www.velunapet.com(임시주소입니다.) | info@velunapet.com(임시주소입니다.) | 제휴: 한국애견연맹(KKF)</p>
+            <p>www.velunapet.com | info@velunapet.com | 제휴: 한국애견연맹(KKF)</p>
             <p style="margin-top: 15px; font-size: 12px; color: #64748b;">&copy; 2026 Veluna Pet. All rights reserved.</p>
         </div>
     </footer>
@@ -594,7 +661,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <script>
-        // 1. 모달 팝업 관련 제어 로직
         const overlay = document.getElementById('modalOverlay');
         const loginBox = document.getElementById('loginBox');
         const registerBox = document.getElementById('registerBox');
@@ -631,15 +697,13 @@
             if (e.target === overlay) closeModal();
         });
 
-        // 2. QR 코드 동적 생성 (요청 내용 반영)
-        // 화면 레이아웃에 맞춰 조그맣게 노출되도록 크기를 가로세로 120px로 조정했습니다.
+        // QR 코드 동적 빌드
         new QRCode(document.getElementById("qrcode"), {
-            text: "https://ych-png.github.io/pet_membership/qrcode.html",
+            text: "https://ych-png.github.io/pet_membership/index.html", // qrcode.html 대신 index.html로 직접 랜딩되게 설정하는 것이 좋습니다.
             width: 120,
             height: 120
         });
 
-        // 3. QR코드 플로팅 토글 이벤트
         const qrToggleBtn = document.getElementById('qrToggleBtn');
         const qrPopover = document.getElementById('qrPopover');
 
