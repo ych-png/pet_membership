@@ -3,36 +3,649 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>멤버쉽</title>
-    <link rel="stylesheet" href="style.css">
+    <title>벨루나펫 멤버쉽 (Veluna Pet)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* 1. 디자인 시스템 & 초기화 */
+        :root {
+            --primary-color: #0ea5e9;       /* 메인 스카이블루 */
+            --primary-dark: #0284c7;
+            --secondary-color: #0f172a;     /* 딥 네이비 */
+            --text-color: #334155;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 2. 내비게이션 바 (Header) */
+        header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            color: var(--primary-color);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-auth {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 15px;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bg-light);
+            border-color: #cbd5e1;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* 3. 메인 히어로 섹션 */
+        .hero {
+            background: linear-gradient(135deg, #e0f2fe 0%, #fafafa 100%);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: var(--white);
+            color: var(--primary-dark);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            color: var(--secondary-color);
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #475569;
+            margin-bottom: 35px;
+        }
+
+        /* 4. 멤버쉽 등급 안내 섹션 */
+        .membership-section {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #64748b;
+        }
+
+        /* 테이블 스타일 */
+        .table-wrapper {
+            overflow-x: auto;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            background-color: var(--white);
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 20px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 16px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--bg-light);
+        }
+
+        .highlight-vip {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* 5. 모달 팝업 스타일 (로그인/회원가입) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: translateY(-20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        .modal-close:hover {
+            color: var(--secondary-color);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* 폼 요소 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--secondary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        }
+
+        .form-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+
+        .form-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .form-switch {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .form-switch span {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        /* 6. 조그만 고정형 QR코드 UI (추가된 부분) */
+        .qr-floating-zone {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .qr-popover {
+            background-color: var(--white);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.15);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            display: none; /* 기본 상태는 숨김 */
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .qr-popover.show {
+            display: block;
+        }
+
+        .qr-popover p {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--secondary-color);
+            margin-top: 8px;
+        }
+
+        /* 크기를 작게(120px) 구성하기 위한 래퍼 */
+        #qrcode {
+            display: inline-block;
+            padding: 4px;
+            background-color: #fff;
+        }
+
+        /* QR 열기 토글 버튼 */
+        .btn-qr-toggle {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+            transition: var(--transition);
+            border: none;
+            font-size: 18px;
+        }
+
+        .btn-qr-toggle:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 7. 푸터 */
+        footer {
+            background-color: var(--secondary-color);
+            color: #94a3b8;
+            padding: 40px 0;
+            text-align: center;
+            font-size: 14px;
+            border-top: 1px solid #1e293b;
+        }
+
+        footer strong {
+            color: var(--white);
+        }
+    </style>
 </head>
 <body>
-    <h1>환영합니다!</h1>
-    <p>첫 번째 홈페이지입니다.</p>
 
-    <script src="script.js"></script>
+    <header>
+        <div class="container navbar">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-paw"></i> VELUNA PET
+            </a>
+            <nav class="nav-menu">
+                <a href="#membership">멤버쉽 혜택</a>
+                <a href="#">동물병원 케어</a>
+                <a href="#">라이프/쇼핑</a>
+                <a href="#">장례 서비스</a>
+            </nav>
+            <div class="nav-auth">
+                <button class="btn btn-outline" id="loginBtn">로그인</button>
+                <button class="btn btn-primary" id="registerBtn">회원가입</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <span class="hero-badge">사단법인 유기견없는도시 제휴</span>
+            <h1>반려동물의 요람에서 무덤까지</h1>
+            <p>벨루나펫은 국내 유일의 생애주기 맞춤형 통합 멤버쉽 플랫폼입니다. 병원, 미용, 보험, 장례까지 최고 수준의 올인원 케어를 회원 특별가로 만나보세요.</p>
+            <button class="btn btn-primary" style="padding: 14px 28px; font-size: 16px;" onclick="openModal('register')">멤버쉽 시작하기</button>
+        </div>
+    </section>
+
+    <section class="membership-section" id="membership">
+        <div class="container">
+            <div class="section-title">
+                <h2>멤버쉽 등급 및 혜택 비교</h2>
+                <p>회원 등급에 따라 제공되는 특별한 할인율을 확인해 보세요.</p>
+            </div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>제공 서비스</th>
+                            <th>VIP 회원</th>
+                            <th>정회원</th>
+                            <th>준회원</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>교육 프로그램</strong></td>
+                            <td class="highlight-vip">50% 할인</td>
+                            <td>30% 할인</td>
+                            <td>10% 할인</td>
+                        </tr>
+                        <tr>
+                            <td><strong>동물병원 (진료비)</strong></td>
+                            <td class="highlight-vip">30% 할인</td>
+                            <td>20% 할인</td>
+                            <td>10% 할인</td>
+                        </tr>
+                        <tr>
+                            <td><strong>애견미용 / 목욕</strong></td>
+                            <td class="highlight-vip">50% 할인</td>
+                            <td>30% 할인</td>
+                            <td>10% 할인</td>
+                        </tr>
+                        <tr>
+                            <td><strong>쇼핑몰 (용품)</strong></td>
+                            <td class="highlight-vip">50% 할인</td>
+                            <td>30% 할인</td>
+                            <td>10% 할인</td>
+                        </tr>
+                        <tr>
+                            <td><strong>애견 보험</strong></td>
+                            <td class="highlight-vip">15% 할인</td>
+                            <td>10% 할인</td>
+                            <td>5% 할인</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <div class="qr-floating-zone">
+        <div class="qr-popover" id="qrPopover">
+            <div id="qrcode"></div>
+            <p>모바일로 확인하기</p>
+        </div>
+        <button class="btn-qr-toggle" id="qrToggleBtn" title="QR코드 보기">
+            <i class="fa-solid fa-qrcode"></i>
+        </button>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p style="margin-bottom: 10px;"><strong>(주)벨루나펫 애견멤버쉽 PLATFORM</strong></p>
+            <p>www.velunapet.com | info@velunapet.com | 제휴: 한국애견연맹(KKF)</p>
+            <p style="margin-top: 15px; font-size: 12px; color: #64748b;">&copy; 2026 Veluna Pet. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box" id="loginBox" style="display: none;">
+            <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="modal-title">반가워요, 벨루나펫입니다!</h3>
+            <p class="modal-subtitle">회원 정보로 로그인해 주세요.</p>
+            <form onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <label for="loginId">이메일 주소</label>
+                    <input type="email" id="loginId" class="form-control" placeholder="example@velunapet.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPw">비밀번호</label>
+                    <input type="password" id="loginPw" class="form-control" placeholder="비밀번호를 입력하세요" required>
+                </div>
+                <button type="submit" class="form-btn">로그인</button>
+            </form>
+            <div class="form-switch">
+                아직 회원이 아니신가요? <span onclick="switchModal('register')">회원가입하기</span>
+            </div>
+        </div>
+
+        <div class="modal-box" id="registerBox" style="display: none;">
+            <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="modal-title">벨루나펫 멤버쉽 가입</h3>
+            <p class="modal-subtitle">평생 맞춤형 혜택을 시작해 보세요.</p>
+            <form onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <label for="regName">이름</label>
+                    <input type="text" id="regName" class="form-control" placeholder="홍길동" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">이메일 주소</label>
+                    <input type="email" id="regEmail" class="form-control" placeholder="name@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPet">반려동물 이름 / 종류</label>
+                    <input type="text" id="regPet" class="form-control" placeholder="예: 초코 (푸들)" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPw">비밀번호</label>
+                    <input type="password" id="regPw" class="form-control" placeholder="영문, 숫자 포함 8자 이상" required>
+                </div>
+                <button type="submit" class="form-btn">멤버쉽 회원가입</button>
+            </form>
+            <div class="form-switch">
+                이미 계정이 있으신가요? <span onclick="switchModal('login')">로그인하기</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        // 1. 모달 팝업 관련 제어 로직
+        const overlay = document.getElementById('modalOverlay');
+        const loginBox = document.getElementById('loginBox');
+        const registerBox = document.getElementById('registerBox');
+
+        function openModal(type) {
+            overlay.classList.add('active');
+            if (type === 'login') {
+                loginBox.style.display = 'block';
+                registerBox.style.display = 'none';
+            } else {
+                loginBox.style.display = 'none';
+                registerBox.style.display = 'block';
+            }
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+        }
+
+        function switchModal(type) {
+            if (type === 'login') {
+                loginBox.style.display = 'block';
+                registerBox.style.display = 'none';
+            } else {
+                loginBox.style.display = 'none';
+                registerBox.style.display = 'block';
+            }
+        }
+
+        document.getElementById('loginBtn').addEventListener('click', () => openModal('login'));
+        document.getElementById('registerBtn').addEventListener('click', () => openModal('register'));
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
+
+        // 2. QR 코드 동적 생성 (요청 내용 반영)
+        // 화면 레이아웃에 맞춰 조그맣게 노출되도록 크기를 가로세로 120px로 조정했습니다.
+        new QRCode(document.getElementById("qrcode"), {
+            text: "https://ych-png.github.io/pet_membership/qrcode.html",
+            width: 120,
+            height: 120
+        });
+
+        // 3. QR코드 플로팅 토글 이벤트
+        const qrToggleBtn = document.getElementById('qrToggleBtn');
+        const qrPopover = document.getElementById('qrPopover');
+
+        qrToggleBtn.addEventListener('click', () => {
+            qrPopover.classList.toggle('show');
+        });
+    </script>
 </body>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>QR 테스트</title>
-</head>
-<body>
-
-<h2>QR 코드를 스캔하세요</h2>
-
-<div id="qrcode"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-<script>
-    new QRCode(document.getElementById("qrcode"), {
-        text: "https://ych-png.github.io/pet_membership/qrcode.html",
-        width: 250,
-        height: 250
-    });
-</script>
-
-</body>
-</html>
 </html>
