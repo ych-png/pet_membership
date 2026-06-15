@@ -46,6 +46,9 @@
         .form-switch { text-align: center; margin-top: 20px; font-size: 14px; color: #64748b; }
         .form-switch a { color: var(--primary-color); font-weight: 500; text-decoration: underline; }
     </style>
+
+    <!-- 1. Supabase CDN 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -69,22 +72,59 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // 2. Supabase 설정 (유저님의 회원가입 파일에 있는 것과 똑같은 Key 값을 넣어주세요!)
+        const SUPABASE_URL = "유저님의_SUPABASE_URL";
+        const SUPABASE_ANON_KEY = "유저님의_SUPABASE_ANON_KEY";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
             const email = document.getElementById('loginId').value.trim();
             const password = document.getElementById('loginPw').value;
 
-            const users = JSON.parse(localStorage.getItem('belluna_users')) || [];
-            const matchedUser = users.find(user => user.email === email && user.password === password);
+            try {
+                // 3. Supabase Auth를 이용하여 이메일/패스워드 로그인 시도
+                const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
 
-            if (!matchedUser) {
-                alert('이메일 또는 비밀번호가 올바르지 않습니다.');
-                return;
+                // 계정이 없거나 비밀번호가 틀렸을 때 처리
+                if (authError) {
+                    alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+                    console.error('로그인 실패 원인:', authError.message);
+                    return;
+                }
+
+                // 로그인 성공한 유저의 고유 ID(UUID) 가져오기
+                const userId = authData.user.id;
+
+                // 4. 맞춤 프로필 테이블(belluna_register)에서 가입 시 기입했던 이름(name) 조회
+                const { data: profileData, error: profileError } = await supabaseClient
+                    .from('belluna_register')
+                    .select('name')
+                    .eq('id', userId)
+                    .single();
+
+                let userName = "고객"; // 만약 이름을 찾지 못할 경우 대비한 기본값
+                if (profileData && !profileError) {
+                    userName = profileData.name;
+                }
+
+                // 5. 로그인 정보 세션스토리지 보존 및 완료 처리
+                sessionStorage.setItem('login_session', JSON.stringify({ 
+                    email: authData.user.email,
+                    name: userName
+                }));
+
+                alert(`${userName}님, 환영합니다!`);
+                window.location.href = 'index.html'; // 로그인 성공 시 메인으로 이동
+
+            } catch (error) {
+                console.error("통신 에러 발생:", error);
+                alert("로그인 처리 중 오류가 발생했습니다.");
             }
-
-            sessionStorage.setItem('login_session', JSON.stringify({ email: matchedUser.email }));
-            alert(`${matchedUser.name}님, 환영합니다!`);
-            window.location.href = 'index.html'; // 로그인 성공 시 메인으로 이동
         });
     </script>
 </body>
