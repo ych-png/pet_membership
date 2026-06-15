@@ -2,101 +2,71 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 - 벨루나펫</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #0ea5e9;       
-            --primary-dark: #0284c7;
-            --secondary-color: #0f172a;     
-            --bg-light: #f8fafc;
-            --white: #ffffff;
-            --border-color: #e2e8f0;
-            --transition: all 0.3s ease;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-light);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .page-wrapper {
-            background-color: var(--white);
-            padding: 40px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border-color);
-        }
-        .title { font-size: 24px; font-weight: 700; color: var(--secondary-color); text-align: center; margin-bottom: 8px; }
-        .subtitle { font-size: 14px; color: #64748b; text-align: center; margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; color: var(--secondary-color); }
-        .form-control { width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 15px; transition: var(--transition); }
-        .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
-        .form-btn { width: 100%; padding: 14px; background-color: var(--primary-color); color: var(--white); border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: var(--transition); margin-top: 10px; }
-        .form-btn:hover { background-color: var(--primary-dark); }
-        .form-switch { text-align: center; margin-top: 20px; font-size: 14px; color: #64748b; }
-        .form-switch a { color: var(--primary-color); font-weight: 500; text-decoration: underline; }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
     <div class="page-wrapper">
         <h3 class="title">벨루나펫 멤버쉽 가입</h3>
-        <p class="subtitle">평생 맞춤형 혜택을 시작해 보세요.</p>
         <form id="registerForm">
-            <div class="form-group">
-                <label for="regName">이름</label>
-                <input type="text" id="regName" class="form-control" placeholder="홍길동" required>
-            </div>
-            <div class="form-group">
-                <label for="regEmail">이메일 주소</label>
-                <input type="email" id="regEmail" class="form-control" placeholder="name@example.com" required>
-            </div>
-            <div class="form-group">
-                <label for="regPet">반려동물 이름 / 종류</label>
-                <input type="text" id="regPet" class="form-control" placeholder="예: 초코 (푸들)" required>
-            </div>
-            <div class="form-group">
-                <label for="regPw">비밀번호</label>
-                <input type="password" id="regPw" class="form-control" placeholder="영문, 숫자 포함 8자 이상" required>
-            </div>
+            <div class="form-group"><label>이름</label><input type="text" id="regName" class="form-control" required></div>
+            <div class="form-group"><label>이메일 주소</label><input type="email" id="regEmail" class="form-control" required></div>
+            <div class="form-group"><label>반려동물 정보</label><input type="text" id="regPet" class="form-control" required></div>
+            <div class="form-group"><label>비밀번호</label><input type="password" id="regPw" class="form-control" required></div>
             <button type="submit" class="form-btn">멤버쉽 회원가입</button>
         </form>
-        <div class="form-switch">
-            이미 계정이 있으신가요? <a href="login.html">로그인하기</a>
-        </div>
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        // 2. 내 Supabase 프로젝트 정보 설정
+        const SUPABASE_URL = "https://qemfpmnsywfzuyzozkqj.supabase.co/rest/v1/"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS"; 
+        
+        // Supabase 클라이언트 실행
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const pet = document.getElementById('regPet').value.trim();
             const password = document.getElementById('regPw').value;
 
-            let users = JSON.parse(localStorage.getItem('belluna_users')) || [];
-            const isExist = users.some(user => user.email === email);
-            if (isExist) {
-                alert('이미 가입된 이메일 주소입니다.');
+            // [핵심 로직 A] Supabase 전용 회원가입 (비밀번호 자동 암호화 및 가입 처리)
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+                email: email,
+                password: password
+            });
+
+            if (authError) {
+                alert('회원가입 실패: ' + authError.message);
                 return;
             }
 
-            const newUser = { name, email, pet, password, grade: '준회원' };
-            users.push(newUser);
-            localStorage.setItem('belluna_users', JSON.stringify(users));
-            
-            alert('벨루나펫 회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.');
-            window.location.href = 'login.html';
+            // [핵심 로직 B] 인증에 성공하면, 해당 사용자의 고유 ID(UUID)를 매칭하여 profiles 테이블에 추가 정보 저장
+            if (authData.user) {
+                const { error: dbError } = await supabase
+                    .from('profiles')
+                    .insert([
+                        { 
+                            id: authData.user.id, // Supabase Auth 시스템이 준 고유 식별키
+                            name: name, 
+                            email: email,
+                            pet_info: pet, 
+                            grade: '준회원' 
+                        }
+                    ]);
+
+                if (dbError) {
+                    alert('데이터베이스 저장 실패: ' + dbError.message);
+                    return;
+                }
+
+                alert('벨루나펫 회원가입이 성공했습니다! 이메일 인증함 또는 로그인 페이지를 확인하세요.');
+                window.location.href = 'login.html';
+            }
         });
     </script>
 </body>
