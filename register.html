@@ -46,6 +46,8 @@
         .form-switch { text-align: center; margin-top: 20px; font-size: 14px; color: #64748b; }
         .form-switch a { color: var(--primary-color); font-weight: 500; text-decoration: underline; }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -69,7 +71,7 @@
                 <label for="regPw">비밀번호</label>
                 <input type="password" id="regPw" class="form-control" placeholder="영문, 숫자 포함 8자 이상" required>
             </div>
-            <button type="submit" class="form-btn">멤버쉽 회원가입</button>
+            <button type="submit" id="submitBtn" class="form-btn">멤버쉽 회원가입</button>
         </form>
         <div class="form-switch">
             이미 계정이 있으신가요? <a href="login.html">로그인하기</a>
@@ -77,26 +79,72 @@
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        // 🔴 [필수 변경] 여기에 본인의 Supabase 정보를 정확히 기입해 주세요. 큰따옴표("")는 유지해야 합니다.
+  const SUPABASE_URL = "https://qemfpmnsywfzuyzozkqj.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS"; 
+        
+        let supabase;
+        try {
+            // Supabase 초기화
+            supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (err) {
+            console.error("Supabase 초기화 실패. URL과 KEY를 확인하세요:", err);
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "가입 처리 중...";
+
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const pet = document.getElementById('regPet').value.trim();
             const password = document.getElementById('regPw').value;
 
-            let users = JSON.parse(localStorage.getItem('belluna_users')) || [];
-            const isExist = users.some(user => user.email === email);
-            if (isExist) {
-                alert('이미 가입된 이메일 주소입니다.');
-                return;
-            }
+            try {
+                // 1. Supabase 인증(Auth) 계정 생성
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email: email,
+                    password: password
+                });
 
-            const newUser = { name, email, pet, password, grade: '준회원' };
-            users.push(newUser);
-            localStorage.setItem('belluna_users', JSON.stringify(users));
-            
-            alert('벨루나펫 회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.');
-            window.location.href = 'login.html';
+                if (authError) {
+                    alert('회원가입 실패: ' + authError.message);
+                    return;
+                }
+
+                // 2. 추가 유저 정보를 profiles 테이블에 저장
+                if (authData && authData.user) {
+                    const { error: dbError } = await supabase
+                        .from('profiles')
+                        .insert([
+                            { 
+                                id: authData.user.id, 
+                                name: name, 
+                                email: email,
+                                pet_info: pet, 
+                                grade: '준회원' 
+                            }
+                        ]);
+
+                    if (dbError) {
+                        console.error("DB 저장 에러 상세:", dbError);
+                        alert('계정은 생성되었으나 상세 정보 저장에 실패했습니다: ' + dbError.message);
+                        return;
+                    }
+
+                    alert('벨루나펫 회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.');
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error("서버 통신 오류:", error);
+                alert('시스템 오류가 발생했습니다. 키 설정이나 인터넷 연결을 확인해 주세요.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "멤버쉽 회원가입";
+            }
         });
     </script>
 </body>
