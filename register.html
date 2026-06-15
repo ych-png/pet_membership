@@ -117,10 +117,10 @@
                     return;
                 }
 
-                // 2. 계정 고유 ID 식별값을 추적하여 profiles 테이블에 관계 데이터 저장
+                // 2. belluna_register 테이블에 관계 데이터 저장
                 if (authData && authData.user) {
                     const { error: dbError } = await supabaseClient
-                        .from('profiles')
+                        .from('belluna_register')
                         .insert([
                             { 
                                 id: authData.user.id, 
