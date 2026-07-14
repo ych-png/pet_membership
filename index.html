@@ -45,21 +45,13 @@
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 10px;
         }
 
+        /* 상단 로고 이미지 크기 최적화 */
         .logo-symbol-nav {
-            height: 32px;
+            height: 38px; /* 글자가 사라진 만큼 로고의 주목도를 높이기 위해 약간 키웠습니다 */
             width: auto;
             object-fit: contain;
-        }
-
-        .brand-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: var(--gold-primary);
         }
 
         .auth-buttons {
@@ -191,7 +183,6 @@
             color: var(--gold-primary);
         }
 
-        /* 하단 카피라이트 */
         footer {
             text-align: center;
             padding: 40px 20px;
@@ -210,15 +201,12 @@
 </head>
 <body>
 
-    <!-- 헤더 영역 -->
     <header>
         <div class="logo-area">
             <img src="beluna_symbol.png" alt="Beluna Symbol" class="logo-symbol-nav">
-            <span class="brand-name">BELUNA PET</span>
         </div>
         
         <div class="auth-buttons" id="navAuthArea">
-            <!-- 서비스 메뉴 트리오 (라이프/쇼핑 옆에 차례대로 배치) -->
             <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
             <a href="#" class="nav-btn">동물병원 케어</a>
             <a href="#" class="nav-btn">장례 서비스</a>
@@ -228,27 +216,23 @@
         </div>
     </header>
 
-    <!-- 히어로 컨텐츠 섹션 -->
     <main class="hero-section">
-        <img src="beluna-symbol.png" alt="Beluna Premium Emblem" class="hero-main-symbol">
+        <img src="beluna_symbol.png" alt="Beluna Premium Emblem" class="hero-main-symbol">
         
         <div class="welcome-badge">Premium Pet Care & Life</div>
         <h1 class="hero-title">당신의 소중한 동반자를 위한 <span>특별함</span></h1>
         <p class="hero-subtitle">벨루나펫 멤버쉽을 통해 최고의 스킨케어 혜택과 프라이빗 라이프 스타일 케어를 경험하세요.</p>
 
-        <!-- 세션 로그인 연동 카드 데이터 -->
         <div class="membership-card" id="statusCard">
             <p class="user-greet">반갑습니다, 고객님</p>
             <p style="color: var(--text-muted); font-size: 14px;">로그인 후 하이엔드 멤버쉽 컨텐츠를 만나보세요.</p>
         </div>
 
-        <!-- 멤버쉽 등급 및 혜택 비교 섹션 -->
         <div style="width: 100%; max-width: 900px; margin-top: 90px; padding: 0 20px; animation: fadeInSymbol 1.8s ease-out;">
             <div class="welcome-badge" style="margin-bottom: 16px; display: inline-block;">Membership Benefits</div>
             <h2 style="font-size: 28px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">벨루나펫 멤버쉽 등급 안내</h2>
             <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 40px; font-weight: 300;">회원 등급별로 제공되는 프라이빗 케어와 독점 쇼핑 혜택을 비교해 보세요.</p>
 
-            <!-- 럭셔리 혜택 비교 테이블 -->
             <div style="width: 100%; overflow-x: auto; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; backdrop-filter: blur(8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
                 <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; min-width: 600px;">
                     <thead>
@@ -295,51 +279,84 @@
         &copy; BELUNA PET. All Rights Reserved.
     </footer>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Firebase 설정 객체 (유저님의 실제 Firebase 키를 입력하세요)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Supabase 연동 완료된 로그인 세션 체크
-            const loginSession = JSON.parse(sessionStorage.getItem('login_session'));
             const statusCard = document.getElementById('statusCard');
             const navAuthArea = document.getElementById('navAuthArea');
 
-            if (loginSession) {
-                const userName = loginSession.name || "멤버쉽";
-                
-                // 로그인에 성공한 정식 회원 인터페이스로 대시보드 카드 전환
-                statusCard.innerHTML = `
-                    <p class="user-greet">👑 Premium 멤버쉽 정보</p>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <p class="info-label">OWNER</p>
-                            <p class="info-value">${userName} 님</p>
-                        </div>
-                        <div class="info-item">
-                            <p class="info-label">MEMBERSHIP</p>
-                            <p class="info-value" style="color: #ffffff;">VIP 정회원</p>
-                        </div>
-                    </div>
-                    <p style="font-size: 13px; color: var(--gold-primary); margin-top: 20px; letter-spacing: 0.5px;">
-                        벨루나펫의 프라이빗 서비스 라운지에 입장하셨습니다.
-                    </p>
-                `;
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    let userName = "멤버쉽";
+                    let userGrade = "일반 회원";
 
-                // 로그인 후에도 상단 세 개의 주요 서비스 메뉴가 그대로 유지되도록 처리
-                navAuthArea.innerHTML = `
-                    <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
-                    <a href="#" class="nav-btn">동물병원 케어</a>
-                    <a href="#" class="nav-btn">장례 서비스</a>
-                    <span style="font-size: 14px; color: var(--text-muted); font-weight: 500;">| &nbsp; ${userName}님 라운지</span>
-                    <a href="#" id="logoutBtn" class="nav-btn" style="text-decoration: underline;">로그아웃</a>
-                `;
+                    try {
+                        const userDocRef = doc(db, "users", user.uid);
+                        const userDocSnap = await getDoc(userDocRef);
+                        
+                        if (userDocSnap.exists()) {
+                            const userData = userDocSnap.data();
+                            userName = userData.name || "멤버쉽";
+                            userGrade = userData.grade || "VIP 정회원";
+                        }
+                    } catch (error) {
+                        console.error("Firestore 유저 정보 로드 실패:", error);
+                    }
+                    
+                    statusCard.innerHTML = `
+                        <p class="user-greet">👑 Premium 멤버쉽 정보</p>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <p class="info-label">OWNER</p>
+                                <p class="info-value">${userName} 님</p>
+                            </div>
+                            <div class="info-item">
+                                <p class="info-label">MEMBERSHIP</p>
+                                <p class="info-value" style="color: #ffffff;">${userGrade}</p>
+                            </div>
+                        </div>
+                        <p style="font-size: 13px; color: var(--gold-primary); margin-top: 20px; letter-spacing: 0.5px;">
+                            벨루나펫의 프라이빗 서비스 라운지에 입장하셨습니다.
+                        </p>
+                    `;
 
-                // 로그아웃 클릭 이벤트 주입
-                document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    sessionStorage.removeItem('login_session');
-                    alert('로그아웃 되었습니다. 안전하게 라운지를 퇴장합니다.');
-                    window.location.reload(); 
-                });
-            }
+                    // 로그인 후 상태창 UI 동적 생성 영역 (글자 제거 상태 유지)
+                    navAuthArea.innerHTML = `
+                        <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
+                        <a href="#" class="nav-btn">동물병원 케어</a>
+                        <a href="#" class="nav-btn">장례 서비스</a>
+                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 500;">| &nbsp; ${userName}님 라운지</span>
+                        <a href="#" id="logoutBtn" class="nav-btn" style="text-decoration: underline;">로그아웃</a>
+                    `;
+
+                    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        signOut(auth).then(() => {
+                            alert('로그아웃 되었습니다. 안전하게 라운지를 퇴장합니다.');
+                            window.location.reload();
+                        }).catch((error) => {
+                            console.error("로그아웃 실패:", error);
+                        });
+                    });
+                }
+            });
         });
     </script>
 </body>
