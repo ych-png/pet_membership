@@ -1,17 +1,30 @@
- body {
-    font-family: Arial, sans-serif;
+/* 화면 너비가 768px 이하일 때 (모바일/태블릿) */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px; /* 양옆 여백 줄임 */
+        flex-direction: column; /* 로고와 메뉴를 위아래로 배치 */
+        gap: 12px;
+        align-items: center;
+    }
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    .auth-buttons {
+        width: 100%;
+        gap: 15px;
+        justify-content: flex-start; /* 왼쪽부터 정렬 */
+        overflow-x: auto; /* 🌟 가로 스크롤 허용 */
+        white-space: nowrap; /* 🌟 글자가 절대 아래로 꺾이지 않게 강제 고정 */
+        padding-bottom: 5px; /* 스크롤바 공간 여유 */
+        
+        /* 스크롤바 디자인을 투명하게 숨겨서 깔끔하게 만듭니다 */
+        -ms-overflow-style: none; /* IE */
+        scrollbar-width: none; /* 파이어폭스 */
+    }
+    .auth-buttons::-webkit-scrollbar {
+        display: none; /* 크롬, 사파리, 오페라 */
+    }
 
-    height: 100vh;
-    margin: 0;
-    text-align: center;
+    .nav-btn {
+        font-size: 13px; /* 글자 크기 살짝 줄임 */
+        flex-shrink: 0; /* 🌟 너비가 좁아져도 글자가 압축되지 않도록 고정 */
+    }
 }
-
-h1 {
-    color: blue;
-}
-
