@@ -3,314 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>벨루나펫 멤버쉽 (Belluna Pet)</title>
+    <title>벨루나펫 - Premium Pet Care & Life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* 디자인 시스템 & 초기화 */
         :root {
-            --primary-color: #0ea5e9;       
-            --primary-dark: #0284c7;
-            --secondary-color: #0f172a;     
-            --text-color: #334155;
-            --bg-light: #f8fafc;
-            --white: #ffffff;
-            --border-color: #e2e8f0;
-            --transition: all 0.3s ease;
+            --bg-dark: #0b0f19;          /* 깊고 고급스러운 미드나잇 네이비 */
+            --gold-primary: #c5a880;     /* 로고와 매칭되는 소프트 골드 */
+            --gold-dark: #a3845b;        /* 무드 있는 다크 골드 */
+            --text-light: #f8fafc;       /* 부드러운 화이트 톤 */
+            --text-muted: #94a3b8;       /* 가독성 높은 그레이 톤 */
+            --card-bg: rgba(255, 255, 255, 0.03); /* 투명하고 세련된 카드 배경 */
+            --border-color: rgba(197, 168, 128, 0.2); /* 은은한 골드 테두리 */
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            color: var(--text-color);
-            background-color: var(--bg-light);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        a { text-decoration: none; color: inherit; }
-        li { list-style: none; }
-        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        /* 내비게이션 바 */
+        /* 상단 네비게이션 헤더 */
         header {
-            background-color: var(--white);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 80px;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            top: 0; width: 100%; z-index: 1000;
         }
 
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--secondary-color);
+        .logo-area {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .logo i { color: var(--primary-color); }
-        .nav-menu { display: flex; gap: 40px; font-weight: 500; }
-        .nav-menu a:hover { color: var(--primary-color); transition: var(--transition); }
-        .nav-auth { display: flex; gap: 15px; }
-
-        .btn {
-            padding: 10px 22px;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            font-size: 15px;
-            display: inline-block;
-            text-align: center;
+        .logo-symbol-nav {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
         }
 
-        .btn-outline {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--bg-light);
-            border-color: #cbd5e1;
-        }
-
-        .btn-primary { background-color: var(--primary-color); color: var(--white); }
-        .btn-primary:hover { background-color: var(--primary-dark); }
-
-        /* 메인 히어로 섹션 */
-        .hero {
-            background: linear-gradient(135deg, #e0f2fe 0%, #fafafa 100%);
-            padding: 100px 0;
-            text-align: left;
-        }
-
-        .hero-content { max-width: 600px; }
-        .hero-badge {
-            display: inline-block;
-            background-color: var(--white);
-            color: var(--primary-dark);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 14px;
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
             font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--gold-primary);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover { color: var(--gold-primary); }
+
+        .nav-btn.active-btn {
+            background-color: var(--gold-primary);
+            color: var(--bg-dark);
+            padding: 8px 18px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .nav-btn.active-btn:hover {
+            background-color: var(--gold-dark);
+        }
+
+        /* 히어로 메인 섹션 */
+        .hero-section {
+            padding-top: 140px;
+            padding-bottom: 100px;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(197, 168, 120, 0.06) 0%, rgba(11, 15, 25, 0) 70%);
+        }
+
+        .hero-main-symbol {
+            width: 110px;
+            height: 110px;
+            object-fit: contain;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 10px 20px rgba(197, 168, 128, 0.2));
+            animation: fadeInSymbol 1.5s ease-out;
+        }
+
+        .welcome-badge {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--gold-primary);
+            font-size: 14px;
+            letter-spacing: 3px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        }
-
-        .hero h1 { font-size: 48px; color: var(--secondary-color); line-height: 1.2; margin-bottom: 20px; font-weight: 700; }
-        .hero p { font-size: 18px; color: #475569; margin-bottom: 35px; }
-
-        /* 멤버쉽 등급 안내 섹션 */
-        .membership-section { padding: 100px 0; background-color: var(--white); }
-        .section-title { text-align: center; margin-bottom: 60px; }
-        .section-title h2 { font-size: 32px; color: var(--secondary-color); margin-bottom: 10px; }
-        .section-title p { color: #64748b; }
-
-        .table-wrapper {
-            overflow-x: auto;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border-radius: 12px;
             border: 1px solid var(--border-color);
+            padding: 5px 14px;
+            border-radius: 20px;
+            background: rgba(197, 168, 128, 0.03);
         }
 
-        table { width: 100%; min-width: 600px; border-collapse: collapse; text-align: center; background-color: var(--white); }
-        th { background-color: var(--secondary-color); color: var(--white); padding: 20px; font-size: 16px; font-weight: 500; }
-        td { padding: 20px; border-bottom: 1px solid var(--border-color); font-size: 16px; }
-        tr:last-child td { border-bottom: none; }
-        tr:nth-child(even) { background-color: var(--bg-light); }
-        .highlight-vip { color: var(--primary-color); font-weight: 700; }
+        .hero-title {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
 
-        /* 조그만 고정형 QR코드 UI */
-        .qr-floating-zone { position: fixed; bottom: 30px; right: 30px; z-index: 999; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
-        .qr-popover { background-color: var(--white); padding: 15px; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15); border: 1px solid var(--border-color); text-align: center; display: none; animation: fadeInUp 0.3s ease; }
-        .qr-popover.show { display: block; }
-        .qr-popover p { font-size: 12px; font-weight: 500; color: var(--secondary-color); margin-top: 8px; }
-        #qrcode { display: inline-block; padding: 4px; background-color: #fff; }
-        .btn-qr-toggle { background-color: var(--secondary-color); color: var(--white); width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25); transition: var(--transition); border: none; font-size: 18px; }
-        .btn-qr-toggle:hover { background-color: var(--primary-color); transform: scale(1.05); }
+        .hero-title span {
+            color: var(--gold-primary);
+        }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .hero-subtitle {
+            font-size: 17px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
 
-        /* 푸터 */
-        footer { background-color: var(--secondary-color); color: #94a3b8; padding: 40px 0; text-align: center; font-size: 14px; border-top: 1px solid #1e293b; }
-        footer strong { color: var(--white); }
+        /* 프리미엄 등급 정보 보드 카드 */
+        .membership-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 32px 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+        }
 
-        @media (max-width: 768px) {
-            .navbar { height: 70px; }
-            .nav-menu { display: none; }
-            .logo { font-size: 20px; }
-            .btn { padding: 8px 14px; font-size: 14px; }
-            .hero { padding: 60px 0; text-align: center; }
-            .hero h1 { font-size: 30px; }
-            .hero p { font-size: 15px; margin-bottom: 25px; }
-            .membership-section { padding: 60px 0; }
-            .section-title { margin-bottom: 30px; }
-            .section-title h2 { font-size: 24px; }
-            th, td { padding: 14px 10px; font-size: 14px; }
-            .qr-floating-zone { display: none; }
+        .user-greet {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold-primary);
+        }
+
+        /* 하단 카피라이트 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 12px;
+            color: rgba(148, 163, 184, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.01);
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeInSymbol {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
+    <!-- 헤더 영역 -->
     <header>
-        <div class="container navbar">
-            <a href="index.html" class="logo">
-                <i class="fa-solid fa-paw"></i> BELLUNA PET
-            </a>
-            <nav class="nav-menu">
-                <a href="#membership">멤버쉽 혜택</a>
-                <a href="#">동물병원 케어</a>
-                <a href="#">라이프/쇼핑</a>
-                <a href="#">장례 서비스</a>
-            </nav>
-            <div class="nav-auth" id="navAuthZone">
-                <a href="login.html" class="btn btn-outline">로그인</a>
-                <a href="register.html" class="btn btn-primary">회원가입</a>
-            </div>
+        <div class="logo-area">
+            <img src="beluna-symbol.png" alt="Beluna Symbol" class="logo-symbol-nav">
+            <span class="brand-name">BELUNA PET</span>
+        </div>
+        
+        <div class="auth-buttons" id="navAuthArea">
+            <!-- 서비스 메뉴 트리오 (라이프/쇼핑 옆에 차례대로 배치) -->
+            <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
+            <a href="#" class="nav-btn">동물병원 케어</a>
+            <a href="#" class="nav-btn">장례 서비스</a>
+            
+            <a href="login.html" class="nav-btn">로그인</a>
+            <a href="register.html" class="nav-btn active-btn">멤버쉽 가입</a>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="container hero-content">
-            <span class="hero-badge">사단법인 유기견없는도시 제휴</span>
-            <h1>반려동물의 요람에서 무덤까지</h1>
-            <p>벨루나펫은 생애주기 맞춤형 통합 멤버쉽 플랫폼입니다. 병원, 미용, 보험, 장례까지 최고 수준의 올인원 케어를 회원 특별가로 만나보세요.</p>
-            <a href="register.html" class="btn btn-primary" style="padding: 14px 28px; font-size: 16px;" id="heroActionBtn">멤버쉽 시작하기</a>
-        </div>
-    </section>
+    <!-- 히어로 컨텐츠 섹션 -->
+    <main class="hero-section">
+        <img src="beluna-symbol.png" alt="Beluna Premium Emblem" class="hero-main-symbol">
+        
+        <div class="welcome-badge">Premium Pet Care & Life</div>
+        <h1 class="hero-title">당신의 소중한 동반자를 위한 <span>특별함</span></h1>
+        <p class="hero-subtitle">벨루나펫 멤버쉽을 통해 최고의 스킨케어 혜택과 프라이빗 라이프 스타일 케어를 경험하세요.</p>
 
-    <section class="membership-section" id="membership">
-        <div class="container">
-            <div class="section-title">
-                <h2>멤버쉽 등급 및 혜택 비교</h2>
-                <p>회원 등급에 따라 제공되는 특별한 할인율을 확인해 보세요.</p>
-            </div>
-            
-            <div class="table-wrapper">
-                <table>
+        <!-- 세션 로그인 연동 카드 데이터 -->
+        <div class="membership-card" id="statusCard">
+            <p class="user-greet">반갑습니다, 고객님</p>
+            <p style="color: var(--text-muted); font-size: 14px;">로그인 후 하이엔드 멤버쉽 컨텐츠를 만나보세요.</p>
+        </div>
+
+        <!-- 멤버쉽 등급 및 혜택 비교 섹션 -->
+        <div style="width: 100%; max-width: 900px; margin-top: 90px; padding: 0 20px; animation: fadeInSymbol 1.8s ease-out;">
+            <div class="welcome-badge" style="margin-bottom: 16px; display: inline-block;">Membership Benefits</div>
+            <h2 style="font-size: 28px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">벨루나펫 멤버쉽 등급 안내</h2>
+            <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 40px; font-weight: 300;">회원 등급별로 제공되는 프라이빗 케어와 독점 쇼핑 혜택을 비교해 보세요.</p>
+
+            <!-- 럭셔리 혜택 비교 테이블 -->
+            <div style="width: 100%; overflow-x: auto; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; backdrop-filter: blur(8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+                <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; min-width: 600px;">
                     <thead>
-                        <tr>
-                            <th>제공 서비스</th>
-                            <th>VIP 회원</th>
-                            <th>정회원</th>
-                            <th>준회원</th>
+                        <tr style="border-bottom: 1px solid var(--border-color); background: rgba(197, 168, 128, 0.05);">
+                            <th style="padding: 20px; color: var(--text-light); font-weight: 500; text-align: left; width: 25%;">제공 혜택</th>
+                            <th style="padding: 20px; color: var(--text-muted); font-weight: 500;">일반 회원<br><span style="font-size: 11px; font-weight: 300;">(가입 즉시)</span></th>
+                            <th style="padding: 20px; color: var(--gold-primary); font-weight: 700; background: rgba(197, 168, 128, 0.02);">VIP 회원<br><span style="font-size: 11px; font-weight: 400;">(공구/쇼핑 이용)</span></th>
+                            <th style="padding: 20px; color: #ffffff; font-weight: 700; font-family: 'Playfair Display', serif; letter-spacing: 1px;">VVIP BLACK<br><span style="font-size: 11px; font-weight: 300; font-family: 'Noto Sans KR';">(최상위 독점)</span></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>교육 프로그램</strong></td>
-                            <td class="highlight-vip">50% 할인</td>
-                            <td>30% 할인</td>
-                            <td>10% 할인</td>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
+                            <td style="padding: 18px 20px; color: var(--text-light); text-align: left; font-weight: 400;">10일 특화 공동구매</td>
+                            <td style="padding: 18px 20px; color: var(--text-muted);">기본가 참여</td>
+                            <td style="padding: 18px 20px; color: var(--gold-primary); font-weight: 700; background: rgba(197, 168, 128, 0.02);">추가 5% 할인</td>
+                            <td style="padding: 18px 20px; color: #ffffff; font-weight: 700;">추가 10% + 우선배정</td>
                         </tr>
-                        <tr>
-                            <td><strong>동물병원 (진료비)</strong></td>
-                            <td class="highlight-vip">30% 할인</td>
-                            <td>20% 할인</td>
-                            <td>10% 할인</td>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
+                            <td style="padding: 18px 20px; color: var(--text-light); text-align: left; font-weight: 400;">네츄럴코어 브랜드관</td>
+                            <td style="padding: 18px 20px; color: var(--text-muted);">일반 이용</td>
+                            <td style="padding: 18px 20px; color: var(--gold-primary); background: rgba(197, 168, 128, 0.02);">시크릿 쿠폰 발급</td>
+                            <td style="padding: 18px 20px; color: #ffffff; font-weight: 700;">전 상품 상시 무료배송</td>
                         </tr>
-                        <tr>
-                            <td><strong>애견미용 / 목욕</strong></td>
-                            <td class="highlight-vip">50% 할인</td>
-                            <td>30% 할인</td>
-                            <td>10% 할인</td>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
+                            <td style="padding: 18px 20px; color: var(--text-light); text-align: left; font-weight: 400;">프라이빗 라이프 케어</td>
+                            <td style="padding: 18px 20px; color: rgba(255,255,255,0.1);">-</td>
+                            <td style="padding: 18px 20px; color: var(--gold-primary); background: rgba(197, 168, 128, 0.02);">온라인 상담 지원</td>
+                            <td style="padding: 18px 20px; color: #ffffff; font-weight: 700;">1:1 전담 케어 큐레이션</td>
                         </tr>
-                        <tr>
-                            <td><strong>쇼핑몰 (용품)</strong></td>
-                            <td class="highlight-vip">50% 할인</td>
-                            <td>30% 할인</td>
-                            <td>10% 할인</td>
-                        </tr>
-                        <tr>
-                            <td><strong>애견 보험</strong></td>
-                            <td class="highlight-vip">15% 할인</td>
-                            <td>10% 할인</td>
-                            <td>5% 할인</td>
+                        <tr style="border-bottom: none;">
+                            <td style="padding: 18px 20px; color: var(--text-light); text-align: left; font-weight: 400;">오프라인 라운지 초대</td>
+                            <td style="padding: 18px 20px; color: rgba(255,255,255,0.1);">-</td>
+                            <td style="padding: 18px 20px; color: rgba(255,255,255,0.1); background: rgba(197, 168, 128, 0.02);">-</td>
+                            <td style="padding: 18px 20px; color: var(--gold-primary); font-weight: 700;">연 2회 프라이빗 파티 초대</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <p style="text-align: right; color: var(--text-muted); font-size: 12px; margin-top: 12px; font-weight: 300;">* 등급 산정 기준 및 세부 혜택은 회원 정책에 따라 변경될 수 있습니다.</p>
         </div>
-    </section>
-
-    <div class="qr-floating-zone">
-        <div class="qr-popover" id="qrPopover">
-            <div id="qrcode"></div>
-            <p>모바일로 확인하기</p>
-        </div>
-        <button class="btn-qr-toggle" id="qrToggleBtn" title="QR코드 보기">
-            <i class="fa-solid fa-qrcode"></i>
-        </button>
-    </div>
+    </main>
 
     <footer>
-        <div class="container">
-            <p style="margin-bottom: 10px;"><strong>(주)벨루나펫 애견멤버쉽 PLATFORM</strong></p>
-            <p>www.bellunapet.co.kr | 제휴: 한국애견연맹(KKF)</p>
-            <p style="margin-top: 15px; font-size: 12px; color: #64748b;">&copy; 2026 Belluna Pet. All rights reserved.</p>
-        </div>
+        &copy; BELUNA PET. All Rights Reserved.
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
-        const navAuthZone = document.getElementById('navAuthZone');
-        const heroActionBtn = document.getElementById('heroActionBtn');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Supabase 연동 완료된 로그인 세션 체크
+            const loginSession = JSON.parse(sessionStorage.getItem('login_session'));
+            const statusCard = document.getElementById('statusCard');
+            const navAuthArea = document.getElementById('navAuthArea');
 
-        // 로그인 세션 확인 및 네비게이션 UI 업데이트
-        function checkAuth() {
-            const session = JSON.parse(sessionStorage.getItem('login_session'));
-            if (session && session.email) {
-                navAuthZone.innerHTML = `
-                    <a href="mypage.html" class="btn btn-outline"><i class="fa-solid fa-user"></i> 마이페이지</a>
-                    <button class="btn btn-primary" onclick="handleLogout()">로그아웃</button>
+            if (loginSession) {
+                const userName = loginSession.name || "멤버쉽";
+                
+                // 로그인에 성공한 정식 회원 인터페이스로 대시보드 카드 전환
+                statusCard.innerHTML = `
+                    <p class="user-greet">👑 Premium 멤버쉽 정보</p>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <p class="info-label">OWNER</p>
+                            <p class="info-value">${userName} 님</p>
+                        </div>
+                        <div class="info-item">
+                            <p class="info-label">MEMBERSHIP</p>
+                            <p class="info-value" style="color: #ffffff;">VIP 정회원</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 13px; color: var(--gold-primary); margin-top: 20px; letter-spacing: 0.5px;">
+                        벨루나펫의 프라이빗 서비스 라운지에 입장하셨습니다.
+                    </p>
                 `;
-                if(heroActionBtn) {
-                    heroActionBtn.innerText = "내 멤버쉽 확인하기";
-                    heroActionBtn.setAttribute('href', 'mypage.html');
-                }
+
+                // 로그인 후에도 상단 세 개의 주요 서비스 메뉴가 그대로 유지되도록 처리
+                navAuthArea.innerHTML = `
+                    <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
+                    <a href="#" class="nav-btn">동물병원 케어</a>
+                    <a href="#" class="nav-btn">장례 서비스</a>
+                    <span style="font-size: 14px; color: var(--text-muted); font-weight: 500;">| &nbsp; ${userName}님 라운지</span>
+                    <a href="#" id="logoutBtn" class="nav-btn" style="text-decoration: underline;">로그아웃</a>
+                `;
+
+                // 로그아웃 클릭 이벤트 주입
+                document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('login_session');
+                    alert('로그아웃 되었습니다. 안전하게 라운지를 퇴장합니다.');
+                    window.location.reload(); 
+                });
             }
-        }
-
-        function handleLogout() {
-            if(confirm('로그아웃 하시겠습니까?')) {
-                sessionStorage.removeItem('login_session');
-                alert('로그아웃 되었습니다.');
-                window.location.reload();
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', checkAuth);
-
-        // QR코드 설정
-        new QRCode(document.getElementById("qrcode"), {
-            text: window.location.href,
-            width: 120,
-            height: 120
-        });
-
-        document.getElementById('qrToggleBtn').addEventListener('click', () => {
-            document.getElementById('qrPopover').classList.toggle('show');
         });
     </script>
 </body>
