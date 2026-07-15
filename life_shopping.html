@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700&display=swap" rel="stylesheet">
     
-    <!-- 기존 공통 스타일 파일 연결 (모바일 반응형 포함) -->
     <link rel="stylesheet" href="style.css">
 
     <style>
@@ -20,14 +19,18 @@
             --text-muted: #94a3b8;
             --card-bg: rgba(255, 255, 255, 0.02);
             --border-color: rgba(197, 168, 128, 0.15);
-            --point-red: #e11d48; /* 할인율 강조를 위한 세련된 레드 딥 톤 */
+            --point-red: #e11d48;
+            --banner-bg-1: #ecdcb9; /* 페오펫 특유의 따뜻하고 고급스러운 아이보리 베이지 배너 배경 */
+            --banner-bg-2: #fdfae7; /* 두 번째 기획전 배너 배경 */
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-light);
             font-family: 'Noto Sans KR', sans-serif;
-            padding-top: 120px; /* 헤더 공간 확보 */
+            padding-top: 94px; /* 고정 헤더 높이만큼 여백 */
         }
 
         .container {
@@ -36,46 +39,221 @@
             padding: 0 20px;
         }
 
-        /* 쇼핑몰 타이틀 섹션 */
-        .shop-header {
-            text-align: center;
-            margin-bottom: 60px;
+        /* 1. 🗂️ 페오펫 스타일 세부 카테고리 네비게이션 바 */
+        .category-nav {
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 94px;
+            z-index: 900;
+            backdrop-filter: blur(10px);
         }
 
-        .shop-badge {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
+        .category-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            list-style: none;
+            padding: 15px 20px;
+            overflow-x: auto; /* 모바일 가로스크롤 대응 */
+            white-space: nowrap;
+        }
+
+        /* 스크롤바 감추기 */
+        .category-list::-webkit-scrollbar { display: none; }
+
+        .category-item a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .category-item a:hover, .category-item.active a {
             color: var(--gold-primary);
-            font-size: 13px;
-            letter-spacing: 3px;
-            border: 1px solid var(--border-color);
-            padding: 4px 12px;
-            border-radius: 20px;
+        }
+
+        .category-item .icon {
+            font-size: 16px;
+        }
+
+        /* 2. 🎡 대형 메인 와이드 배너 섹션 */
+        .main-hero-banner {
+            background-color: var(--banner-bg-1);
+            width: 100%;
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            color: #222222; /* 밝은 배너용 어두운 글씨 */
+        }
+
+        .banner-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .banner-text-side {
+            max-width: 500px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .banner-badge {
             display: inline-block;
+            background: transparent;
+            border: 1px solid #a3845b;
+            color: #a3845b;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
             margin-bottom: 15px;
         }
 
-        .shop-title {
-            font-size: 32px;
+        .banner-title {
+            font-size: 34px;
             font-weight: 700;
-            margin-bottom: 10px;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            color: #111111;
         }
 
-        .shop-subtitle {
-            color: var(--text-muted);
-            font-size: 15px;
+        .banner-title span {
+            color: var(--point-red);
+        }
+
+        .banner-desc {
+            font-size: 16px;
+            color: #555555;
+            margin-bottom: 25px;
             font-weight: 300;
         }
 
-        /* 🛍️ 상품 그리드 레이아웃 (반응형) */
+        .banner-click-btn {
+            display: inline-block;
+            background: #111111;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .banner-click-btn:hover {
+            background: var(--gold-dark);
+        }
+
+        .banner-image-side {
+            max-width: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner-image-side img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.1));
+        }
+
+        /* 3. 🍖 국내생산 원물 기획전 배너 섹션 */
+        .promotion-section {
+            padding: 80px 0;
+        }
+
+        .promo-wide-card {
+            background-color: var(--banner-bg-2);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px 80px;
+            color: #222222;
+        }
+
+        .promo-text {
+            max-width: 500px;
+        }
+
+        .promo-tag {
+            font-size: 14px;
+            color: #666666;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .promo-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111111;
+            line-height: 1.3;
+            margin-bottom: 15px;
+        }
+
+        .promo-discount-badge {
+            background: var(--point-red);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .promo-subtitle {
+            font-size: 16px;
+            color: #555555;
+            margin-bottom: 25px;
+        }
+
+        .promo-image {
+            max-width: 400px;
+        }
+
+        .promo-image img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* 🛍️ 일반 멤버십 최저가 상품 그리드 타이틀 */
+        .section-title-area {
+            margin-top: 40px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--gold-primary);
+            padding-left: 15px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        /* 상품 그리드 시스템 */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* PC 기본 4열 */
-            gap: 30px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
             margin-bottom: 100px;
         }
 
-        /* 상품 개별 카드 디자인 */
         .product-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -86,20 +264,14 @@
         }
 
         .product-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-5px);
             border-color: var(--gold-primary);
-            box-shadow: 0 15px 30px rgba(197, 168, 128, 0.08);
         }
 
-        /* 썸네일 영역 */
         .product-thumb {
             width: 100%;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 1/1;
             background: #151b2c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
             overflow: hidden;
         }
 
@@ -107,14 +279,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
         }
 
-        .product-card:hover .product-thumb img {
-            transform: scale(1.05);
-        }
-
-        /* 페오펫 핵심: 파격적인 할인 배지 */
         .badge-discount {
             position: absolute;
             top: 12px;
@@ -122,91 +288,70 @@
             background: var(--point-red);
             color: #fff;
             font-weight: 700;
-            font-size: 13px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            z-index: 10;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
         }
 
-        /* 상품 상세 정보 텍스트 영역 */
         .product-info {
-            padding: 20px;
-        }
-
-        .product-tag {
-            font-size: 11px;
-            color: var(--gold-primary);
-            font-weight: 500;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
+            padding: 15px;
         }
 
         .product-name {
-            font-size: 15px;
-            font-weight: 500;
-            color: #ffffff;
-            margin-bottom: 12px;
-            line-height: 1.4;
-            height: 42px; /* 두 줄 제한 고정 */
+            font-size: 14px;
+            font-weight: 400;
+            height: 40px;
+            overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* 가격 비교 존 (페오펫몰 시그니처 벤치마킹) */
-        .price-zone {
-            border-top: 1px dashed rgba(255, 255, 255, 0.05);
-            padding-top: 12px;
+            margin-bottom: 10px;
         }
 
         .price-regular {
             font-size: 12px;
             color: var(--text-muted);
             text-decoration: line-through;
-            margin-bottom: 2px;
         }
 
         .price-membership {
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
-        }
-
-        .price-label {
-            font-size: 11px;
-            color: var(--gold-primary);
-            border: 1px solid rgba(197, 168, 128, 0.3);
-            padding: 1px 4px;
-            border-radius: 3px;
-            margin-right: 4px;
-            font-weight: 500;
-        }
-
-        .price-amount {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--gold-primary);
+            margin-top: 2px;
         }
 
-        /* 📱 모바일 및 태블릿 반응형 대응 디자인 */
+        /* 📱 대형 스크린부터 스마트폰까지 완벽 반응형 구현 */
         @media (max-width: 1024px) {
-            .product-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } /* 태블릿 3열 */
+            .product-grid { grid-template-columns: repeat(3, 1fr); }
+            .promo-wide-card { padding: 40px; }
+            .banner-title { font-size: 28px; }
         }
 
         @media (max-width: 768px) {
-            body { padding-top: 140px; }
-            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; } /* 모바일 2열 배치 */
-            .product-info { padding: 12px; }
-            .product-name { font-size: 13px; height: 36px; margin-bottom: 8px; }
-            .price-amount { font-size: 15px; }
-            .shop-title { font-size: 24px; }
+            body { padding-top: 130px; }
+            .category-nav { top: 130px; }
+            
+            .main-hero-banner { min-height: 320px; padding: 20px 0; }
+            .banner-container { flex-direction: column; text-align: center; gap: 20px; padding: 0 20px; }
+            .banner-image-side { max-width: 240px; }
+            .banner-title { font-size: 24px; }
+            
+            .promo-wide-card { flex-direction: column; text-align: center; padding: 30px 20px; gap: 20px; }
+            .promo-title { font-size: 22px; }
+            .promo-image { max-width: 250px; }
+
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <!-- 상단 고정 헤더 (메인 index.html과 동일 구성, 글자 제외 버전) -->
     <header>
         <div class="logo-area">
             <a href="index.html">
@@ -222,102 +367,109 @@
         </div>
     </header>
 
+    <nav class="category-nav">
+        <ul class="category-list">
+            <li class="category-item active"><a href="#"><span class="icon">💰</span>벨루나머니</a></li>
+            <li class="category-item"><a href="#"><span class="icon">📦</span>전체</a></li>
+            <li class="category-item"><a href="#"><span class="icon">🏆</span>BEST</a></li>
+            <li class="category-item"><a href="#"><span class="icon">✨</span>NEW</a></li>
+            <li class="category-item"><a href="#"><span class="icon">🥩</span>사료/주식</a></li>
+            <li class="category-item"><a href="#"><span class="icon">🦴</span>간식/츄르</a></li>
+            <li class="category-item"><a href="#"><span class="icon">🛁</span>미용/위생</a></li>
+            <li class="category-item"><a href="#"><span class="icon">💊</span>건강/영양제</a></li>
+            <li class="category-item"><a href="#"><span class="icon">🏡</span>하우스/용품</a></li>
+        </ul>
+    </nav>
+
+    <section class="main-hero-banner">
+        <div class="banner-container">
+            <div class="banner-text-side">
+                <div class="banner-badge">그루밍댕이</div>
+                <h2 class="banner-title">우리 아이에게 입히는<br>사랑스러운 하루</h2>
+                <p class="banner-desc">편안함과 귀여움을 담은 프리미엄 데일리 웨어 오픈</p>
+                <a href="#" class="banner-click-btn">Click</a>
+            </div>
+            <div class="banner-image-side">
+                <img src="https://images.unsplash.com/photo-1541599540903-216a46cc1ad6?q=80&w=500&auto=format&fit=crop" alt="메인 배너 반려견 이미지">
+            </div>
+        </div>
+    </section>
+
     <div class="container">
-        <!-- 쇼핑몰 상단 타이틀 -->
-        <section class="shop-header">
-            <div class="shop-badge">Beluna Membership Secret Shop</div>
-            <h1 class="shop-title">멤버쉽 독점 우주 최저가</h1>
-            <p class="shop-subtitle">벨루나 프리미엄 회원에게만 허용된 시크릿 커머스 레이블입니다.</p>
+        
+        <section class="promotion-section">
+            <div class="promo-wide-card">
+                <div class="promo-text">
+                    <p class="promo-tag">벨루나 PET X 페스룸</p>
+                    <h2 class="promo-title">국내 생산 원물 100%<br>우리집 삼남매 3종 <span class="promo-discount-badge">57%</span></h2>
+                    <p class="promo-subtitle">프리미엄 동결건조 영양 간식 기획 특가전</p>
+                    <a href="#" class="banner-click-btn">Click</a>
+                </div>
+                <div class="promo-image">
+                    <img src="https://images.unsplash.com/photo-1608454537062-4093bf3ed404?q=80&w=500&auto=format&fit=crop" alt="기획전 상품 이미지">
+                </div>
+            </div>
         </section>
 
-        <!-- 🛍️ 상품 리스트 섹션 -->
-        <main class="product-grid">
+        <section>
+            <div class="section-title-area">
+                <h2 class="section-title">벨루나 멤버십 실시간 BEST 특가 상품</h2>
+            </div>
             
-            <!-- 상품 1 -->
-            <div class="product-card">
-                <div class="badge-discount">52%</div>
-                <div class="product-thumb">
-                    <!-- 임시 플레이스홀더 이미지입니다. 실제 상품 이미지 경로로 교체하세요 -->
-                    <img src="https://images.unsplash.com/photo-1589924691106-073469a65222?q=80&w=500&auto=format&fit=crop" alt="상품 이미지">
-                </div>
-                <div class="product-info">
-                    <div class="product-tag">PREMIUM FOOD</div>
-                    <div class="product-name">[벨루나 독점] 반려견을 위한 수제 정성 화식 프리미엄 미트 세트</div>
-                    <div class="price-zone">
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="badge-discount">52%</div>
+                    <div class="product-thumb">
+                        <img src="https://images.unsplash.com/photo-1589924691106-073469a65222?q=80&w=400&auto=format&fit=crop" alt="상품">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[독점] 반려견 맞춤형 프리미엄 리얼 자연 화식 패키지</div>
                         <div class="price-regular">43,500원</div>
-                        <div class="price-membership">
-                            <span class="price-label">회원가</span>
-                            <span class="price-amount">21,000원</span>
-                        </div>
+                        <div class="price-membership">21,000원</div>
                     </div>
                 </div>
-            </div>
-
-            <!-- 상품 2 -->
-            <div class="product-card">
-                <div class="badge-discount">55%</div>
-                <div class="product-thumb">
-                    <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?q=80&w=500&auto=format&fit=crop" alt="상품 이미지">
-                </div>
-                <div class="product-info">
-                    <div class="product-tag">HEALTH CARE</div>
-                    <div class="product-name">[초고함량] 댕댕츄정 관절&슬개골 올인원 면역 영양제 60정</div>
-                    <div class="price-zone">
+                <div class="product-card">
+                    <div class="badge-discount">55%</div>
+                    <div class="product-thumb">
+                        <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?q=80&w=400&auto=format&fit=crop" alt="상품">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[관절 집중 케어] 초고함량 유산균 댕댕츄정 60정</div>
                         <div class="price-regular">55,000원</div>
-                        <div class="price-membership">
-                            <span class="price-label">회원가</span>
-                            <span class="price-amount">24,950원</span>
-                        </div>
+                        <div class="price-membership">24,950원</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge-discount">48%</div>
+                    <div class="product-thumb">
+                        <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?q=80&w=400&auto=format&fit=crop" alt="상품">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">100% 오가닉 순면 사계절 컴포트 강아지 홈웨어</div>
+                        <div class="price-regular">38,000원</div>
+                        <div class="price-membership">19,760원</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge-discount">35%</div>
+                    <div class="product-thumb">
+                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=400&auto=format&fit=crop" alt="상품">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[위생/케어] 저자극 포인핸드 올인원 펫 샴푸 500ml</div>
+                        <div class="price-regular">29,000원</div>
+                        <div class="price-membership">18,850원</div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- 상품 3 -->
-            <div class="product-card">
-                <div class="badge-discount">56%</div>
-                <div class="product-thumb">
-                    <img src="https://images.unsplash.com/photo-1608454537062-4093bf3ed404?q=80&w=500&auto=format&fit=crop" alt="상품 이미지">
-                </div>
-                <div class="product-info">
-                    <div class="product-tag">LIFE & OUTDOOR</div>
-                    <div class="product-name">[산책 필수품] 천연 유기농 해충 차단 및 피모 자외선 보호 스프레이</div>
-                    <div class="price-zone">
-                        <div class="price-regular">44,900원</div>
-                        <div class="price-membership">
-                            <span class="price-label">회원가</span>
-                            <span class="price-amount">19,950원</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 상품 4 -->
-            <div class="product-card">
-                <div class="badge-discount">48%</div>
-                <div class="product-thumb">
-                    <img src="https://images.unsplash.com/photo-1541599540903-216a46cc1ad6?q=80&w=500&auto=format&fit=crop" alt="상품 이미지">
-                </div>
-                <div class="product-info">
-                    <div class="product-tag">PREMIUM TREAT</div>
-                    <div class="product-name">100% 한우 치즈 스틱 스트레스 해소 이갈이 수제간식</div>
-                    <div class="price-zone">
-                        <div class="price-regular">32,000원</div>
-                        <div class="price-membership">
-                            <span class="price-label">회원가</span>
-                            <span class="price-amount">16,640원</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </main>
     </div>
 
     <footer style="text-align: center; padding: 40px 20px; font-size: 12px; color: rgba(148, 163, 184, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.01); font-family: 'Playfair Display', serif; letter-spacing: 1px;">
         &copy; BELUNA PET. All Rights Reserved.
     </footer>
 
-    <!-- Firebase 로그인 유저 세션 연동 (index.html과 동일 로직) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
