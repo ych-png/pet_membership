@@ -3,288 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>벨루나펫 - Premium Pet Care & Life</title>
+    <title>벨루나펫 - 프리미엄 케어 플랫폼</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700&display=swap" rel="stylesheet">
+    
+    <!-- 외부 스타일에 구애받지 않도록 내부 마스터 스타일로 제어합니다 -->
+    <link rel="stylesheet" href="style.css">
+
     <style>
         :root {
-            --bg-dark: #0b0f19;          /* 깊고 고급스러운 미드나잇 네이비 */
-            --gold-primary: #c5a880;     /* 로고와 매칭되는 소프트 골드 */
-            --gold-dark: #a3845b;        /* 무드 있는 다크 골드 */
-            --text-light: #f8fafc;       /* 부드러운 화이트 톤 */
-            --text-muted: #94a3b8;       /* 가독성 높은 그레이 톤 */
-            --card-bg: rgba(255, 255, 255, 0.03); /* 투명하고 세련된 카드 배경 */
-            --border-color: rgba(197, 168, 128, 0.2); /* 은은한 골드 테두리 */
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --bg-dark: #0b0f19;
+            --gold-primary: #c5a880;
+            --gold-dark: #a3845b;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(197, 168, 128, 0.15);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
+
         body {
+            background-color: var(--bg-dark) !important;
+            color: var(--text-light) !important;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            line-height: 1.6;
-            overflow-x: hidden;
+            padding-top: 100px !important; /* PC 헤더 높이만큼 본문 내리기 */
         }
 
-        /* 상단 네비게이션 헤더 */
+        /* ========================================================
+           ✨ [마스터 헤더] PC 레이아웃 (기본 좌우 정렬 구조)
+        ======================================================== */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid var(--border-color);
-            background: rgba(11, 15, 25, 0.8);
-            backdrop-filter: blur(12px);
-            position: fixed;
-            top: 0; width: 100%; z-index: 1000;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100px !important;
+            background: rgba(11, 15, 25, 0.9) !important;
+            backdrop-filter: blur(15px) !important;
+            -webkit-backdrop-filter: blur(15px) !important;
+            border-bottom: 1px solid rgba(197, 168, 128, 0.15) !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 0 50px !important;
+            z-index: 2000 !important;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3) !important;
         }
 
         .logo-area {
-            display: flex;
-            align-items: center;
+            display: flex !important;
+            align-items: center !important;
+            flex-shrink: 0 !important; /* 모바일에서 로고가 찌그러지지 않게 고정 */
         }
-
-        /* 상단 로고 이미지 크기 최적화 */
+        
         .logo-symbol-nav {
-            height: 38px; /* 글자가 사라진 만큼 로고의 주목도를 높이기 위해 약간 키웠습니다 */
-            width: auto;
-            object-fit: contain;
+            height: 54px !important;
+            width: auto !important;
+            object-fit: contain !important;
+            display: block !important;
         }
 
+        /* 내비게이션 영역 베이스 */
         .auth-buttons {
-            display: flex;
-            gap: 20px;
-            align-items: center;
+            display: flex !important;
+            align-items: center !important;
+            gap: 32px !important;
+            background: transparent !important;
+            padding: 0 !important;
         }
 
+        /* 헤더 메뉴 링크 스타일 */
         .nav-btn {
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-muted);
-            transition: var(--transition);
+            text-decoration: none !important;
+            color: rgba(248, 250, 252, 0.7) !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            letter-spacing: 0.5px !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            padding: 8px 0 !important;
+            border: none !important;
+            background: transparent !important;
+            flex-shrink: 0 !important; /* 슬라이드 작동 시 글자가 끊겨서 줄바꿈되지 않도록 방지 */
         }
 
-        .nav-btn:hover { color: var(--gold-primary); }
+        .nav-btn:hover {
+            color: #ffffff !important;
+        }
 
+        /* 호버 시 밑줄 효과 */
+        .nav-btn::after {
+            content: '' !important;
+            position: absolute !important;
+            bottom: 0 !important;
+            left: 50% !important;
+            width: 0 !important;
+            height: 1px !important;
+            background-color: var(--gold-primary) !important;
+            transition: all 0.3s ease !important;
+            transform: translateX(-50%) !important;
+        }
+        
+        .nav-btn:hover::after {
+            width: 100% !important;
+        }
+
+        /* 테두리가 있는 멤버쉽 가입 버튼 */
         .nav-btn.active-btn {
-            background-color: var(--gold-primary);
-            color: var(--bg-dark);
-            padding: 8px 18px;
-            border-radius: 4px;
-            font-weight: 700;
+            border: 1px solid var(--gold-primary) !important;
+            padding: 9px 22px !important;
+            border-radius: 4px !important;
+            color: var(--gold-primary) !important;
+            font-weight: 500 !important;
         }
-
+        .nav-btn.active-btn::after {
+            display: none !important;
+        }
         .nav-btn.active-btn:hover {
-            background-color: var(--gold-dark);
+            background: rgba(197, 168, 128, 0.1) !important;
+            color: #ffffff !important;
+            border-color: #ffffff !important;
         }
 
-        /* 히어로 메인 섹션 */
-        .hero-section {
-            padding-top: 140px;
-            padding-bottom: 100px;
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* 메인 인트로 센터 영역 (메인 홈 전용) */
+        .main-welcome {
+            max-width: 800px;
+            margin: 150px auto 50px auto;
             text-align: center;
-            background: radial-gradient(circle at center, rgba(197, 168, 120, 0.06) 0%, rgba(11, 15, 25, 0) 70%);
+            padding: 0 20px;
         }
-
-        .hero-main-symbol {
-            width: 110px;
-            height: 110px;
-            object-fit: contain;
-            margin-bottom: 24px;
-            filter: drop-shadow(0 10px 20px rgba(197, 168, 128, 0.2));
-            animation: fadeInSymbol 1.5s ease-out;
-        }
-
-        .welcome-badge {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            color: var(--gold-primary);
-            font-size: 14px;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            padding: 5px 14px;
-            border-radius: 20px;
-            background: rgba(197, 168, 128, 0.03);
-        }
-
-        .hero-title {
-            font-size: 40px;
+        .main-welcome h1 {
+            font-size: 42px;
             font-weight: 700;
-            margin-bottom: 16px;
             letter-spacing: -0.5px;
-            color: #ffffff;
-        }
-
-        .hero-title span {
-            color: var(--gold-primary);
-        }
-
-        .hero-subtitle {
-            font-size: 17px;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 40px;
-            font-weight: 300;
-        }
-
-        /* 프리미엄 등급 정보 보드 카드 */
-        .membership-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 32px 40px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 480px;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-        }
-
-        .user-greet {
-            font-size: 20px;
-            font-weight: 500;
             margin-bottom: 20px;
+            line-height: 1.3;
         }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            text-align: left;
-            margin-top: 10px;
-        }
-
-        .info-item {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            padding: 16px;
-            border-radius: 8px;
-        }
-
-        .info-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-        }
-
-        .info-value {
-            font-size: 16px;
-            font-weight: 700;
+        .main-welcome h1 span {
             color: var(--gold-primary);
         }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            font-size: 12px;
-            color: rgba(148, 163, 184, 0.3);
-            border-top: 1px solid rgba(255, 255, 255, 0.01);
-            font-family: 'Playfair Display', serif;
-            letter-spacing: 1px;
+        .main-welcome p {
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.6;
         }
 
-        @keyframes fadeInSymbol {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ========================================================
+           📱 [모바일 스크린 최적화 및 터치 가로 슬라이드 기능 구현]
+        ======================================================== */
+        @media (max-width: 1024px) {
+            header { padding: 0 24px !important; }
+            .auth-buttons { gap: 24px !important; }
+        }
+
+        @media (max-width: 768px) {
+            body { 
+                padding-top: 135px !important; /* 모바일 헤더가 2줄로 배치되므로 상단 여백 확대 */
+            }
+            
+            header {
+                height: auto !important;
+                padding: 15px 0 12px 0 !important; /* 양옆 패딩을 줄여 스크롤 끝단 최적화 */
+                flex-direction: column !important;
+                gap: 12px !important;
+            }
+
+            .logo-area {
+                width: 100% !important;
+                justify-content: center !important; /* 로고는 상단 중앙에 고정 */
+            }
+
+            /* 🎯 핵심 수정: 모바일 전용 가로 스크롤/슬라이드 인터페이스 활성화 */
+            .auth-buttons {
+                width: 100% !important;
+                justify-content: flex-start !important; /* 스크롤이 왼쪽부터 시작하도록 설정 */
+                gap: 20px !important;                 /* 터치하기 편한 여유로운 버튼 간격 */
+                overflow-x: auto !important;          /* 가로 스크롤(슬라이드) 권한 강제 허용 */
+                overflow-y: hidden !important;        /* 세로 움직임 원천 차단 */
+                white-space: nowrap !important;        /* 메뉴 아이템들이 한 줄로 나란히 유지되도록 설정 */
+                padding: 0 24px 8px 24px !important;  /* 좌우 여백을 주어 잘려 보이지 않게 설계 */
+                
+                /* 스크롤 제스처 부드럽게 만들기 (iOS/Android) */
+                -webkit-overflow-scrolling: touch !important; 
+            }
+
+            /* 슬라이드 편의를 위해 스크롤바는 깔끔하게 숨김 처리 */
+            .auth-buttons::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            .nav-btn { 
+                font-size: 14px !important; 
+                display: inline-block !important;
+            }
+            
+            /* 가입 버튼도 스크롤라인 안에서 무너지지 않도록 패딩 최적화 */
+            .nav-btn.active-btn { 
+                padding: 6px 16px !important; 
+            }
+
+            .main-welcome h1 { font-size: 28px; }
+            .main-welcome p { font-size: 14px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- 📌 PC에서는 고정 정렬 / 모바일에서는 가로 슬라이드가 완벽 작동하는 반응형 헤더 -->
     <header>
         <div class="logo-area">
-            <img src="beluna_logo.png" alt="Beluna Symbol" class="logo-symbol-nav">
+            <a href="index.html">
+                <img src="beluna_symbol.png" alt="Beluna Symbol" class="logo-symbol-nav">
+            </a>
         </div>
-        
         <div class="auth-buttons" id="navAuthArea">
+            <!-- 각 텍스트에 flex-shrink:0을 주어 슬라이드 도중 자물쇠처럼 글자가 고정됩니다 -->
             <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
             <a href="#" class="nav-btn">동물병원 케어</a>
             <a href="#" class="nav-btn">장례 서비스</a>
-            
             <a href="login.html" class="nav-btn">로그인</a>
             <a href="register.html" class="nav-btn active-btn">멤버쉽 가입</a>
         </div>
     </header>
 
-    <main class="hero-section">
-        <img src="beluna_symbol.png" alt="Beluna Premium Emblem" class="hero-main-symbol">
-        
-        <div class="welcome-badge">Premium Pet Care & Life</div>
-        <h1 class="hero-title">당신의 소중한 동반자를 위한 <span>특별함</span></h1>
-        <p class="hero-subtitle">벨루나펫 멤버쉽을 통해 최고의 스킨케어 혜택과 프라이빗 라이프 스타일 케어를 경험하세요.</p>
+    <!-- 메인 환영 섹션 공간 -->
+    <div class="main-welcome">
+        <h1>프리미엄 반려생활의 시작<br><span>벨루나 펫</span>에 오신 것을 환영합니다</h1>
+        <p>최고의 전문 의료 매칭부터 프리미엄 시크릿 커머스 쇼핑, 그리고 마지막 안식까지<br>벨루나 멤버쉽 전용 프리미엄 토탈 홈 케어 서비스를 만나보세요.</p>
+    </div>
 
-        <div class="membership-card" id="statusCard">
-            <p class="user-greet">반갑습니다, 고객님</p>
-            <p style="color: var(--text-muted); font-size: 14px;">로그인 후 하이엔드 멤버쉽 컨텐츠를 만나보세요.</p>
-        </div>
-
-        <div style="width: 100%; max-width: 900px; margin-top: 90px; padding: 0 20px; animation: fadeInSymbol 1.8s ease-out;">
-            <div class="welcome-badge" style="margin-bottom: 16px; display: inline-block;">Membership Benefits</div>
-            <h2 style="font-size: 28px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">벨루나펫 멤버쉽 등급 안내</h2>
-            <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 40px; font-weight: 300;">회원 등급별로 제공되는 프라이빗 케어와 독점 쇼핑 혜택을 비교해 보세요.</p>
-
-            <div style="width: 100%; overflow-x: auto; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; backdrop-filter: blur(8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
-                <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; min-width: 600px;">
-                    <thead>
-                        <tr style="border-bottom: 1px solid var(--border-color); background: rgba(197, 168, 128, 0.05);">
-                            <th style="padding: 20px; color: var(--text-light); font-weight: 500; text-align: left; width: 25%;">제공 혜택</th>
-                            <th style="padding: 20px; color: var(--text-muted); font-weight: 500;">일반 회원<br><span style="font-size: 11px; font-weight: 300;">(가입 즉시)</span></th>
-                            <th style="padding: 20px; color: var(--gold-primary); font-weight: 700; background: rgba(197, 168, 128, 0.02);">VIP 회원<br><span style="font-size: 11px; font-weight: 400;">(공구/쇼핑 이용)</span></th>
-                            <th style="padding: 20px; color: #ffffff; font-weight: 700; font-family: 'Playfair Display', serif; letter-spacing: 1px;">VVIP BLACK<br><span style="font-size: 11px; font-weight: 300; font-family: 'Noto Sans KR';">(최상위 독점)</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
-                            <td style="padding: 18px 20px; color: var(--text-light); text-align: left; font-weight: 400;">10일 특화 공동구매</td>
-                            <td style="padding: 18px 20px; color: var(--text-muted);">기본가 참여</td>
-                            <td style="padding: 18px 20px; color: var(--gold-primary); font-weight: 700; background: rgba(197, 168, 128, 0.02);">추가 5% 할인</td>
-                            <td style="padding: 18px 20px; color: #ffffff; font-weight: 700;">추가 10% + 우선배정</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
-                            <td style="padding: 18px 20px; color: var(--text-light); text-align: left; font-weight: 400;">네츄럴코어 브랜드관</td>
-                            <td style="padding: 18px 20px; color: var(--text-muted);">일반 이용</td>
-                            <td style="padding: 18px 20px; color: var(--gold-primary); background: rgba(197, 168, 128, 0.02);">시크릿 쿠폰 발급</td>
-                            <td style="padding: 18px 20px; color: #ffffff; font-weight: 700;">전 상품 상시 무료배송</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
-                            <td style="padding: 18px 20px; color: var(--text-light); text-align: left; font-weight: 400;">프라이빗 라이프 케어</td>
-                            <td style="padding: 18px 20px; color: rgba(255,255,255,0.1);">-</td>
-                            <td style="padding: 18px 20px; color: var(--gold-primary); background: rgba(197, 168, 128, 0.02);">온라인 상담 지원</td>
-                            <td style="padding: 18px 20px; color: #ffffff; font-weight: 700;">1:1 전담 케어 큐레이션</td>
-                        </tr>
-                        <tr style="border-bottom: none;">
-                            <td style="padding: 18px 20px; color: var(--text-light); text-align: left; font-weight: 400;">오프라인 라운지 초대</td>
-                            <td style="padding: 18px 20px; color: rgba(255,255,255,0.1);">-</td>
-                            <td style="padding: 18px 20px; color: rgba(255,255,255,0.1); background: rgba(197, 168, 128, 0.02);">-</td>
-                            <td style="padding: 18px 20px; color: var(--gold-primary); font-weight: 700;">연 2회 프라이빗 파티 초대</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <p style="text-align: right; color: var(--text-muted); font-size: 12px; margin-top: 12px; font-weight: 300;">* 등급 산정 기준 및 세부 혜택은 회원 정책에 따라 변경될 수 있습니다.</p>
-        </div>
-    </main>
-
-    <footer>
+    <footer style="text-align: center; padding: 40px 20px; font-size: 12px; color: rgba(148, 163, 184, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.01); font-family: 'Playfair Display', serif; letter-spacing: 1px; margin-top: 200px;">
         &copy; BELUNA PET. All Rights Reserved.
     </footer>
 
+    <!-- Firebase 회원 동적 매칭 (로그인 후 가로 슬라이드 구조 자동 보존 연동) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase 설정 객체 (유저님의 실제 Firebase 키를 입력하세요)
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_AUTH_DOMAIN",
@@ -298,65 +257,29 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const statusCard = document.getElementById('statusCard');
-            const navAuthArea = document.getElementById('navAuthArea');
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                let userName = "멤버쉽";
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) userName = userDoc.data().name || "멤버쉽";
+                } catch (e) { console.error(e); }
 
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    let userName = "멤버쉽";
-                    let userGrade = "일반 회원";
+                // 로그인 완료 시 새로 꽂히는 DOM 메뉴 구조 역시 무너지지 않고 가로 슬라이드가 이어지도록 맞춤 설계
+                document.getElementById('navAuthArea').innerHTML = `
+                    <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
+                    <a href="#" class="nav-btn">동물병원 케어</a>
+                    <a href="#" class="nav-btn">장례 서비스</a>
+                    <span style="font-size: 14px; color: rgba(255,255,255,0.2); flex-shrink:0; padding: 0 2px;">|</span>
+                    <span style="font-size: 14px; color: var(--gold-primary); font-weight: 500; flex-shrink:0;">${userName}님</span>
+                    <a href="#" id="logoutBtn" class="nav-btn" style="color: rgba(248, 250, 252, 0.4) !important;">로그아웃</a>
+                `;
 
-                    try {
-                        const userDocRef = doc(db, "users", user.uid);
-                        const userDocSnap = await getDoc(userDocRef);
-                        
-                        if (userDocSnap.exists()) {
-                            const userData = userDocSnap.data();
-                            userName = userData.name || "멤버쉽";
-                            userGrade = userData.grade || "VIP 정회원";
-                        }
-                    } catch (error) {
-                        console.error("Firestore 유저 정보 로드 실패:", error);
-                    }
-                    
-                    statusCard.innerHTML = `
-                        <p class="user-greet">👑 Premium 멤버쉽 정보</p>
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <p class="info-label">OWNER</p>
-                                <p class="info-value">${userName} 님</p>
-                            </div>
-                            <div class="info-item">
-                                <p class="info-label">MEMBERSHIP</p>
-                                <p class="info-value" style="color: #ffffff;">${userGrade}</p>
-                            </div>
-                        </div>
-                        <p style="font-size: 13px; color: var(--gold-primary); margin-top: 20px; letter-spacing: 0.5px;">
-                            벨루나펫의 프라이빗 서비스 라운지에 입장하셨습니다.
-                        </p>
-                    `;
-
-                    // 로그인 후 상태창 UI 동적 생성 영역 (글자 제거 상태 유지)
-                    navAuthArea.innerHTML = `
-                        <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
-                        <a href="#" class="nav-btn">동물병원 케어</a>
-                        <a href="#" class="nav-btn">장례 서비스</a>
-                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 500;">| &nbsp; ${userName}님 라운지</span>
-                        <a href="#" id="logoutBtn" class="nav-btn" style="text-decoration: underline;">로그아웃</a>
-                    `;
-
-                    document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                        e.preventDefault();
-                        signOut(auth).then(() => {
-                            alert('로그아웃 되었습니다. 안전하게 라운지를 퇴장합니다.');
-                            window.location.reload();
-                        }).catch((error) => {
-                            console.error("로그아웃 실패:", error);
-                        });
-                    });
-                }
-            });
+                document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    signOut(auth).then(() => window.location.reload());
+                });
+            }
         });
     </script>
 </body>
