@@ -3,284 +3,505 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>벨루나펫 - 프리미엄 케어 플랫폼</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700&display=swap" rel="stylesheet">
-    
-    <!-- 외부 스타일에 구애받지 않도록 내부 마스터 스타일로 제어합니다 -->
-    <link rel="stylesheet" href="style.css">
-
+    <title>Belluna Pet Alpha - 한국애견연맹과 함께하는 반려생활 플랫폼</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --bg-dark: #0b0f19;
-            --gold-primary: #c5a880;
-            --gold-dark: #a3845b;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: rgba(197, 168, 128, 0.15);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background-color: var(--bg-dark) !important;
-            color: var(--text-light) !important;
-            font-family: 'Noto Sans KR', sans-serif;
-            padding-top: 100px !important; /* PC 헤더 높이만큼 본문 내리기 */
-        }
-
-        /* ========================================================
-           ✨ [마스터 헤더] PC 레이아웃 (기본 좌우 정렬 구조)
-        ======================================================== */
-        header {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100px !important;
-            background: rgba(11, 15, 25, 0.9) !important;
-            backdrop-filter: blur(15px) !important;
-            -webkit-backdrop-filter: blur(15px) !important;
-            border-bottom: 1px solid rgba(197, 168, 128, 0.15) !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            padding: 0 50px !important;
-            z-index: 2000 !important;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3) !important;
-        }
-
-        .logo-area {
-            display: flex !important;
-            align-items: center !important;
-            flex-shrink: 0 !important; /* 모바일에서 로고가 찌그러지지 않게 고정 */
-        }
-        
-        .logo-symbol-nav {
-            height: 54px !important;
-            width: auto !important;
-            object-fit: contain !important;
-            display: block !important;
-        }
-
-        /* 내비게이션 영역 베이스 */
-        .auth-buttons {
-            display: flex !important;
-            align-items: center !important;
-            gap: 32px !important;
-            background: transparent !important;
-            padding: 0 !important;
-        }
-
-        /* 헤더 메뉴 링크 스타일 */
-        .nav-btn {
-            text-decoration: none !important;
-            color: rgba(248, 250, 252, 0.7) !important;
-            font-size: 14px !important;
-            font-weight: 400 !important;
-            letter-spacing: 0.5px !important;
-            transition: all 0.3s ease !important;
-            position: relative !important;
-            padding: 8px 0 !important;
-            border: none !important;
-            background: transparent !important;
-            flex-shrink: 0 !important; /* 슬라이드 작동 시 글자가 끊겨서 줄바꿈되지 않도록 방지 */
-        }
-
-        .nav-btn:hover {
-            color: #ffffff !important;
-        }
-
-        /* 호버 시 밑줄 효과 */
-        .nav-btn::after {
-            content: '' !important;
-            position: absolute !important;
-            bottom: 0 !important;
-            left: 50% !important;
-            width: 0 !important;
-            height: 1px !important;
-            background-color: var(--gold-primary) !important;
-            transition: all 0.3s ease !important;
-            transform: translateX(-50%) !important;
-        }
-        
-        .nav-btn:hover::after {
-            width: 100% !important;
-        }
-
-        /* 테두리가 있는 멤버쉽 가입 버튼 */
-        .nav-btn.active-btn {
-            border: 1px solid var(--gold-primary) !important;
-            padding: 9px 22px !important;
-            border-radius: 4px !important;
-            color: var(--gold-primary) !important;
-            font-weight: 500 !important;
-        }
-        .nav-btn.active-btn::after {
-            display: none !important;
-        }
-        .nav-btn.active-btn:hover {
-            background: rgba(197, 168, 128, 0.1) !important;
-            color: #ffffff !important;
-            border-color: #ffffff !important;
-        }
-
-        /* 메인 인트로 센터 영역 (메인 홈 전용) */
-        .main-welcome {
-            max-width: 800px;
-            margin: 150px auto 50px auto;
-            text-align: center;
-            padding: 0 20px;
-        }
-        .main-welcome h1 {
-            font-size: 42px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 20px;
-            line-height: 1.3;
-        }
-        .main-welcome h1 span {
-            color: var(--gold-primary);
-        }
-        .main-welcome p {
-            color: var(--text-muted);
-            font-size: 16px;
-            font-weight: 300;
-            line-height: 1.6;
-        }
-
-        /* ========================================================
-           📱 [모바일 스크린 최적화 및 터치 가로 슬라이드 기능 구현]
-        ======================================================== */
-        @media (max-width: 1024px) {
-            header { padding: 0 24px !important; }
-            .auth-buttons { gap: 24px !important; }
-        }
-
-        @media (max-width: 768px) {
-            body { 
-                padding-top: 135px !important; /* 모바일 헤더가 2줄로 배치되므로 상단 여백 확대 */
-            }
-            
-            header {
-                height: auto !important;
-                padding: 15px 0 12px 0 !important; /* 양옆 패딩을 줄여 스크롤 끝단 최적화 */
-                flex-direction: column !important;
-                gap: 12px !important;
-            }
-
-            .logo-area {
-                width: 100% !important;
-                justify-content: center !important; /* 로고는 상단 중앙에 고정 */
-            }
-
-            /* 🎯 핵심 수정: 모바일 전용 가로 스크롤/슬라이드 인터페이스 활성화 */
-            .auth-buttons {
-                width: 100% !important;
-                justify-content: flex-start !important; /* 스크롤이 왼쪽부터 시작하도록 설정 */
-                gap: 20px !important;                 /* 터치하기 편한 여유로운 버튼 간격 */
-                overflow-x: auto !important;          /* 가로 스크롤(슬라이드) 권한 강제 허용 */
-                overflow-y: hidden !important;        /* 세로 움직임 원천 차단 */
-                white-space: nowrap !important;        /* 메뉴 아이템들이 한 줄로 나란히 유지되도록 설정 */
-                padding: 0 24px 8px 24px !important;  /* 좌우 여백을 주어 잘려 보이지 않게 설계 */
-                
-                /* 스크롤 제스처 부드럽게 만들기 (iOS/Android) */
-                -webkit-overflow-scrolling: touch !important; 
-            }
-
-            /* 슬라이드 편의를 위해 스크롤바는 깔끔하게 숨김 처리 */
-            .auth-buttons::-webkit-scrollbar {
-                display: none !important;
-            }
-
-            .nav-btn { 
-                font-size: 14px !important; 
-                display: inline-block !important;
-            }
-            
-            /* 가입 버튼도 스크롤라인 안에서 무너지지 않도록 패딩 최적화 */
-            .nav-btn.active-btn { 
-                padding: 6px 16px !important; 
-            }
-
-            .main-welcome h1 { font-size: 28px; }
-            .main-welcome p { font-size: 14px; }
-        }
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; }
+        .banner-slide { display: none; }
+        .banner-slide.active { display: flex; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 pb-20">
 
-    <!-- 📌 PC에서는 고정 정렬 / 모바일에서는 가로 슬라이드가 완벽 작동하는 반응형 헤더 -->
-    <header>
-        <div class="logo-area">
-            <a href="index.html">
-                <img src="beluna_symbol.png" alt="Beluna Symbol" class="logo-symbol-nav">
-            </a>
+    <!-- Top Header -->
+    <header class="bg-white border-b sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl font-black text-rose-600 tracking-wider">Belluna Pet</span>
+                <span class="text-xs bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full font-bold">ALPHA</span>
+            </div>
+            <div class="text-xs text-gray-500 hidden md:block">
+                한국애견연맹과 함께 만드는 믿을 수 있는 반려생활, 더 똑똑한 소비
+            </div>
+            <div class="flex items-center space-x-4 text-sm font-medium">
+                <a href="#my" class="hover:text-rose-600"><i class="fa-solid fa-user mr-1"></i> MY</a>
+            </div>
         </div>
-        <div class="auth-buttons" id="navAuthArea">
-            <!-- 각 텍스트에 flex-shrink:0을 주어 슬라이드 도중 자물쇠처럼 글자가 고정됩니다 -->
-            <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
-            <a href="#" class="nav-btn">동물병원 케어</a>
-            <a href="#" class="nav-btn">장례 서비스</a>
-            <a href="login.html" class="nav-btn">로그인</a>
-            <a href="register.html" class="nav-btn active-btn">멤버쉽 가입</a>
-        </div>
+
+        <!-- Navigation Bar -->
+        <nav class="bg-rose-900 text-white overflow-x-auto">
+            <div class="max-w-7xl mx-auto px-4 flex whitespace-nowrap space-x-6 text-sm font-semibold">
+                <a href="#group-buy" class="py-3 border-b-2 border-white hover:text-rose-200">🛒 공동구매</a>
+                <a href="#mall" class="py-3 hover:text-rose-200">🛍️ 쇼핑몰</a>
+                <a href="#hanacard" class="py-3 hover:text-rose-200">💳 하나카드</a>
+                <a href="#insurance" class="py-3 hover:text-rose-200">🛡️ 펫보험</a>
+                <a href="#membership" class="py-3 hover:text-rose-200">⭐ 멤버쉽혜택</a>
+                <a href="#events" class="py-3 hover:text-rose-200">🎁 이벤트</a>
+                <a href="#my" class="py-3 hover:text-rose-200">👤 MY</a>
+            </div>
+        </nav>
     </header>
 
-    <!-- 메인 환영 섹션 공간 -->
-    <div class="main-welcome">
-        <h1>프리미엄 반려생활의 시작<br><span>벨루나 펫</span>에 오신 것을 환영합니다</h1>
-        <p>최고의 전문 의료 매칭부터 프리미엄 시크릿 커머스 쇼핑, 그리고 마지막 안식까지<br>벨루나 멤버쉽 전용 프리미엄 토탈 홈 케어 서비스를 만나보세요.</p>
-    </div>
+    <!-- Main Hero Banners (4 Banners Carousel/Slider format) -->
+    <section class="bg-gradient-to-r from-rose-800 to-rose-900 text-white relative overflow-hidden min-h-[280px] flex items-center">
+        <!-- Banner 1 -->
+        <div class="banner-slide active max-w-7xl mx-auto px-4 py-10 w-full flex-col justify-center">
+            <span class="inline-block bg-rose-700/60 text-rose-100 text-xs px-3 py-1 rounded-full mb-3 w-fit">한국애견연맹 공식 제휴</span>
+            <h1 class="text-2xl md:text-4xl font-extrabold mb-3 leading-tight">한국애견연맹과 함께하는<br/>믿을 수 있는 반려생활 플랫폼</h1>
+            <p class="text-rose-100 text-sm md:text-base mb-6 max-w-2xl">공동구매와 쇼핑으로 생활비를 절약하고, 하나카드 혜택과 펫보험 정보를 한 곳에서 만나보세요.</p>
+            <div class="flex space-x-3">
+                <a href="#group-buy" class="bg-white text-rose-900 font-bold px-5 py-2.5 rounded-lg shadow hover:bg-rose-50 transition text-sm">공동구매 바로가기</a>
+                <a href="#my" class="bg-rose-700 text-white font-bold px-5 py-2.5 rounded-lg border border-rose-500 hover:bg-rose-600 transition text-sm">회원가입</a>
+            </div>
+        </div>
 
-    <footer style="text-align: center; padding: 40px 20px; font-size: 12px; color: rgba(148, 163, 184, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.01); font-family: 'Playfair Display', serif; letter-spacing: 1px; margin-top: 200px;">
-        &copy; BELUNA PET. All Rights Reserved.
+        <!-- Banner 2 -->
+        <div class="banner-slide max-w-7xl mx-auto px-4 py-10 w-full flex-col justify-center">
+            <span class="inline-block bg-amber-500/80 text-white text-xs px-3 py-1 rounded-full mb-3 w-fit">WEEKLY SPECIAL</span>
+            <h1 class="text-2xl md:text-4xl font-extrabold mb-3 leading-tight">매주 새로운 공동구매, 더 큰 절약</h1>
+            <p class="text-rose-100 text-sm md:text-base mb-6 max-w-2xl">반려동물 용품부터 생활용품까지 공동구매 특가로 만나보세요.</p>
+            <div>
+                <a href="#group-buy" class="bg-amber-400 text-gray-900 font-bold px-5 py-2.5 rounded-lg shadow hover:bg-amber-300 transition text-sm">진행 중인 공동구매 보기</a>
+            </div>
+        </div>
+
+        <!-- Banner 3 -->
+        <div class="banner-slide max-w-7xl mx-auto px-4 py-10 w-full flex-col justify-center">
+            <span class="inline-block bg-blue-600/80 text-white text-xs px-3 py-1 rounded-full mb-3 w-fit">CARD BENEFIT</span>
+            <h1 class="text-2xl md:text-4xl font-extrabold mb-3 leading-tight">애견연맹 하나카드로 더 큰 혜택</h1>
+            <p class="text-rose-100 text-sm md:text-base mb-6 max-w-2xl">하나카드 결제 시 추가 할인, 마일리지 적립 및 다양한 회원 혜택을 제공합니다.</p>
+            <div>
+                <a href="#hanacard" class="bg-blue-500 text-white font-bold px-5 py-2.5 rounded-lg shadow hover:bg-blue-400 transition text-sm">애견연맹 하나카드 혜택 보기</a>
+            </div>
+        </div>
+
+        <!-- Banner 4 -->
+        <div class="banner-slide max-w-7xl mx-auto px-4 py-10 w-full flex-col justify-center">
+            <span class="inline-block bg-emerald-600/80 text-white text-xs px-3 py-1 rounded-full mb-3 w-fit">PET INSURANCE</span>
+            <h1 class="text-2xl md:text-3xl font-extrabold mb-3 leading-tight">반려견의 갑작스러운 병원비가 걱정되시나요?<br/>삼성화재 펫보험으로 부담을 줄여보세요.</h1>
+            <p class="text-rose-100 text-sm md:text-base mb-6 max-w-2xl">예상치 못한 진료비에 대비할 수 있도록 삼성화재 펫보험 정보를 제공합니다.</p>
+            <div>
+                <a href="#insurance" class="bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-lg shadow hover:bg-emerald-400 transition text-sm">펫보험 알아보기</a>
+            </div>
+        </div>
+
+        <!-- Banner Controls -->
+        <div class="absolute bottom-3 right-4 flex space-x-2">
+            <button onclick="changeBanner(-1)" class="w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 text-white text-xs"><i class="fa-solid fa-chevron-left"></i></button>
+            <button onclick="changeBanner(1)" class="w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 text-white text-xs"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Platform Intro Bar -->
+    <section class="bg-rose-50 border-b border-rose-100 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-lg md:text-xl font-bold text-rose-900 mb-1">
+                "한국애견연맹과 함께 만드는 믿을 수 있는 반려생활 플랫폼"
+            </h2>
+            <p class="text-sm text-gray-600">
+                공동구매 · 쇼핑 · 하나카드 혜택 · 펫보험 정보까지, 반려생활에 필요한 서비스를 한 곳에서 제공합니다.
+            </p>
+        </div>
+    </section>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-12">
+
+        <!-- ⑥ MY (가장 중요: 상단 배치 및 이번달 절약 금액 표시) -->
+        <section id="my" class="bg-white rounded-2xl shadow-lg border border-rose-100 overflow-hidden">
+            <div class="bg-gradient-to-r from-rose-900 to-rose-800 text-white p-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold"><i class="fa-solid fa-circle-user mr-2"></i> MY 대시보드</h2>
+                    <span class="text-xs bg-rose-700/80 px-3 py-1 rounded-full border border-rose-500">애견연맹 하나카드 회원</span>
+                </div>
+
+                <!-- 이번달 절약금액 (요청사항 핵심 반영) -->
+                <div class="mt-6 bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
+                    <p class="text-xs text-rose-200 font-medium mb-1">이번달 절약금액</p>
+                    <div class="text-3xl font-black text-amber-300 mb-4">39,500 원</div>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs border-t border-white/10 pt-3">
+                        <div>
+                            <span class="block text-rose-200 mb-0.5">회원가 절약</span>
+                            <span class="font-bold text-sm">12,300원</span>
+                        </div>
+                        <div class="border-x border-white/10">
+                            <span class="block text-rose-200 mb-0.5">공동구매 절약</span>
+                            <span class="font-bold text-sm">18,500원</span>
+                        </div>
+                        <div>
+                            <span class="block text-rose-200 mb-0.5">하나카드 혜택</span>
+                            <span class="font-bold text-sm">8,700원</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MY Quick Menu -->
+            <div class="p-6 grid grid-cols-3 md:grid-cols-6 gap-4 text-center">
+                <a href="#" class="p-3 rounded-xl bg-gray-50 hover:bg-rose-50 transition border border-gray-100">
+                    <i class="fa-solid fa-box-open text-rose-600 text-xl mb-2"></i>
+                    <div class="text-xs font-bold text-gray-700">내 주문</div>
+                </a>
+                <a href="#" class="p-3 rounded-xl bg-gray-50 hover:bg-rose-50 transition border border-gray-100">
+                    <i class="fa-solid fa-ticket text-rose-600 text-xl mb-2"></i>
+                    <div class="text-xs font-bold text-gray-700">내 쿠폰</div>
+                </a>
+                <a href="#" class="p-3 rounded-xl bg-gray-50 hover:bg-rose-50 transition border border-gray-100">
+                    <i class="fa-solid fa-coins text-rose-600 text-xl mb-2"></i>
+                    <div class="text-xs font-bold text-gray-700">내 마일리지</div>
+                </a>
+                <a href="#" class="p-3 rounded-xl bg-gray-50 hover:bg-rose-50 transition border border-gray-100">
+                    <i class="fa-solid fa-piggy-bank text-rose-600 text-xl mb-2"></i>
+                    <div class="text-xs font-bold text-gray-700">내 절약금액</div>
+                </a>
+                <a href="#" class="p-3 rounded-xl bg-gray-50 hover:bg-rose-50 transition border border-gray-100">
+                    <i class="fa-solid fa-users text-rose-600 text-xl mb-2"></i>
+                    <div class="text-xs font-bold text-gray-700">내 공동구매</div>
+                </a>
+                <a href="#" class="p-3 rounded-xl bg-gray-50 hover:bg-rose-50 transition border border-gray-100">
+                    <i class="fa-solid fa-truck-fast text-rose-600 text-xl mb-2"></i>
+                    <div class="text-xs font-bold text-gray-700">내 배송조회</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ① 공동구매 Section -->
+        <section id="group-buy" class="bg-white rounded-xl shadow-sm border p-6">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900 flex items-center">
+                        <span class="text-2xl mr-2">🛒</span> 공동구매
+                    </h2>
+                    <p class="text-xs text-gray-500 mt-1">벨루나펫 결제 시스템 이용 (친누 시스템 동일 경험 제공)</p>
+                </div>
+            </div>
+
+            <!-- Tab Menu -->
+            <div class="flex space-x-2 border-b pb-3 mb-6 overflow-x-auto text-sm font-semibold">
+                <button class="px-4 py-2 bg-rose-600 text-white rounded-lg">🔥 현재 진행중</button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">⏰ 오늘 마감</button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">📅 예정 공동구매</button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">📦 종료된 공동구매</button>
+                <button class="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg hover:bg-amber-100">⭐ 공동구매 요청</button>
+            </div>
+
+            <!-- Products Grid Sample -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="border rounded-xl p-4 hover:shadow-md transition">
+                    <div class="bg-gray-100 h-40 rounded-lg mb-3 flex items-center justify-center text-gray-400 font-bold">상품 이미지</div>
+                    <span class="text-xs bg-rose-100 text-rose-600 font-bold px-2 py-0.5 rounded">달성률 145%</span>
+                    <h3 class="font-bold text-gray-800 mt-2">[공동구매] 프리미엄 애견 유기농 사료 5kg</h3>
+                    <div class="mt-3 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs text-gray-400 line-through">35,000원</span>
+                            <div class="text-lg font-extrabold text-rose-600">21,000원</div>
+                        </div>
+                        <button class="bg-rose-600 text-white text-xs px-3 py-2 rounded-lg font-bold">참여하기</button>
+                    </div>
+                </div>
+                <div class="border rounded-xl p-4 hover:shadow-md transition">
+                    <div class="bg-gray-100 h-40 rounded-lg mb-3 flex items-center justify-center text-gray-400 font-bold">상품 이미지</div>
+                    <span class="text-xs bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded">⏰ 오늘 마감</span>
+                    <h3 class="font-bold text-gray-800 mt-2">[공동구매] 저자극 대용량 펫 샴푸 1L</h3>
+                    <div class="mt-3 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs text-gray-400 line-through">28,000원</span>
+                            <div class="text-lg font-extrabold text-rose-600">16,800원</div>
+                        </div>
+                        <button class="bg-rose-600 text-white text-xs px-3 py-2 rounded-lg font-bold">참여하기</button>
+                    </div>
+                </div>
+                <div class="border rounded-xl p-4 hover:shadow-md transition">
+                    <div class="bg-gray-100 h-40 rounded-lg mb-3 flex items-center justify-center text-gray-400 font-bold">상품 이미지</div>
+                    <span class="text-xs bg-blue-100 text-blue-600 font-bold px-2 py-0.5 rounded">하나카드 추가할인</span>
+                    <h3 class="font-bold text-gray-800 mt-2">[공동구매] 관절케어 영양제 90정</h3>
+                    <div class="mt-3 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs text-gray-400 line-through">42,000원</span>
+                            <div class="text-lg font-extrabold text-rose-600">25,200원</div>
+                        </div>
+                        <button class="bg-rose-600 text-white text-xs px-3 py-2 rounded-lg font-bold">참여하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ② 쇼핑몰 Section -->
+        <section id="mall" class="bg-white rounded-xl shadow-sm border p-6">
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center">
+                    <span class="text-2xl mr-2">🛍️</span> 벨루나 쇼핑몰
+                </h2>
+                <p class="text-xs text-gray-500 mt-1">친누 쇼핑몰 연동/관리 & 친누 결제 시스템 적용</p>
+            </div>
+
+            <!-- Categories -->
+            <div class="space-y-6">
+                <!-- A. 애견용품 -->
+                <div>
+                    <h3 class="text-sm font-bold text-rose-900 bg-rose-50 px-3 py-1.5 rounded-md inline-block mb-3">A. 애견용품</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs font-medium">
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">사료</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">간식</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">영양제</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">건강관리</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">장난감</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">산책</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">미용</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">배변</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">하우스</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">이동장</div>
+                    </div>
+                </div>
+
+                <!-- B. 반려인을 위한 생활용품 -->
+                <div>
+                    <h3 class="text-sm font-bold text-blue-900 bg-blue-50 px-3 py-1.5 rounded-md inline-block mb-3">B. 반려인을 위한 생활용품</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-medium">
+                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">건강식품</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">생활용품</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">주방</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">욕실</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">자동차</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">캠핑</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">여행</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">가전</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ③ 애견연맹 하나카드 Section -->
+        <section id="hanacard" class="bg-white rounded-xl shadow-sm border p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center">
+                    <span class="text-2xl mr-2">💳</span> 애견연맹 하나카드
+                </h2>
+                <span class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded">제휴 협의 예정</span>
+            </div>
+            <p class="text-sm text-gray-600 mb-6">애견연맹 하나카드로 결제하면 더 많은 할인과 적립을 받을 수 있습니다.</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center text-xs font-bold">
+                <div class="p-4 bg-gray-50 border rounded-xl hover:bg-rose-50 transition cursor-pointer">카드 소개</div>
+                <div class="p-4 bg-gray-50 border rounded-xl hover:bg-rose-50 transition cursor-pointer">카드 신청</div>
+                <div class="p-4 bg-gray-50 border rounded-xl hover:bg-rose-50 transition cursor-pointer">카드 혜택</div>
+                <div class="p-4 bg-gray-50 border rounded-xl hover:bg-rose-50 transition cursor-pointer">회원 혜택 비교</div>
+                <div class="p-4 bg-gray-50 border rounded-xl hover:bg-rose-50 transition cursor-pointer">이벤트</div>
+            </div>
+        </section>
+
+        <!-- ④ 펫보험 Section -->
+        <section id="insurance" class="bg-white rounded-xl shadow-sm border p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center">
+                    <span class="text-2xl mr-2">🛡️</span> 삼성화재 펫보험
+                </h2>
+                <span class="text-xs bg-blue-50 text-blue-600 font-bold px-2.5 py-1 rounded">삼성화재 공식 제휴 안내</span>
+            </div>
+            
+            <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-5 mb-6">
+                <h3 class="text-lg font-bold text-emerald-900 mb-2">"믿을 수 있는 삼성보험으로, 우리 아이의 건강을 준비하세요."</h3>
+                <p class="text-xs text-emerald-700 leading-relaxed">
+                    예상치 못한 질병이나 사고는 누구에게나 발생할 수 있습니다. Belluna Pet에서는 삼성화재 펫보험 정보를 통해 반려동물 의료비 부담을 줄일 수 있는 방법을 안내해 드립니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center text-xs font-bold">
+                <div class="p-4 border rounded-xl hover:border-emerald-500 cursor-pointer">펫보험이 필요한 이유</div>
+                <div class="p-4 border rounded-xl hover:border-emerald-500 cursor-pointer">삼성화재 펫보험 소개</div>
+                <div class="p-4 border rounded-xl hover:border-emerald-500 cursor-pointer">보장내용</div>
+                <div class="p-4 border rounded-xl hover:border-emerald-500 cursor-pointer">보험료 계산</div>
+                <div class="p-4 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 cursor-pointer">가입하기</div>
+            </div>
+        </section>
+
+        <!-- ⑤ 멤버쉽 혜택 & 이벤트 Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 멤버쉽 혜택 -->
+            <section id="membership" class="bg-white rounded-xl shadow-sm border p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="text-2xl mr-2">⭐</span> 멤버쉽 혜택
+                </h2>
+                <div class="bg-gray-50 rounded-lg p-6 text-center text-gray-500">
+                    <i class="fa-solid fa-clock text-2xl mb-2 text-rose-500"></i>
+                    <p class="font-bold text-sm">Coming soon</p>
+                    <p class="text-xs text-gray-400 mt-1">추후 VIP, Diamond 등급이 확장될 예정입니다.</p>
+                </div>
+            </section>
+
+            <!-- 이벤트 -->
+            <section id="events" class="bg-white rounded-xl shadow-sm border p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="text-2xl mr-2">🎁</span> 이벤트
+                </h2>
+                <div class="grid grid-cols-2 gap-3 text-center text-xs font-bold">
+                    <div class="p-4 border rounded-xl hover:bg-rose-50 cursor-pointer">🗓️ 출석체크</div>
+                    <div class="p-4 border rounded-xl hover:bg-rose-50 cursor-pointer">🤝 친구추천</div>
+                    <div class="p-4 border rounded-xl hover:bg-rose-50 cursor-pointer">🎟️ 쿠폰</div>
+                    <div class="p-4 border rounded-xl hover:bg-rose-50 cursor-pointer">🎁 사은품</div>
+                </div>
+            </section>
+        </div>
+
+        <!-- [회원 구분 및 혜택 비교표] Section -->
+        <section class="bg-white rounded-xl shadow-sm border p-6 overflow-x-auto">
+            <h2 class="text-lg font-bold text-gray-900 mb-2">📋 벨루나펫 회원 등급별 혜택 비교 (Alpha)</h2>
+            <p class="text-xs text-gray-500 mb-4">* 알파버전에서는 베이직, 프리미엄은 미운영되며 추후 VIP, Diamond 등급으로 확장 예정입니다.</p>
+            
+            <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 border-b">
+                        <th class="p-3 border-r">구분</th>
+                        <th class="p-3 border-r">비회원</th>
+                        <th class="p-3 border-r">일반회원</th>
+                        <th class="p-3 border-r bg-rose-50 text-rose-900">애견연맹하나카드 회원</th>
+                        <th class="p-3 border-r opacity-50">베이직 (추후)</th>
+                        <th class="p-3 opacity-50">프리미엄 (추후)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y text-gray-600">
+                    <tr>
+                        <td class="p-3 font-bold border-r bg-gray-50">가입비 / 월구독료</td>
+                        <td class="p-3 border-r">-</td>
+                        <td class="p-3 border-r">무료</td>
+                        <td class="p-3 border-r bg-rose-50/30 font-bold text-rose-700">무료</td>
+                        <td class="p-3 border-r opacity-50">9,900원</td>
+                        <td class="p-3 opacity-50">39,900원</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold border-r bg-gray-50">가입조건</td>
+                        <td class="p-3 border-r">없음</td>
+                        <td class="p-3 border-r">회원가입</td>
+                        <td class="p-3 border-r bg-rose-50/30">하나카드 등록/신규발급</td>
+                        <td class="p-3 border-r opacity-50">유료 가입</td>
+                        <td class="p-3 opacity-50">유료 가입</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold border-r bg-gray-50">쇼핑몰 / 회원가</td>
+                        <td class="p-3 border-r">이용가능 / ✖</td>
+                        <td class="p-3 border-r">✔ / ✔</td>
+                        <td class="p-3 border-r bg-rose-50/30 font-bold text-rose-700">✔ / ✔</td>
+                        <td class="p-3 border-r opacity-50">✔ / ✔</td>
+                        <td class="p-3 opacity-50">✔ / ✔</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold border-r bg-gray-50">공동구매 / 추가할인</td>
+                        <td class="p-3 border-r">일부 / ✖</td>
+                        <td class="p-3 border-r">✔ / ✖</td>
+                        <td class="p-3 border-r bg-rose-50/30 font-bold text-rose-700">✔ / ✔</td>
+                        <td class="p-3 border-r opacity-50">✔ / ✔</td>
+                        <td class="p-3 opacity-50">✔ / ✔</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold border-r bg-gray-50">하나카드 결제 추가적립</td>
+                        <td class="p-3 border-r">✖</td>
+                        <td class="p-3 border-r">✖</td>
+                        <td class="p-3 border-r bg-rose-50/30 font-bold text-rose-700">✔</td>
+                        <td class="p-3 border-r opacity-50">✔</td>
+                        <td class="p-3 opacity-50">✔</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold border-r bg-gray-50">하나카드 추가 할인 이벤트</td>
+                        <td class="p-3 border-r">✖</td>
+                        <td class="p-3 border-r">✖</td>
+                        <td class="p-3 border-r bg-rose-50/30 font-bold text-rose-700">최대 5% 할인</td>
+                        <td class="p-3 border-r opacity-50">최대 5% 할인</td>
+                        <td class="p-3 opacity-50">최대 8% 할인</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold border-r bg-gray-50">월 할인 / 생일 쿠폰</td>
+                        <td class="p-3 border-r">✖</td>
+                        <td class="p-3 border-r">✖</td>
+                        <td class="p-3 border-r bg-rose-50/30 font-bold text-rose-700">✔ / ✔</td>
+                        <td class="p-3 border-r opacity-50">✔ / ✔</td>
+                        <td class="p-3 opacity-50">✔ / ✔</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold border-r bg-gray-50">마일리지 적립 / 사용</td>
+                        <td class="p-3 border-r">✖ / ✖</td>
+                        <td class="p-3 border-r">기본 / 최대 5%</td>
+                        <td class="p-3 border-r bg-rose-50/30 font-bold text-rose-700">추가 적립 / 최대 10%</td>
+                        <td class="p-3 border-r opacity-50">추가 적립 / 최대 20%</td>
+                        <td class="p-3 opacity-50">최고 적립 / 최대 50%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- [마진별/회원별 할인율 및 마일리지 정책 표] Section -->
+        <section class="bg-white rounded-xl shadow-sm border p-6 overflow-x-auto">
+            <h2 class="text-lg font-bold text-gray-900 mb-1">📊 마진별/회원별 할인율, 마일리지 적립 및 사용한도</h2>
+            <p class="text-xs text-rose-600 mb-4 font-semibold">
+                * 표기 순서: 할인율(%) / 적립률(%) / 최대 마일리지 사용률(%)
+            </p>
+
+            <table class="w-full text-xs text-center border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 border-b">
+                        <th class="p-2 border">마진율</th>
+                        <th class="p-2 border">최소이익률</th>
+                        <th class="p-2 border">일반회원 (할인/적립/마일리지)</th>
+                        <th class="p-2 border bg-rose-50 text-rose-900 font-bold">애견연맹 하나카드 회원 (할인/적립/마일리지)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y">
+                    <tr><td class="p-2 border font-medium">5%</td><td class="p-2 border">2%</td><td class="p-2 border">0 / 0 / 0</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">0 / 0.5 / 1</td></tr>
+                    <tr><td class="p-2 border font-medium">10%</td><td class="p-2 border">4%</td><td class="p-2 border">0 / 0.5 / 1</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">0.5 / 1 / 3</td></tr>
+                    <tr><td class="p-2 border font-medium">15%</td><td class="p-2 border">6%</td><td class="p-2 border">0 / 1 / 2</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">1 / 2 / 5</td></tr>
+                    <tr><td class="p-2 border font-medium">20%</td><td class="p-2 border">8%</td><td class="p-2 border">0 / 1.5 / 2</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">1 / 2.5 / 7</td></tr>
+                    <tr><td class="p-2 border font-medium">25%</td><td class="p-2 border">10%</td><td class="p-2 border">0 / 2 / 3</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">2 / 3 / 9</td></tr>
+                    <tr><td class="p-2 border font-medium">30%</td><td class="p-2 border">12%</td><td class="p-2 border">0 / 2.5 / 3</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">2 / 3.5 / 11</td></tr>
+                    <tr><td class="p-2 border font-medium">35%</td><td class="p-2 border">14%</td><td class="p-2 border">0 / 2.5 / 4</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">3 / 4 / 12</td></tr>
+                    <tr><td class="p-2 border font-medium">40%</td><td class="p-2 border">16%</td><td class="p-2 border">0 / 3 / 4</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">3 / 4.5 / 13</td></tr>
+                    <tr><td class="p-2 border font-medium">45%</td><td class="p-2 border">18%</td><td class="p-2 border">0 / 3 / 5</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">4 / 5 / 14</td></tr>
+                    <tr><td class="p-2 border font-medium">50%</td><td class="p-2 border">20%</td><td class="p-2 border">0 / 3 / 5</td><td class="p-2 border bg-rose-50/20 font-bold text-rose-700">5 / 5 / 15</td></tr>
+                </tbody>
+            </table>
+
+            <ul class="text-xs text-gray-500 mt-4 space-y-1 list-disc list-inside">
+                <li>애견연맹하나카드 사용 시 모두 최대 5% 할인 적용됩니다.</li>
+                <li>애견연맹하나카드 회원 최대 사용 마일리지 비율은 15%입니다.</li>
+                <li><strong>마일리지를 이용해 구매한 제품은 마일리지 적립이 되지 않습니다.</strong></li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 text-xs py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            <p class="text-gray-300 font-bold">Belluna Pet (벨루나펫 Alpha Version)</p>
+            <p>Belluna Pet은 한국애견연맹과 협력하여 반려인에게 저렴한 쇼핑과 다양한 혜택을 제공하는 플랫폼입니다. 공동구매를 통한 저렴한 쇼핑, 하나카드 제휴 혜택, 마일리지 서비스, 그리고 반려생활에 필요한 정보를 한 곳에서 제공하여 더 편리하고 믿을 수 있는 반려생활을 만들어갑니다.</p>
+            <p class="text-gray-600 pt-2">© Belluna Pet. All rights reserved.</p>
+        </div>
     </footer>
 
-    <!-- Firebase 회원 동적 매칭 (로그인 후 가로 슬라이드 구조 자동 보존 연동) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- Banner Carousel JS Script -->
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
 
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) slide.classList.add('active');
+            });
+        }
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        function changeBanner(direction) {
+            currentSlide += direction;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            showSlide(currentSlide);
+        }
 
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                let userName = "멤버쉽";
-                try {
-                    const userDoc = await getDoc(doc(db, "users", user.uid));
-                    if (userDoc.exists()) userName = userDoc.data().name || "멤버쉽";
-                } catch (e) { console.error(e); }
-
-                // 로그인 완료 시 새로 꽂히는 DOM 메뉴 구조 역시 무너지지 않고 가로 슬라이드가 이어지도록 맞춤 설계
-                document.getElementById('navAuthArea').innerHTML = `
-                    <a href="life_shopping.html" class="nav-btn">라이프/쇼핑</a>
-                    <a href="#" class="nav-btn">동물병원 케어</a>
-                    <a href="#" class="nav-btn">장례 서비스</a>
-                    <span style="font-size: 14px; color: rgba(255,255,255,0.2); flex-shrink:0; padding: 0 2px;">|</span>
-                    <span style="font-size: 14px; color: var(--gold-primary); font-weight: 500; flex-shrink:0;">${userName}님</span>
-                    <a href="#" id="logoutBtn" class="nav-btn" style="color: rgba(248, 250, 252, 0.4) !important;">로그아웃</a>
-                `;
-
-                document.getElementById('logoutBtn').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    signOut(auth).then(() => window.location.reload());
-                });
-            }
-        });
+        // Auto slide change every 5 seconds
+        setInterval(() => {
+            changeBanner(1);
+        }, 5000);
     </script>
 </body>
 </html>
