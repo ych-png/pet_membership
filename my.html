@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belluna Pet - MY 대시보드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 pb-20">
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-9 w-auto object-contain">
+                <span class="text-xl font-black text-amber-400 tracking-wider hidden sm:inline-block">Belluna Pet</span>
+            </a>
+            <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">ALPHA</span>
+        </div>
+        <nav class="bg-slate-950 text-slate-300 border-t border-slate-800/80 overflow-x-auto">
+            <div class="max-w-7xl mx-auto px-4 flex whitespace-nowrap space-x-6 text-sm font-semibold">
+                <a href="index.html" class="py-3 hover:text-amber-300 transition">🛒 공동구매</a>
+                <a href="shopping.html" class="py-3 hover:text-amber-300 transition">🛍️ 쇼핑몰</a>
+                <a href="hanacard.html" class="py-3 hover:text-amber-300 transition">💳 하나카드</a>
+                <a href="insurance.html" class="py-3 hover:text-amber-300 transition">🛡️ 펫보험</a>
+                <a href="membership.html" class="py-3 hover:text-amber-300 transition">⭐ 멤버쉽혜택</a>
+                <a href="events.html" class="py-3 hover:text-amber-300 transition">🎁 이벤트</a>
+                <a href="my.html" class="py-3 border-b-2 border-amber-400 text-amber-400">👤 MY</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+        <!-- MY 대시보드 메인 -->
+        <section class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+            <!-- 상단 요약 카드 -->
+            <div class="bg-slate-900 text-white p-6 border-b border-slate-800">
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-xl font-bold flex items-center"><i class="fa-solid fa-circle-user mr-2 text-amber-400"></i> 홍길동 님</h1>
+                    <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full">애견연맹 하나카드 회원</span>
+                </div>
+
+                <!-- 이번달 절약금액 표기 (최상단) -->
+                <div class="bg-slate-800/80 rounded-xl p-5 border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium mb-1">이번달 절약금액</p>
+                    <div class="text-3xl font-black text-amber-400 mb-4">39,500 원</div>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs border-t border-slate-700/80 pt-3">
+                        <div>
+                            <span class="block text-slate-400 mb-0.5">회원가 절약</span>
+                            <span class="font-bold text-sm text-slate-200">12,300원</span>
+                        </div>
+                        <div class="border-x border-slate-700/80">
+                            <span class="block text-slate-400 mb-0.5">공동구매 절약</span>
+                            <span class="font-bold text-sm text-slate-200">18,500원</span>
+                        </div>
+                        <div>
+                            <span class="block text-slate-400 mb-0.5">하나카드 혜택</span>
+                            <span class="font-bold text-sm text-amber-400">8,700원</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MY 퀵메뉴 6종 -->
+            <div class="p-6 grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                    <i class="fa-solid fa-box-open text-slate-900 text-2xl mb-2"></i>
+                    <span class="text-xs font-bold text-slate-700">내 주문</span>
+                </a>
+                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                    <i class="fa-solid fa-ticket text-slate-900 text-2xl mb-2"></i>
+                    <span class="text-xs font-bold text-slate-700">내 쿠폰</span>
+                </a>
+                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                    <i class="fa-solid fa-coins text-slate-900 text-2xl mb-2"></i>
+                    <span class="text-xs font-bold text-slate-700">내 마일리지</span>
+                </a>
+                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                    <i class="fa-solid fa-piggy-bank text-slate-900 text-2xl mb-2"></i>
+                    <span class="text-xs font-bold text-slate-700">내 절약금액</span>
+                </a>
+                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                    <i class="fa-solid fa-users text-slate-900 text-2xl mb-2"></i>
+                    <span class="text-xs font-bold text-slate-700">내 공동구매</span>
+                </a>
+                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                    <i class="fa-solid fa-truck-fast text-slate-900 text-2xl mb-2"></i>
+                    <span class="text-xs font-bold text-slate-700">내 배송조회</span>
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
