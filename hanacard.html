@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belluna Pet - 애견연맹 하나카드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 pb-20">
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-9 w-auto object-contain">
+                <span class="text-xl font-black text-amber-400 tracking-wider hidden sm:inline-block">Belluna Pet</span>
+            </a>
+            <a href="my.html" class="text-sm font-medium text-slate-200 hover:text-amber-400"><i class="fa-solid fa-user mr-1"></i> MY</a>
+        </div>
+        <nav class="bg-slate-950 text-slate-300 border-t border-slate-800/80 overflow-x-auto">
+            <div class="max-w-7xl mx-auto px-4 flex whitespace-nowrap space-x-6 text-sm font-semibold">
+                <a href="index.html" class="py-3 hover:text-amber-300 transition">🛒 공동구매</a>
+                <a href="shopping.html" class="py-3 hover:text-amber-300 transition">🛍️ 쇼핑몰</a>
+                <a href="hanacard.html" class="py-3 border-b-2 border-amber-400 text-amber-400">💳 하나카드</a>
+                <a href="insurance.html" class="py-3 hover:text-amber-300 transition">🛡️ 펫보험</a>
+                <a href="membership.html" class="py-3 hover:text-amber-300 transition">⭐ 멤버쉽혜택</a>
+                <a href="events.html" class="py-3 hover:text-amber-300 transition">🎁 이벤트</a>
+                <a href="my.html" class="py-3 hover:text-amber-300 transition">👤 MY</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+                <h1 class="text-2xl font-bold text-slate-900">💳 애견연맹 하나카드</h1>
+                <p class="text-sm text-slate-600 mt-2">애견연맹 하나카드로 결제하면 더 많은 할인과 적립을 받을 수 있습니다.</p>
+            </div>
+
+            <!-- 서브 메뉴 -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center text-xs font-bold mb-8">
+                <button class="p-4 bg-slate-900 border border-slate-800 text-amber-400 rounded-xl">카드 소개</button>
+                <button class="p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100">카드 신청</button>
+                <button class="p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100">카드 혜택</button>
+                <button class="p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100">회원 혜택 비교</button>
+                <button class="p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100">이벤트</button>
+            </div>
+
+            <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-6 text-center text-sm text-amber-900">
+                <i class="fa-solid fa-circle-info text-xl mb-2 block text-amber-600"></i>
+                현재 하나카드와 세부 제휴 협의 진행 중에 있습니다. 빠른 시일 내 서비스가 오픈될 예정입니다.
+            </div>
+        </section>
+    </main>
+</body>
+</html>
