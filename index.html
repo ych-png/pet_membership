@@ -11,8 +11,17 @@
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         body { font-family: 'Pretendard', sans-serif; }
-        .banner-slide { display: none; }
-        .banner-slide.active { display: flex; }
+        
+        /* 배너 슬라이드 애니메이션 효과 */
+        .banner-slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .banner-slide.active {
+            display: flex;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 pb-20">
@@ -28,26 +37,26 @@
                 한국애견연맹과 함께 만드는 믿을 수 있는 반려생활, 더 똑똑한 소비
             </div>
             <div class="flex items-center space-x-4 text-sm font-medium">
-                <a href="#my" class="hover:text-rose-600"><i class="fa-solid fa-user mr-1"></i> MY</a>
+                <a href="#my" class="hover:text-rose-600 transition"><i class="fa-solid fa-user mr-1"></i> MY</a>
             </div>
         </div>
 
         <!-- Navigation Bar -->
         <nav class="bg-rose-900 text-white overflow-x-auto">
             <div class="max-w-7xl mx-auto px-4 flex whitespace-nowrap space-x-6 text-sm font-semibold">
-                <a href="#group-buy" class="py-3 border-b-2 border-white hover:text-rose-200">🛒 공동구매</a>
-                <a href="#mall" class="py-3 hover:text-rose-200">🛍️ 쇼핑몰</a>
-                <a href="#hanacard" class="py-3 hover:text-rose-200">💳 하나카드</a>
-                <a href="#insurance" class="py-3 hover:text-rose-200">🛡️ 펫보험</a>
-                <a href="#membership" class="py-3 hover:text-rose-200">⭐ 멤버쉽혜택</a>
-                <a href="#events" class="py-3 hover:text-rose-200">🎁 이벤트</a>
-                <a href="#my" class="py-3 hover:text-rose-200">👤 MY</a>
+                <a href="#group-buy" class="py-3 border-b-2 border-white hover:text-rose-200 transition">🛒 공동구매</a>
+                <a href="#mall" class="py-3 hover:text-rose-200 transition">🛍️ 쇼핑몰</a>
+                <a href="#hanacard" class="py-3 hover:text-rose-200 transition">💳 하나카드</a>
+                <a href="#insurance" class="py-3 hover:text-rose-200 transition">🛡️ 펫보험</a>
+                <a href="#membership" class="py-3 hover:text-rose-200 transition">⭐ 멤버쉽혜택</a>
+                <a href="#events" class="py-3 hover:text-rose-200 transition">🎁 이벤트</a>
+                <a href="#my" class="py-3 hover:text-rose-200 transition">👤 MY</a>
             </div>
         </nav>
     </header>
 
     <!-- Main Hero Banners (4 Banners Carousel/Slider format) -->
-    <section class="bg-gradient-to-r from-rose-800 to-rose-900 text-white relative overflow-hidden min-h-[280px] flex items-center">
+    <section class="bg-gradient-to-r from-rose-800 to-rose-900 text-white relative overflow-hidden min-h-[300px] flex items-center">
         <!-- Banner 1 -->
         <div class="banner-slide active max-w-7xl mx-auto px-4 py-10 w-full flex-col justify-center">
             <span class="inline-block bg-rose-700/60 text-rose-100 text-xs px-3 py-1 rounded-full mb-3 w-fit">한국애견연맹 공식 제휴</span>
@@ -90,9 +99,13 @@
         </div>
 
         <!-- Banner Controls -->
-        <div class="absolute bottom-3 right-4 flex space-x-2">
-            <button onclick="changeBanner(-1)" class="w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 text-white text-xs"><i class="fa-solid fa-chevron-left"></i></button>
-            <button onclick="changeBanner(1)" class="w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 text-white text-xs"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="absolute bottom-4 right-4 flex space-x-2 z-10">
+            <button onclick="changeBanner(-1)" class="w-8 h-8 rounded-full bg-black/40 hover:bg-black/70 text-white text-xs flex items-center justify-center transition" aria-label="이전 슬라이드">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button onclick="changeBanner(1)" class="w-8 h-8 rounded-full bg-black/40 hover:bg-black/70 text-white text-xs flex items-center justify-center transition" aria-label="다음 슬라이드">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
         </div>
     </section>
 
@@ -110,7 +123,7 @@
 
     <main class="max-w-7xl mx-auto px-4 py-8 space-y-12">
 
-        <!-- ⑥ MY (가장 중요: 상단 배치 및 이번달 절약 금액 표시) -->
+        <!-- MY 대시보드 (상단 배치) -->
         <section id="my" class="bg-white rounded-2xl shadow-lg border border-rose-100 overflow-hidden">
             <div class="bg-gradient-to-r from-rose-900 to-rose-800 text-white p-6">
                 <div class="flex justify-between items-center">
@@ -118,7 +131,7 @@
                     <span class="text-xs bg-rose-700/80 px-3 py-1 rounded-full border border-rose-500">애견연맹 하나카드 회원</span>
                 </div>
 
-                <!-- 이번달 절약금액 (요청사항 핵심 반영) -->
+                <!-- 이번달 절약금액 -->
                 <div class="mt-6 bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
                     <p class="text-xs text-rose-200 font-medium mb-1">이번달 절약금액</p>
                     <div class="text-3xl font-black text-amber-300 mb-4">39,500 원</div>
@@ -182,10 +195,10 @@
             <!-- Tab Menu -->
             <div class="flex space-x-2 border-b pb-3 mb-6 overflow-x-auto text-sm font-semibold">
                 <button class="px-4 py-2 bg-rose-600 text-white rounded-lg">🔥 현재 진행중</button>
-                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">⏰ 오늘 마감</button>
-                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">📅 예정 공동구매</button>
-                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">📦 종료된 공동구매</button>
-                <button class="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg hover:bg-amber-100">⭐ 공동구매 요청</button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition">⏰ 오늘 마감</button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition">📅 예정 공동구매</button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition">📦 종료된 공동구매</button>
+                <button class="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg hover:bg-amber-100 transition">⭐ 공동구매 요청</button>
             </div>
 
             <!-- Products Grid Sample -->
@@ -199,7 +212,7 @@
                             <span class="text-xs text-gray-400 line-through">35,000원</span>
                             <div class="text-lg font-extrabold text-rose-600">21,000원</div>
                         </div>
-                        <button class="bg-rose-600 text-white text-xs px-3 py-2 rounded-lg font-bold">참여하기</button>
+                        <button class="bg-rose-600 text-white text-xs px-3 py-2 rounded-lg font-bold hover:bg-rose-700 transition">참여하기</button>
                     </div>
                 </div>
                 <div class="border rounded-xl p-4 hover:shadow-md transition">
@@ -211,7 +224,7 @@
                             <span class="text-xs text-gray-400 line-through">28,000원</span>
                             <div class="text-lg font-extrabold text-rose-600">16,800원</div>
                         </div>
-                        <button class="bg-rose-600 text-white text-xs px-3 py-2 rounded-lg font-bold">참여하기</button>
+                        <button class="bg-rose-600 text-white text-xs px-3 py-2 rounded-lg font-bold hover:bg-rose-700 transition">참여하기</button>
                     </div>
                 </div>
                 <div class="border rounded-xl p-4 hover:shadow-md transition">
@@ -223,7 +236,7 @@
                             <span class="text-xs text-gray-400 line-through">42,000원</span>
                             <div class="text-lg font-extrabold text-rose-600">25,200원</div>
                         </div>
-                        <button class="bg-rose-600 text-white text-xs px-3 py-2 rounded-lg font-bold">참여하기</button>
+                        <button class="bg-rose-600 text-white text-xs px-3 py-2 rounded-lg font-bold hover:bg-rose-700 transition">참여하기</button>
                     </div>
                 </div>
             </div>
@@ -244,16 +257,16 @@
                 <div>
                     <h3 class="text-sm font-bold text-rose-900 bg-rose-50 px-3 py-1.5 rounded-md inline-block mb-3">A. 애견용품</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs font-medium">
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">사료</div>
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">간식</div>
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">영양제</div>
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">건강관리</div>
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">장난감</div>
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">산책</div>
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">미용</div>
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">배변</div>
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">하우스</div>
-                        <div class="p-3 border rounded-lg hover:border-rose-500 cursor-pointer">이동장</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">사료</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">간식</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">영양제</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">건강관리</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">장난감</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">산책</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">미용</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">배변</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">하우스</div>
+                        <div class="p-3 border rounded-lg hover:border-rose-500 transition cursor-pointer">이동장</div>
                     </div>
                 </div>
 
@@ -261,14 +274,14 @@
                 <div>
                     <h3 class="text-sm font-bold text-blue-900 bg-blue-50 px-3 py-1.5 rounded-md inline-block mb-3">B. 반려인을 위한 생활용품</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-medium">
-                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">건강식품</div>
-                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">생활용품</div>
-                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">주방</div>
-                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">욕실</div>
-                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">자동차</div>
-                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">캠핑</div>
-                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">여행</div>
-                        <div class="p-3 border rounded-lg hover:border-blue-500 cursor-pointer">가전</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 transition cursor-pointer">건강식품</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 transition cursor-pointer">생활용품</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 transition cursor-pointer">주방</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 transition cursor-pointer">욕실</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 transition cursor-pointer">자동차</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 transition cursor-pointer">캠핑</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 transition cursor-pointer">여행</div>
+                        <div class="p-3 border rounded-lg hover:border-blue-500 transition cursor-pointer">가전</div>
                     </div>
                 </div>
             </div>
@@ -310,11 +323,11 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center text-xs font-bold">
-                <div class="p-4 border rounded-xl hover:border-emerald-500 cursor-pointer">펫보험이 필요한 이유</div>
-                <div class="p-4 border rounded-xl hover:border-emerald-500 cursor-pointer">삼성화재 펫보험 소개</div>
-                <div class="p-4 border rounded-xl hover:border-emerald-500 cursor-pointer">보장내용</div>
-                <div class="p-4 border rounded-xl hover:border-emerald-500 cursor-pointer">보험료 계산</div>
-                <div class="p-4 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 cursor-pointer">가입하기</div>
+                <div class="p-4 border rounded-xl hover:border-emerald-500 transition cursor-pointer">펫보험이 필요한 이유</div>
+                <div class="p-4 border rounded-xl hover:border-emerald-500 transition cursor-pointer">삼성화재 펫보험 소개</div>
+                <div class="p-4 border rounded-xl hover:border-emerald-500 transition cursor-pointer">보장내용</div>
+                <div class="p-4 border rounded-xl hover:border-emerald-500 transition cursor-pointer">보험료 계산</div>
+                <div class="p-4 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition cursor-pointer">가입하기</div>
             </div>
         </section>
 
@@ -338,10 +351,10 @@
                     <span class="text-2xl mr-2">🎁</span> 이벤트
                 </h2>
                 <div class="grid grid-cols-2 gap-3 text-center text-xs font-bold">
-                    <div class="p-4 border rounded-xl hover:bg-rose-50 cursor-pointer">🗓️ 출석체크</div>
-                    <div class="p-4 border rounded-xl hover:bg-rose-50 cursor-pointer">🤝 친구추천</div>
-                    <div class="p-4 border rounded-xl hover:bg-rose-50 cursor-pointer">🎟️ 쿠폰</div>
-                    <div class="p-4 border rounded-xl hover:bg-rose-50 cursor-pointer">🎁 사은품</div>
+                    <div class="p-4 border rounded-xl hover:bg-rose-50 transition cursor-pointer">🗓️ 출석체크</div>
+                    <div class="p-4 border rounded-xl hover:bg-rose-50 transition cursor-pointer">🤝 친구추천</div>
+                    <div class="p-4 border rounded-xl hover:bg-rose-50 transition cursor-pointer">🎟️ 쿠폰</div>
+                    <div class="p-4 border rounded-xl hover:bg-rose-50 transition cursor-pointer">🎁 사은품</div>
                 </div>
             </section>
         </div>
@@ -482,12 +495,15 @@
     <!-- Banner Carousel JS Script -->
     <script>
         let currentSlide = 0;
+        let slideInterval;
         const slides = document.querySelectorAll('.banner-slide');
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
                 slide.classList.remove('active');
-                if (i === index) slide.classList.add('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
             });
         }
 
@@ -496,12 +512,22 @@
             if (currentSlide >= slides.length) currentSlide = 0;
             if (currentSlide < 0) currentSlide = slides.length - 1;
             showSlide(currentSlide);
+            resetTimer(); // 버튼 클릭 시 자동 전환 타이머 리셋
         }
 
-        // Auto slide change every 5 seconds
-        setInterval(() => {
-            changeBanner(1);
-        }, 5000);
+        function startTimer() {
+            slideInterval = setInterval(() => {
+                changeBanner(1);
+            }, 5000);
+        }
+
+        function resetTimer() {
+            clearInterval(slideInterval);
+            startTimer();
+        }
+
+        // 자동 슬라이드 시작
+        startTimer();
     </script>
 </body>
 </html>
