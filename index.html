@@ -25,11 +25,14 @@
                 </a>
                 <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">ALPHA</span>
             </div>
+            
             <div class="text-xs text-slate-400 hidden md:block">
                 한국애견연맹과 함께 만드는 회원 중심 플랫폼
             </div>
-            <div class="flex items-center space-x-4 text-sm font-medium text-slate-200">
-                <a href="my.html" class="hover:text-amber-400 transition flex items-center"><i class="fa-solid fa-user mr-1.5"></i> MY</a>
+
+            <!-- 우측 로그인/회원가입/MY 영역 (JavaScript 동적 변경) -->
+            <div id="auth-area" class="flex items-center space-x-3 text-sm font-medium text-slate-200">
+                <!-- 로그인 전/후 상태에 따라 스크립트로 내부 요소가 교체됩니다 -->
             </div>
         </div>
 
@@ -43,7 +46,8 @@
                 <a href="insurance.html" class="py-3 hover:text-amber-300 transition">🛡️ 펫보험</a>
                 <a href="membership.html" class="py-3 hover:text-amber-300 transition">⭐ 멤버쉽혜택</a>
                 <a href="events.html" class="py-3 hover:text-amber-300 transition">🎁 이벤트</a>
-                <a href="my.html" class="py-3 hover:text-amber-300 transition">👤 MY</a>
+                <!-- GNB 우측 MY 메뉴 (로그인 시에만 노출되도록 처리) -->
+                <a href="my.html" id="gnb-my-link" class="py-3 hover:text-amber-300 transition hidden">👤 MY</a>
             </div>
         </nav>
     </header>
@@ -56,9 +60,10 @@
             <span class="inline-block bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-3 py-1 rounded-full mb-3 w-fit font-semibold">한국애견연맹 공식 제휴</span>
             <h1 class="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 text-slate-100 leading-tight">한국애견연맹과 함께하는 믿을 수 있는 반려생활 플랫폼</h1>
             <p class="text-slate-300 text-sm md:text-base mb-6 max-w-2xl leading-relaxed">공동구매와 쇼핑으로 생활비를 절약하고, 하나카드 혜택과 펫보험 정보를 한 곳에서 만나보세요.</p>
-            <div class="flex flex-wrap gap-3">
+            <div class="flex flex-wrap gap-3" id="banner-btn-area">
                 <a href="groupbuy.html" class="bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg shadow text-xs md:text-sm hover:bg-amber-300 transition">공동구매 바로가기</a>
-                <a href="my.html" class="bg-slate-800 text-slate-200 font-bold px-5 py-2.5 rounded-lg border border-slate-700 text-xs md:text-sm hover:bg-slate-700 transition">회원가입</a>
+                <!-- 로그인 여부에 따라 가입 또는 MY로 이동 -->
+                <a href="signup.html" id="banner-action-btn" class="bg-slate-800 text-slate-200 font-bold px-5 py-2.5 rounded-lg border border-slate-700 text-xs md:text-sm hover:bg-slate-700 transition">회원가입</a>
             </div>
         </div>
 
@@ -174,8 +179,60 @@
         </div>
     </footer>
 
-    <!-- Banner Slider Script -->
+    <!-- Banner Slider & Auth Script -->
     <script>
+        // --- 1. 로그인 상태 확인 및 UI 동적 업데이트 ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const authArea = document.getElementById('auth-area');
+            const gnbMyLink = document.getElementById('gnb-my-link');
+            const bannerActionBtn = document.getElementById('banner-action-btn');
+
+            if (isLoggedIn) {
+                // 로그인 상태인 경우: MY 페이지 버튼 + 로그아웃 버튼 노출
+                authArea.innerHTML = `
+                    <a href="my.html" class="hover:text-amber-400 transition flex items-center bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 text-xs">
+                        <i class="fa-solid fa-user mr-1.5 text-amber-400"></i> MY페이지
+                    </a>
+                    <button onclick="handleLogout()" class="text-slate-400 hover:text-rose-400 text-xs transition underline">
+                        로그아웃
+                    </button>
+                `;
+                // Navigation Bar MY 버튼 노출
+                if (gnbMyLink) gnbMyLink.classList.remove('hidden');
+                
+                // 첫번째 배너 버튼 변경
+                if (bannerActionBtn) {
+                    bannerActionBtn.innerText = "마이페이지";
+                    bannerActionBtn.href = "my.html";
+                }
+            } else {
+                // 로그인 전 상태인 경우: 로그인 / 회원가입 버튼 노출
+                authArea.innerHTML = `
+                    <a href="login.html" class="hover:text-amber-400 transition text-xs">로그인</a>
+                    <span class="text-slate-700 text-xs">|</span>
+                    <a href="signup.html" class="bg-amber-400 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-amber-300 transition shadow">회원가입</a>
+                `;
+                // Navigation Bar MY 버튼 숨김
+                if (gnbMyLink) gnbMyLink.classList.add('hidden');
+
+                // 첫번째 배너 버튼 변경
+                if (bannerActionBtn) {
+                    bannerActionBtn.innerText = "회원가입";
+                    bannerActionBtn.href = "signup.html";
+                }
+            }
+        });
+
+        // 로그아웃 처리 함수
+        function handleLogout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            alert('로그아웃 되었습니다.');
+            window.location.reload(); // 페이지 새로고침
+        }
+
+        // --- 2. 메인 배너 슬라이더 스크립트 ---
         let currentSlide = 0;
         const slides = document.querySelectorAll('.banner-slide');
         const indicator = document.getElementById('slide-indicator');
