@@ -6,28 +6,15 @@
     <title>Belluna Pet - 멤버쉽 혜택</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 pb-20">
-    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-2">
-                <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-9 w-auto object-contain">
-                <span class="text-xl font-black text-amber-400 tracking-wider hidden sm:inline-block">Belluna Pet</span>
-            </a>
-            <a href="my.html" class="text-sm font-medium text-slate-200 hover:text-amber-400"><i class="fa-solid fa-user mr-1"></i> MY</a>
-        </div>
-        <nav class="bg-slate-950 text-slate-300 border-t border-slate-800/80 overflow-x-auto">
-            <div class="max-w-7xl mx-auto px-4 flex whitespace-nowrap space-x-6 text-sm font-semibold">
-                <a href="index.html" class="py-3 hover:text-amber-300 transition">🛒 공동구매</a>
-                <a href="shopping.html" class="py-3 hover:text-amber-300 transition">🛍️ 쇼핑몰</a>
-                <a href="hanacard.html" class="py-3 hover:text-amber-300 transition">💳 하나카드</a>
-                <a href="insurance.html" class="py-3 hover:text-amber-300 transition">🛡️ 펫보험</a>
-                <a href="membership.html" class="py-3 border-b-2 border-amber-400 text-amber-400">⭐ 멤버쉽혜택</a>
-                <a href="events.html" class="py-3 hover:text-amber-300 transition">🎁 이벤트</a>
-                <a href="my.html" class="py-3 hover:text-amber-300 transition">👤 MY</a>
-            </div>
-        </nav>
-    </header>
+
+    <!-- 통합 공통 헤더가 삽입될 위치 -->
+    <div id="common-header"></div>
 
     <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
         <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center">
@@ -51,9 +38,10 @@
                         <th class="p-2.5 border-r">비회원</th>
                         <th class="p-2.5 border-r">일반회원</th>
                         <th class="p-2.5 border-r bg-amber-500/10 text-amber-900 font-bold">애견연맹하나카드 회원</th>
+                    </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-slate-600">
-                    <tr><td class="p-2.5 font-bold border-r bg-slate-50">월 구독료</td><td class="p-2.5 border-r">-</td><td class="p-2.5 border-r">무료</td><td class="p-2.5 border-r bg-amber-500/5 font-bold text-amber-700">무료</td>></tr>
+                    <tr><td class="p-2.5 font-bold border-r bg-slate-50">월 구독료</td><td class="p-2.5 border-r">-</td><td class="p-2.5 border-r">무료</td><td class="p-2.5 border-r bg-amber-500/5 font-bold text-amber-700">무료</td></tr>
                     <tr><td class="p-2.5 font-bold border-r bg-slate-50">가입조건</td><td class="p-2.5 border-r">없음</td><td class="p-2.5 border-r">회원가입</td><td class="p-2.5 border-r bg-amber-500/5">카드 등록 / 신규발급</td></tr>
                     <tr><td class="p-2.5 font-bold border-r bg-slate-50">쇼핑몰 이용 / 회원가</td><td class="p-2.5 border-r">✔ / ✖</td><td class="p-2.5 border-r">✔ / ✔</td><td class="p-2.5 border-r bg-amber-500/5 font-bold text-amber-700">✔ / ✔</td></tr>
                     <tr><td class="p-2.5 font-bold border-r bg-slate-50">공동구매 / 추가할인</td><td class="p-2.5 border-r">일부 / ✖</td><td class="p-2.5 border-r">✔ / ✖</td><td class="p-2.5 border-r bg-amber-500/5 font-bold text-amber-700">✔ / ✔</td></tr>
@@ -65,5 +53,27 @@
             </table>
         </section>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            <div class="flex items-center space-x-2">
+                <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-6 w-auto opacity-80">
+                <span class="text-slate-200 font-bold">Belluna Pet (벨루나펫 Alpha Version)</span>
+            </div>
+            <p class="leading-relaxed">Belluna Pet은 한국애견연맹과 협력하여 반려인에게 저렴한 쇼핑과 다양한 혜택을 제공하는 플랫폼입니다.</p>
+            <p class="text-slate-600 pt-2">© Belluna Pet. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- 공통 헤더 스크립트 불러오기 -->
+    <script src="header.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 공통 헤더 렌더링 호출 ('membership.html'을 전달하여 멤버쉽혜택 메뉴 활성화)
+            renderHeader('membership.html');
+        });
+    </script>
 </body>
 </html>
