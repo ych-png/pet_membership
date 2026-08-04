@@ -54,7 +54,6 @@ function renderHeader(activeMenu) {
                         <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-9 w-auto object-contain">
                         <span class="text-xl font-black text-amber-400 tracking-wider hidden sm:inline-block">Belluna Pet</span>
                     </a>
-                    <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">ALPHA</span>
                 </div>
                 
                 <div class="text-xs text-slate-400 hidden md:block">
