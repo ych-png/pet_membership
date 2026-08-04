@@ -15,42 +15,8 @@
 </head>
 <body class="bg-slate-50 text-slate-800 pb-20">
 
-    <!-- Top Header -->
-    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <a href="index.html" class="flex items-center space-x-2">
-                    <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-9 w-auto object-contain">
-                    <span class="text-xl font-black text-amber-400 tracking-wider hidden sm:inline-block">Belluna Pet</span>
-                </a>
-                <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">ALPHA</span>
-            </div>
-            
-            <div class="text-xs text-slate-400 hidden md:block">
-                한국애견연맹과 함께 만드는 회원 중심 플랫폼
-            </div>
-
-            <!-- 우측 로그인/회원가입/MY 영역 (JavaScript 동적 변경) -->
-            <div id="auth-area" class="flex items-center space-x-3 text-sm font-medium text-slate-200">
-                <!-- 로그인 전/후 상태에 따라 스크립트로 내부 요소가 교체됩니다 -->
-            </div>
-        </div>
-
-        <!-- Navigation Bar -->
-        <nav class="bg-slate-950 text-slate-300 border-t border-slate-800/80 overflow-x-auto">
-            <div class="max-w-7xl mx-auto px-4 flex whitespace-nowrap space-x-6 text-sm font-semibold">
-                <a href="index.html" class="py-3 border-b-2 border-amber-400 text-amber-400">🏠 홈</a>
-                <a href="groupbuy.html" class="py-3 hover:text-amber-300 transition">🛒 공동구매</a>
-                <a href="shopping.html" class="py-3 hover:text-amber-300 transition">🛍️ 쇼핑몰</a>
-                <a href="hanacard.html" class="py-3 hover:text-amber-300 transition">💳 하나카드</a>
-                <a href="insurance.html" class="py-3 hover:text-amber-300 transition">🛡️ 펫보험</a>
-                <a href="membership.html" class="py-3 hover:text-amber-300 transition">⭐ 멤버쉽혜택</a>
-                <a href="events.html" class="py-3 hover:text-amber-300 transition">🎁 이벤트</a>
-                <!-- GNB 우측 MY 메뉴 (로그인 시에만 노출되도록 처리) -->
-                <a href="my.html" id="gnb-my-link" class="py-3 hover:text-amber-300 transition hidden">👤 MY</a>
-            </div>
-        </nav>
-    </header>
+    <!-- 통합 공통 헤더가 삽입될 위치 -->
+    <div id="common-header"></div>
 
     <!-- Main Hero Banners (4가지 슬라이드) -->
     <section class="bg-gradient-to-r from-slate-900 via-slate-850 to-indigo-950 text-white relative overflow-hidden min-h-[320px] flex items-center border-b border-slate-800">
@@ -62,7 +28,7 @@
             <p class="text-slate-300 text-sm md:text-base mb-6 max-w-2xl leading-relaxed">공동구매와 쇼핑으로 생활비를 절약하고, 하나카드 혜택과 펫보험 정보를 한 곳에서 만나보세요.</p>
             <div class="flex flex-wrap gap-3" id="banner-btn-area">
                 <a href="groupbuy.html" class="bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg shadow text-xs md:text-sm hover:bg-amber-300 transition">공동구매 바로가기</a>
-                <!-- 로그인 여부에 따라 가입 또는 MY로 이동 -->
+                <!-- 로그인 여부에 따라 가입 또는 MY로 이동하는 버튼 -->
                 <a href="signup.html" id="banner-action-btn" class="bg-slate-800 text-slate-200 font-bold px-5 py-2.5 rounded-lg border border-slate-700 text-xs md:text-sm hover:bg-slate-700 transition">회원가입</a>
             </div>
         </div>
@@ -107,7 +73,7 @@
         </div>
     </section>
 
-    <!-- Platform Core Message Bar (핵심 문구) -->
+    <!-- Platform Core Message Bar -->
     <section class="bg-amber-500/10 border-b border-amber-500/20 py-6">
         <div class="max-w-7xl mx-auto px-4 text-center space-y-1.5">
             <h2 class="text-lg md:text-xl font-extrabold text-amber-950">
@@ -119,10 +85,10 @@
         </div>
     </section>
 
-    <!-- Main Content Area: Quick Links & Platform Intro -->
+    <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 py-12 space-y-12">
         
-        <!-- 주요 서비스 바로가기 카드 -->
+        <!-- 주요 서비스 카드리스트 -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <a href="groupbuy.html" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-amber-400 transition group">
                 <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 text-xl mb-4 group-hover:scale-110 transition-transform">🛒</div>
@@ -149,7 +115,7 @@
             </a>
         </section>
 
-        <!-- 홈페이지 소개 문구 상세 섹션 -->
+        <!-- 소개 안내 섹션 -->
         <section class="bg-white border border-slate-200 rounded-2xl p-8 md:p-10 shadow-sm text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
             <div class="max-w-3xl space-y-3">
                 <span class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full uppercase tracking-wider">About Belluna Pet</span>
@@ -179,60 +145,25 @@
         </div>
     </footer>
 
-    <!-- Banner Slider & Auth Script -->
+    <!-- 공통 헤더 스크립트 불러오기 -->
+    <script src="header.js"></script>
+
     <script>
-        // --- 1. 로그인 상태 확인 및 UI 동적 업데이트 ---
         document.addEventListener("DOMContentLoaded", function() {
+            // 1. 공통 헤더 렌더링 호출 (현재 페이지 'index.html' 전달)
+            renderHeader('index.html');
+
+            // 2. index.html 전용: 첫 번째 배너 액션 버튼 변경
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            const authArea = document.getElementById('auth-area');
-            const gnbMyLink = document.getElementById('gnb-my-link');
             const bannerActionBtn = document.getElementById('banner-action-btn');
 
-            if (isLoggedIn) {
-                // 로그인 상태인 경우: MY 페이지 버튼 + 로그아웃 버튼 노출
-                authArea.innerHTML = `
-                    <a href="my.html" class="hover:text-amber-400 transition flex items-center bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 text-xs">
-                        <i class="fa-solid fa-user mr-1.5 text-amber-400"></i> MY페이지
-                    </a>
-                    <button onclick="handleLogout()" class="text-slate-400 hover:text-rose-400 text-xs transition underline">
-                        로그아웃
-                    </button>
-                `;
-                // Navigation Bar MY 버튼 노출
-                if (gnbMyLink) gnbMyLink.classList.remove('hidden');
-                
-                // 첫번째 배너 버튼 변경
-                if (bannerActionBtn) {
-                    bannerActionBtn.innerText = "마이페이지";
-                    bannerActionBtn.href = "my.html";
-                }
-            } else {
-                // 로그인 전 상태인 경우: 로그인 / 회원가입 버튼 노출
-                authArea.innerHTML = `
-                    <a href="login.html" class="hover:text-amber-400 transition text-xs">로그인</a>
-                    <span class="text-slate-700 text-xs">|</span>
-                    <a href="signup.html" class="bg-amber-400 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-amber-300 transition shadow">회원가입</a>
-                `;
-                // Navigation Bar MY 버튼 숨김
-                if (gnbMyLink) gnbMyLink.classList.add('hidden');
-
-                // 첫번째 배너 버튼 변경
-                if (bannerActionBtn) {
-                    bannerActionBtn.innerText = "회원가입";
-                    bannerActionBtn.href = "signup.html";
-                }
+            if (isLoggedIn && bannerActionBtn) {
+                bannerActionBtn.innerText = "마이페이지";
+                bannerActionBtn.href = "my.html";
             }
         });
 
-        // 로그아웃 처리 함수
-        function handleLogout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userEmail');
-            alert('로그아웃 되었습니다.');
-            window.location.reload(); // 페이지 새로고침
-        }
-
-        // --- 2. 메인 배너 슬라이더 스크립트 ---
+        // 3. 메인 배너 슬라이더 전용 스크립트
         let currentSlide = 0;
         const slides = document.querySelectorAll('.banner-slide');
         const indicator = document.getElementById('slide-indicator');
@@ -252,10 +183,9 @@
             showSlide(currentSlide);
         }
 
-        // 5초마다 자동 슬라이드
+        // 5초 자동 슬라이드
         let bannerTimer = setInterval(() => changeBanner(1), 5000);
 
-        // 버튼 클릭 시 자동 슬라이드 타이머 리셋
         document.querySelectorAll('button').forEach(button => {
             button.addEventListener('click', () => {
                 clearInterval(bannerTimer);
