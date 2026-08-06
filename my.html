@@ -22,26 +22,35 @@
             <!-- 상단 요약 카드 -->
             <div class="bg-slate-900 text-white p-6 border-b border-slate-800">
                 <div class="flex justify-between items-center mb-4">
-                    <h1 class="text-xl font-bold flex items-center"><i class="fa-solid fa-circle-user mr-2 text-amber-400"></i> 홍길동 님</h1>
-                    <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full">애견연맹 하나카드 회원</span>
+                    <!-- 1. 로그인한 사용자 이름 동적 표기 영역 -->
+                    <h1 class="text-xl font-bold flex items-center">
+                        <i class="fa-solid fa-circle-user mr-2 text-amber-400"></i>
+                        <span id="user-name">불러오는 중...</span> 님
+                    </h1>
+                    <span id="user-grade" class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full">
+                        애견연맹 하나카드 회원
+                    </span>
                 </div>
 
                 <!-- 이번달 절약금액 표기 (최상단) -->
                 <div class="bg-slate-800/80 rounded-xl p-5 border border-slate-700">
                     <p class="text-xs text-slate-400 font-medium mb-1">이번달 절약금액</p>
-                    <div class="text-3xl font-black text-amber-400 mb-4">39,500 원</div>
+                    
+                    <!-- 2. 실제 이번달 총 절약금액 영역 -->
+                    <div id="total-saved" class="text-3xl font-black text-amber-400 mb-4">0 원</div>
+                    
                     <div class="grid grid-cols-3 gap-2 text-center text-xs border-t border-slate-700/80 pt-3">
                         <div>
                             <span class="block text-slate-400 mb-0.5">회원가 절약</span>
-                            <span class="font-bold text-sm text-slate-200">12,300원</span>
+                            <span id="member-saved" class="font-bold text-sm text-slate-200">0원</span>
                         </div>
                         <div class="border-x border-slate-700/80">
                             <span class="block text-slate-400 mb-0.5">공동구매 절약</span>
-                            <span class="font-bold text-sm text-slate-200">18,500원</span>
+                            <span id="group-saved" class="font-bold text-sm text-slate-200">0원</span>
                         </div>
                         <div>
                             <span class="block text-slate-400 mb-0.5">하나카드 혜택</span>
-                            <span class="font-bold text-sm text-amber-400">8,700원</span>
+                            <span id="card-saved" class="font-bold text-sm text-amber-400">0원</span>
                         </div>
                     </div>
                 </div>
@@ -49,27 +58,27 @@
 
             <!-- MY 퀵메뉴 6종 -->
             <div class="p-6 grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                <a href="/orders.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
                     <i class="fa-solid fa-box-open text-slate-900 text-2xl mb-2"></i>
                     <span class="text-xs font-bold text-slate-700">내 주문</span>
                 </a>
-                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                <a href="/coupons.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
                     <i class="fa-solid fa-ticket text-slate-900 text-2xl mb-2"></i>
                     <span class="text-xs font-bold text-slate-700">내 쿠폰</span>
                 </a>
-                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                <a href="/mileage.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
                     <i class="fa-solid fa-coins text-slate-900 text-2xl mb-2"></i>
                     <span class="text-xs font-bold text-slate-700">내 마일리지</span>
                 </a>
-                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                <a href="/savings.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
                     <i class="fa-solid fa-piggy-bank text-slate-900 text-2xl mb-2"></i>
                     <span class="text-xs font-bold text-slate-700">내 절약금액</span>
                 </a>
-                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                <a href="/group-buy.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
                     <i class="fa-solid fa-users text-slate-900 text-2xl mb-2"></i>
                     <span class="text-xs font-bold text-slate-700">내 공동구매</span>
                 </a>
-                <a href="#" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+                <a href="/delivery.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
                     <i class="fa-solid fa-truck-fast text-slate-900 text-2xl mb-2"></i>
                     <span class="text-xs font-bold text-slate-700">내 배송조회</span>
                 </a>
@@ -93,9 +102,57 @@
     <script src="header.js"></script>
 
     <script>
+        // 숫자를 '39,500' 형식의 쉼표 표기법으로 전환해주는 유틸리티 함수
+        function formatCurrency(amount) {
+            return Number(amount || 0).toLocaleString('ko-KR');
+        }
+
+        // 백엔드 API 또는 LocalStorage에서 회원정보 및 절약금액 조회
+        async function loadUserDashboardData() {
+            try {
+                /* 
+                   [실제 백엔드 서버 연동 시 사용 예시]
+                   const response = await fetch('/api/user/dashboard-summary', {
+                       headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                   });
+                   const data = await response.json();
+                */
+
+                // 프론트엔드 테스트 및 목업 데이터 구조
+                const data = {
+                    userName: localStorage.getItem('userName') || "김벨루", // 로그인 세션에서 이름 가져오기
+                    userGrade: "애견연맹 하나카드 회원",
+                    savings: {
+                        member: 12300,  // 회원가 절약액
+                        group: 18500,   // 공동구매 절약액
+                        card: 8700     // 카드 혜택
+                    }
+                };
+
+                // 총 절약 금액 계산
+                const totalSavedAmount = data.savings.member + data.savings.group + data.savings.card;
+
+                // DOM 요소에 데이터 바인딩
+                document.getElementById('user-name').textContent = data.userName;
+                document.getElementById('user-grade').textContent = data.userGrade;
+                
+                document.getElementById('total-saved').textContent = `${formatCurrency(totalSavedAmount)} 원`;
+                document.getElementById('member-saved').textContent = `${formatCurrency(data.savings.member)}원`;
+                document.getElementById('group-saved').textContent = `${formatCurrency(data.savings.group)}원`;
+                document.getElementById('card-saved').textContent = `${formatCurrency(data.savings.card)}원`;
+
+            } catch (error) {
+                console.error("대시보드 데이터 로드 실패:", error);
+                document.getElementById('user-name').textContent = "회원";
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
-            // 공통 헤더 렌더링 호출 ('my.html'을 전달하여 MY 메뉴 활성화)
+            // 공통 헤더 렌더링 호출
             renderHeader('my.html');
+            
+            // 사용자 정보 및 절약 금액 실시간 로드
+            loadUserDashboardData();
         });
     </script>
 </body>
