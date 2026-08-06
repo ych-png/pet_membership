@@ -45,7 +45,7 @@
 
                 <div class="flex items-center justify-between text-xs text-slate-400 pt-1">
                     <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" class="rounded bg-slate-900 border-slate-700 text-amber-400 focus:ring-0">
+                        <input type="checkbox" id="rememberMe" class="rounded bg-slate-900 border-slate-700 text-amber-400 focus:ring-0">
                         <span>로그인 상태 유지</span>
                     </label>
                     <a href="#" class="hover:text-amber-400 transition">비밀번호 찾기</a>
@@ -71,12 +71,35 @@
     <script>
         function handleLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('email').value;
-            // 프론트엔드 시뮬레이션용 스크립트
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userEmail', email);
-            alert('로그인되었습니다!');
-            window.location.href = 'index.html';
+            
+            const emailInput = document.getElementById('email').value.trim();
+            const passwordInput = document.getElementById('password').value;
+
+            // 1. localStorage에서 저장된 회원 데이터 목록을 가져옴
+            // (signup.html에서 users 키로 저장된 배열 데이터를 연동)
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // 2. 입력한 이메일과 비밀번호가 일치하는 회원 검색
+            const matchedUser = users.find(user => user.email === emailInput && user.password === passwordInput);
+
+            if (matchedUser) {
+                // 로그인 성공 시 세션 정보 저장
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', matchedUser.email);
+                localStorage.setItem('userName', matchedUser.name || '회원'); // 이름이 등록되어 있을 경우 저장
+
+                alert(`${matchedUser.name || '회원'}님, 반갑습니다! 로그인되었습니다.`);
+                window.location.href = 'index.html';
+            } else {
+                // 가입 정보가 없거나 비밀번호가 틀린 경우
+                const emailExists = users.some(user => user.email === emailInput);
+                
+                if (emailExists) {
+                    alert('비밀번호가 올바르지 않습니다. 다시 확인해주세요.');
+                } else {
+                    alert('가입되지 않은 이메일 계정입니다. 회원가입 후 이용해주세요.');
+                }
+            }
         }
     </script>
 </body>
