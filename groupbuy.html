@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <!-- 상품 Card 2 (사람용 예시) -->
+                <!-- 상품 Card 2 (사람용) -->
                 <div class="product-item border border-slate-200 rounded-xl p-4 hover:shadow-md transition bg-white flex flex-col justify-between" data-category="human">
                     <div>
                         <div class="bg-slate-100 h-44 rounded-lg mb-3 flex items-center justify-center text-slate-400 font-bold">반려인 생활용품</div>
@@ -143,7 +143,6 @@
     <script>
         // 1. 로그인 여부 확인 및 접근 제한 (인증 보호)
         function checkAuth() {
-            // 프로젝트의 실제 로그인 저장 방식(예: localStorage, Cookie 등)에 맞게 조건문을 수정하세요.
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; 
 
             if (!isLoggedIn) {
