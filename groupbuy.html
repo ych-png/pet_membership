@@ -33,8 +33,15 @@
     <main class="max-w-7xl mx-auto px-4 py-8 space-y-8" id="group-buy-list">
         
         <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <!-- 1. 사람용 / 동물용 대카테고리 탭 -->
+            <div class="flex border-b border-slate-200 mb-4">
+                <button onclick="filterCategory('all')" id="tab-all" class="category-tab px-5 py-2.5 text-sm font-bold border-b-2 border-amber-500 text-amber-600">전체보기</button>
+                <button onclick="filterCategory('pet')" id="tab-pet" class="category-tab px-5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800">🐶 펫용품 (동물용)</button>
+                <button onclick="filterCategory('human')" id="tab-human" class="category-tab px-5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800">👤 반려인용 (사람용)</button>
+            </div>
+
             <!-- Sub Menu / Status Filter -->
-            <div class="flex space-x-2 border-b border-slate-100 pb-4 mb-6 overflow-x-auto text-xs font-semibold">
+            <div class="flex space-x-2 pb-4 mb-6 overflow-x-auto text-xs font-semibold">
                 <button class="px-3.5 py-2 bg-amber-500 text-slate-950 rounded-lg whitespace-nowrap font-bold shadow-sm">🔥 현재 진행중</button>
                 <button class="px-3.5 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition whitespace-nowrap">⏰ 오늘 마감</button>
                 <button class="px-3.5 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition whitespace-nowrap">📅 예정 공동구매</button>
@@ -42,17 +49,18 @@
                 <button class="px-3.5 py-2 bg-amber-50 text-amber-800 border border-amber-200 rounded-lg hover:bg-amber-100 transition whitespace-nowrap">⭐ 공동구매 요청</button>
             </div>
 
-            <!-- Products Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                <!-- 상품 Card 1 -->
-                <div class="border border-slate-200 rounded-xl p-4 hover:shadow-md transition bg-white flex flex-col justify-between">
+            <!-- Products Grid (data-category 속성 추가) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" id="product-grid">
+                
+                <!-- 상품 Card 1 (동물용) -->
+                <div class="product-item border border-slate-200 rounded-xl p-4 hover:shadow-md transition bg-white flex flex-col justify-between" data-category="pet">
                     <div>
                         <div class="bg-slate-100 h-44 rounded-lg mb-3 flex items-center justify-center text-slate-400 font-bold">사료 특가 상품</div>
                         <div class="flex items-center justify-between">
                             <span class="text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">달성률 145%</span>
                             <span class="text-xs text-slate-400">잔여 3일</span>
                         </div>
-                        <h3 class="font-bold text-slate-800 mt-2 text-sm md:text-base">[공동구매] 유기농 강아지 사료 5kg</h3>
+                        <h3 class="font-bold text-slate-800 mt-2 text-sm md:text-base">[동물용] 유기농 강아지 사료 5kg</h3>
                     </div>
                     <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-end">
                         <div>
@@ -63,15 +71,15 @@
                     </div>
                 </div>
 
-                <!-- 상품 Card 2 -->
-                <div class="border border-slate-200 rounded-xl p-4 hover:shadow-md transition bg-white flex flex-col justify-between">
+                <!-- 상품 Card 2 (사람용 예시) -->
+                <div class="product-item border border-slate-200 rounded-xl p-4 hover:shadow-md transition bg-white flex flex-col justify-between" data-category="human">
                     <div>
-                        <div class="bg-slate-100 h-44 rounded-lg mb-3 flex items-center justify-center text-slate-400 font-bold">목욕용품 상품</div>
+                        <div class="bg-slate-100 h-44 rounded-lg mb-3 flex items-center justify-center text-slate-400 font-bold">반려인 생활용품</div>
                         <div class="flex items-center justify-between">
                             <span class="text-xs bg-rose-100 text-rose-700 font-bold px-2 py-0.5 rounded">⏰ 오늘 마감</span>
                             <span class="text-xs text-slate-400">오늘 23:59 마감</span>
                         </div>
-                        <h3 class="font-bold text-slate-800 mt-2 text-sm md:text-base">[공동구매] 저자극 펫 샴푸 1L</h3>
+                        <h3 class="font-bold text-slate-800 mt-2 text-sm md:text-base">[사람용] 돌기형 털 제거 테이프 클리너 세트</h3>
                     </div>
                     <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-end">
                         <div>
@@ -82,15 +90,15 @@
                     </div>
                 </div>
 
-                <!-- 상품 Card 3 -->
-                <div class="border border-slate-200 rounded-xl p-4 hover:shadow-md transition bg-white flex flex-col justify-between">
+                <!-- 상품 Card 3 (동물용) -->
+                <div class="product-item border border-slate-200 rounded-xl p-4 hover:shadow-md transition bg-white flex flex-col justify-between" data-category="pet">
                     <div>
                         <div class="bg-slate-100 h-44 rounded-lg mb-3 flex items-center justify-center text-slate-400 font-bold">영양제 상품</div>
                         <div class="flex items-center justify-between">
                             <span class="text-xs bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded">하나카드 추가할인</span>
                             <span class="text-xs text-slate-400">잔여 5일</span>
                         </div>
-                        <h3 class="font-bold text-slate-800 mt-2 text-sm md:text-base">[공동구매] 관절 영양제 90정</h3>
+                        <h3 class="font-bold text-slate-800 mt-2 text-sm md:text-base">[동물용] 관절 영양제 90정</h3>
                     </div>
                     <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-end">
                         <div>
@@ -100,6 +108,7 @@
                         <button class="bg-slate-900 text-amber-400 border border-slate-800 text-xs px-3.5 py-2 rounded-lg font-bold hover:bg-slate-800 transition">참여하기</button>
                     </div>
                 </div>
+
             </div>
         </section>
 
@@ -123,7 +132,7 @@
                 <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-6 w-auto opacity-80">
                 <span class="text-slate-200 font-bold">Belluna Pet (벨루나펫 Alpha Version)</span>
             </div>
-            <p class="leading-relaxed">Belluna Pet은 한국애견연맹과 협력하여 반려인에게 저렴한 쇼핑과 다양한 혜택을 제공하는 플랫폼입니다. 공동구매를 통한 저렴한 쇼핑, 하나카드 제휴 혜택, 마일리지 서비스, 그리고 반려생활에 필요한 정보를 한 곳에서 제공하여 더 편리하고 믿을 수 있는 반려생활을 만들어갑니다.</p>
+            <p class="leading-relaxed">Belluna Pet은 한국애견연맹과 협력하여 반려인에게 저렴한 쇼핑과 다양한 혜택을 제공하는 플랫폼입니다.</p>
             <p class="text-slate-600 pt-2">© Belluna Pet. All rights reserved.</p>
         </div>
     </footer>
@@ -132,9 +141,52 @@
     <script src="header.js"></script>
 
     <script>
+        // 1. 로그인 여부 확인 및 접근 제한 (인증 보호)
+        function checkAuth() {
+            // 프로젝트의 실제 로그인 저장 방식(예: localStorage, Cookie 등)에 맞게 조건문을 수정하세요.
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; 
+
+            if (!isLoggedIn) {
+                alert('공동구매 페이지는 회원 전용 서비스입니다.\n로그인 페이지로 이동합니다.');
+                window.location.href = 'login.html'; // 실제 로그인 페이지 경로로 변경
+            }
+        }
+
+        // 2. 카테고리 필터링 기능 (사람용 / 동물용)
+        function filterCategory(category) {
+            const items = document.querySelectorAll('.product-item');
+            const tabs = document.querySelectorAll('.category-tab');
+
+            // 탭 스타일 변경
+            tabs.forEach(tab => {
+                tab.classList.remove('border-amber-500', 'text-amber-600', 'font-bold');
+                tab.classList.add('border-transparent', 'text-slate-500', 'font-semibold');
+            });
+            
+            const activeTab = document.getElementById(`tab-${category}`);
+            if (activeTab) {
+                activeTab.classList.remove('border-transparent', 'text-slate-500', 'font-semibold');
+                activeTab.classList.add('border-amber-500', 'text-amber-600', 'font-bold');
+            }
+
+            // 아이템 노출 필터링
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
-            // 공통 헤더 렌더링 호출 ('groupbuy.html'을 전달하여 공동구매 메뉴 활성화)
-            renderHeader('groupbuy.html');
+            // 페이지 진입 시 로그인 상태 검사
+            checkAuth();
+
+            // 공통 헤더 렌더링 호출
+            if (typeof renderHeader === 'function') {
+                renderHeader('groupbuy.html');
+            }
         });
     </script>
 </body>
