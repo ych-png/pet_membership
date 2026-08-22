@@ -28,8 +28,9 @@
             <p class="text-slate-300 text-sm md:text-base mb-6 max-w-2xl leading-relaxed">공동구매와 쇼핑으로 생활비를 절약하고, 하나카드 혜택과 펫보험 정보를 한 곳에서 만나보세요.</p>
             <div class="flex flex-wrap gap-3" id="banner-btn-area">
                 <a href="groupbuy.html" class="bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg shadow text-xs md:text-sm hover:bg-amber-300 transition">공동구매 바로가기</a>
-                <!-- 로그인 여부에 따라 가입 또는 MY로 이동하는 버튼 -->
-                <a href="signup.html" id="banner-action-btn" class="bg-slate-800 text-slate-200 font-bold px-5 py-2.5 rounded-lg border border-slate-700 text-xs md:text-sm hover:bg-slate-700 transition">회원가입</a>
+                
+                <!-- 회원가입 버튼 클릭 시 새 창으로 QR코드 오픈 -->
+                <a href="signup.html" id="banner-action-btn" onclick="openQrWindow(event)" class="bg-slate-800 text-slate-200 font-bold px-5 py-2.5 rounded-lg border border-slate-700 text-xs md:text-sm hover:bg-slate-700 transition">회원가입</a>
             </div>
         </div>
 
@@ -149,6 +150,70 @@
     <script src="header.js"></script>
 
     <script>
+        // 새 창(팝업)으로 회원가입 QR코드 출력 함수
+        function openQrWindow(e) {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            // 로그인 상태인 경우 클릭 시 마이페이지로 이동
+            if (isLoggedIn) return;
+
+            // 이동 방지
+            if (e) e.preventDefault();
+
+            // 가입 페이지 절대 경로
+            const signupUrl = new URL('signup.html', window.location.href).href;
+            
+            // 새 창의 가로/세로 크기 및 화면 중앙 위치 계산
+            const width = 400;
+            const height = 480;
+            const left = (window.screen.width / 2) - (width / 2);
+            const top = (window.screen.height / 2) - (height / 2);
+
+            // 팝업 창 생성
+            const qrWindow = window.open('', 'QRWindow', `width=${width},height=${height},top=${top},left=${left},resizable=no`);
+
+            // 새 창 HTML 내용 작성 (Tailwind CSS + QR코드 라이브러리 동적 로드)
+            qrWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="ko">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>회원가입 QR코드</title>
+                    <script src="https://cdn.tailwindcss.com"><\/script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+                    <style>
+                        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+                        body { font-family: 'Pretendard', sans-serif; }
+                    </style>
+                </head>
+                <body class="bg-slate-950 text-slate-100 flex flex-col items-center justify-center min-h-screen p-6 text-center">
+                    <h2 class="text-lg font-bold text-amber-400 mb-1">회원가입 QR코드</h2>
+                    <p class="text-xs text-slate-400 mb-6">스마트폰 카메라로 아래 QR코드를 스캔하면<br>모바일 회원가입 페이지로 바로 이동합니다.</p>
+                    
+                    <div class="p-4 bg-white rounded-2xl shadow-xl border-4 border-amber-400/20 mb-6">
+                        <div id="popup-qrcode"></div>
+                    </div>
+
+                    <a href="${signupUrl}" target="_blank" class="text-xs text-slate-400 hover:text-white underline mb-4">
+                        PC에서 회원가입 계속하기
+                    </a>
+
+                    <button onclick="window.close()" class="w-full bg-slate-800 text-slate-300 font-semibold py-2 rounded-lg text-xs hover:bg-slate-700 transition">
+                        창 닫기
+                    </button>
+
+                    <script>
+                        new QRCode(document.getElementById("popup-qrcode"), {
+                            text: "${signupUrl}",
+                            width: 160,
+                            height: 160
+                        });
+                    <\/script>
+                </body>
+                </html>
+            `);
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             // 1. 공통 헤더 렌더링 호출 (현재 페이지 'index.html' 전달)
             renderHeader('index.html');
@@ -160,7 +225,18 @@
             if (isLoggedIn && bannerActionBtn) {
                 bannerActionBtn.innerText = "마이페이지";
                 bannerActionBtn.href = "my.html";
+                bannerActionBtn.removeAttribute("onclick");
             }
+
+            // 헤더의 회원가입 버튼 클릭 시에도 새 팝업 창 연결
+            setTimeout(() => {
+                const headerSignupBtns = document.querySelectorAll('a[href="signup.html"]');
+                headerSignupBtns.forEach(btn => {
+                    if (!isLoggedIn) {
+                        btn.addEventListener('click', openQrWindow);
+                    }
+                });
+            }, 100);
         });
 
         // 3. 메인 배너 슬라이더 전용 스크립트
