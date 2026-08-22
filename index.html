@@ -29,8 +29,8 @@
             <div class="flex flex-wrap gap-3" id="banner-btn-area">
                 <a href="groupbuy.html" class="bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg shadow text-xs md:text-sm hover:bg-amber-300 transition">공동구매 바로가기</a>
                 
-                <!-- 회원가입 버튼 클릭 시 새 창으로 QR코드 오픈 -->
-                <a href="signup.html" id="banner-action-btn" onclick="openQrWindow(event)" class="bg-slate-800 text-slate-200 font-bold px-5 py-2.5 rounded-lg border border-slate-700 text-xs md:text-sm hover:bg-slate-700 transition">회원가입</a>
+                <!-- 회원가입 버튼 클릭 시 모바일 여부에 따라 분기 -->
+                <a href="signup.html" id="banner-action-btn" onclick="handleSignupClick(event)" class="bg-slate-800 text-slate-200 font-bold px-5 py-2.5 rounded-lg border border-slate-700 text-xs md:text-sm hover:bg-slate-700 transition">회원가입</a>
             </div>
         </div>
 
@@ -150,29 +150,36 @@
     <script src="header.js"></script>
 
     <script>
-        // 새 창(팝업)으로 회원가입 QR코드 출력 함수
-        function openQrWindow(e) {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        // 정확한 모바일 기기 감지 (User-Agent + 화면 너비 + Touch 이벤트 검사)
+        function isMobileDevice() {
+            const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isSmallWidth = window.innerWidth <= 768;
+            const hasTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
             
-            // 로그인 상태인 경우 클릭 시 마이페이지로 이동
-            if (isLoggedIn) return;
+            return isMobileUA || (isSmallWidth && hasTouch);
+        }
 
-            // 이동 방지
+        // 회원가입 버튼 클릭 이벤트 핸들러
+        function handleSignupClick(e) {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (isLoggedIn) return; // 이미 로그인되었으면 기본 링크(my.html) 동작
+
+            // 1. 모바일 환경인 경우: 팝업을 띄우지 않고 기본 동작(signup.html 이동) 수행
+            if (isMobileDevice()) {
+                return true; 
+            }
+
+            // 2. PC 환경인 경우: 페이지 이동을 취소하고 QR코드 팝업 생성
             if (e) e.preventDefault();
 
-            // 가입 페이지 절대 경로
             const signupUrl = new URL('signup.html', window.location.href).href;
-            
-            // 새 창의 가로/세로 크기 및 화면 중앙 위치 계산
             const width = 400;
             const height = 480;
             const left = (window.screen.width / 2) - (width / 2);
             const top = (window.screen.height / 2) - (height / 2);
 
-            // 팝업 창 생성
             const qrWindow = window.open('', 'QRWindow', `width=${width},height=${height},top=${top},left=${left},resizable=no`);
 
-            // 새 창 HTML 내용 작성 (Tailwind CSS + QR코드 라이브러리 동적 로드)
             qrWindow.document.write(`
                 <!DOCTYPE html>
                 <html lang="ko">
@@ -215,10 +222,10 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. 공통 헤더 렌더링 호출 (현재 페이지 'index.html' 전달)
+            // 1. 공통 헤더 렌더링 호출
             renderHeader('index.html');
 
-            // 2. index.html 전용: 첫 번째 배너 액션 버튼 변경
+            // 2. 로그인 여부에 따른 메인 배너 버튼 수정
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             const bannerActionBtn = document.getElementById('banner-action-btn');
 
@@ -228,18 +235,20 @@
                 bannerActionBtn.removeAttribute("onclick");
             }
 
-            // 헤더의 회원가입 버튼 클릭 시에도 새 팝업 창 연결
+            // 3. 공통 헤더 내 회원가입 버튼에도 모바일 판단 로직 연동
             setTimeout(() => {
                 const headerSignupBtns = document.querySelectorAll('a[href="signup.html"]');
                 headerSignupBtns.forEach(btn => {
                     if (!isLoggedIn) {
-                        btn.addEventListener('click', openQrWindow);
+                        btn.addEventListener('click', function(e) {
+                            handleSignupClick(e);
+                        });
                     }
                 });
             }, 100);
         });
 
-        // 3. 메인 배너 슬라이더 전용 스크립트
+        // 메인 배너 슬라이더 전용 스크립트
         let currentSlide = 0;
         const slides = document.querySelectorAll('.banner-slide');
         const indicator = document.getElementById('slide-indicator');
@@ -259,7 +268,6 @@
             showSlide(currentSlide);
         }
 
-        // 5초 자동 슬라이드
         let bannerTimer = setInterval(() => changeBanner(1), 5000);
 
         document.querySelectorAll('button').forEach(button => {
