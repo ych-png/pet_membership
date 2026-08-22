@@ -3,128 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belluna Pet Alpha - 로그인</title>
+    <title>Belluna Pet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase JS SDK (필수) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         body { font-family: 'Pretendard', sans-serif; }
+        .banner-slide { display: none; opacity: 0; transition: opacity 0.5s ease-in-out; }
+        .banner-slide.active { display: flex; opacity: 1; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 flex flex-col min-h-screen justify-between">
+<body class="bg-slate-50 text-slate-800 pb-20">
 
-    <!-- Header -->
-    <header class="border-b border-slate-800 p-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-2">
-                <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-8 w-auto">
-                <span class="text-lg font-black text-amber-400">Belluna Pet</span>
+    <!-- 통합 공통 헤더가 삽입될 위치 -->
+    <div id="common-header"></div>
+
+    <!-- Main Hero Banners (4가지 슬라이드) -->
+    <section class="bg-gradient-to-r from-slate-900 via-slate-850 to-indigo-950 text-white relative overflow-hidden min-h-[320px] flex items-center border-b border-slate-800">
+        
+        <!-- Banner 1 -->
+        <div class="banner-slide active max-w-7xl mx-auto px-4 py-10 w-full flex-col justify-center">
+            <span class="inline-block bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-3 py-1 rounded-full mb-3 w-fit font-semibold">한국애견연맹 공식 제휴</span>
+            <h1 class="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 text-slate-100 leading-tight">한국애견연맹과 함께하는 믿을 수 있는 반려생활 플랫폼</h1>
+            <p class="text-slate-300 text-sm md:text-base mb-6 max-w-2xl leading-relaxed">공동구매와 쇼핑으로 생활비를 절약하고, 하나카드 혜택과 펫보험 정보를 한 곳에서 만나보세요.</p>
+            <div class="flex flex-wrap gap-3" id="banner-btn-area">
+                <a href="groupbuy.html" class="bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg shadow text-xs md:text-sm hover:bg-amber-300 transition">공동구매 바로가기</a>
+                
+                <!-- 회원가입 버튼 (PC: QR 팝업 / 모바일: signup.html 이동) -->
+                <a href="signup.html" id="banner-action-btn" onclick="openQrWindow(event)" class="bg-slate-800 text-slate-200 font-bold px-5 py-2.5 rounded-lg border border-slate-700 text-xs md:text-sm hover:bg-slate-700 transition">회원가입</a>
+            </div>
+        </div>
+
+        <!-- Banner 2 -->
+        <div class="banner-slide max-w-7xl mx-auto px-4 py-10 w-full flex-col justify-center">
+            <span class="inline-block bg-amber-500 text-slate-950 font-bold text-xs px-3 py-1 rounded-full mb-3 w-fit">WEEKLY SPECIAL</span>
+            <h1 class="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 text-slate-100 leading-tight">매주 새로운 공동구매, 더 큰 절약</h1>
+            <p class="text-slate-300 text-sm md:text-base mb-6 max-w-2xl leading-relaxed">반려동물 용품부터 생활용품까지 공동구매 특가로 만나보세요.</p>
+            <div>
+                <a href="groupbuy.html" class="bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg shadow text-xs md:text-sm hover:bg-amber-300 transition">진행 중인 공동구매 보기</a>
+            </div>
+        </div>
+
+        <!-- Banner 3 -->
+        <div class="banner-slide max-w-7xl mx-auto px-4 py-10 w-full flex-col justify-center">
+            <span class="inline-block bg-indigo-500/30 text-indigo-300 border border-indigo-400/30 text-xs px-3 py-1 rounded-full mb-3 w-fit font-semibold">제휴 혜택</span>
+            <h1 class="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 text-slate-100 leading-tight">애견연맹 하나카드로 더 큰 혜택</h1>
+            <p class="text-slate-300 text-sm md:text-base mb-6 max-w-2xl leading-relaxed">하나카드 결제 시 추가 할인, 마일리지 적립 및 다양한 회원 혜택을 제공합니다.</p>
+            <div>
+                <a href="hanacard.html" class="bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg shadow text-xs md:text-sm hover:bg-amber-300 transition">애견연맹 하나카드 혜택 보기</a>
+            </div>
+        </div>
+
+        <!-- Banner 4 -->
+        <div class="banner-slide max-w-7xl mx-auto px-4 py-10 w-full flex-col justify-center">
+            <span class="inline-block bg-rose-500/30 text-rose-300 border border-rose-400/30 text-xs px-3 py-1 rounded-full mb-3 w-fit font-semibold">안심 케어</span>
+            <h1 class="text-xl md:text-2xl lg:text-3xl font-extrabold mb-3 text-slate-100 leading-snug max-w-3xl">반려견의 갑작스러운 병원비가 걱정되시나요?<br class="hidden sm:inline"> 삼성화재 펫보험으로 의료비 부담을 줄일 수 있는 방법을 확인해 보세요.</h1>
+            <p class="text-slate-300 text-sm md:text-base mb-6 max-w-2xl leading-relaxed">예상치 못한 진료비에 대비할 수 있도록 삼성화재 펫보험 정보를 제공합니다.</p>
+            <div>
+                <a href="insurance.html" class="bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg shadow text-xs md:text-sm hover:bg-amber-300 transition">펫보험 알아보기</a>
+            </div>
+        </div>
+
+        <!-- Banner Controls & Indicators -->
+        <div class="absolute bottom-4 right-4 flex items-center space-x-3 z-10">
+            <div id="slide-indicator" class="text-xs text-slate-400 font-medium">1 / 4</div>
+            <div class="flex space-x-1">
+                <button onclick="changeBanner(-1)" class="w-8 h-8 rounded-full bg-slate-800/80 border border-slate-700 hover:bg-slate-700 text-white text-xs flex items-center justify-center transition"><i class="fa-solid fa-chevron-left"></i></button>
+                <button onclick="changeBanner(1)" class="w-8 h-8 rounded-full bg-slate-800/80 border border-slate-700 hover:bg-slate-700 text-white text-xs flex items-center justify-center transition"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Core Message Bar -->
+    <section class="bg-amber-500/10 border-b border-amber-500/20 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-1.5">
+            <h2 class="text-lg md:text-xl font-extrabold text-amber-950">
+                "한국애견연맹과 함께 만드는 믿을 수 있는 반려생활 플랫폼"
+            </h2>
+            <p class="text-xs md:text-sm text-slate-700 font-medium">
+                공동구매 · 쇼핑 · 하나카드 혜택 · 펫보험 정보까지, 반려생활에 필요한 서비스를 한 곳에서 제공합니다.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 py-12 space-y-12">
+        
+        <!-- 주요 서비스 카드리스트 -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <a href="groupbuy.html" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-amber-400 transition group">
+                <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 text-xl mb-4 group-hover:scale-110 transition-transform">🛒</div>
+                <h3 class="font-bold text-slate-900 text-lg mb-1">공동구매</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">회원 전용 특가로 엄선된 상품을 가장 알뜰하게 구매해보세요.</p>
             </a>
-            <a href="index.html" class="text-xs text-slate-400 hover:text-white transition">🏠 메인으로 돌아가기</a>
-        </div>
-    </header>
 
-    <!-- Login Form Section -->
-    <main class="flex-grow flex items-center justify-center px-4 py-12">
-        <div class="w-full max-w-md bg-slate-950 border border-slate-800 rounded-2xl p-8 shadow-2xl">
-            <div class="text-center mb-8">
-                <h1 class="text-2xl font-bold text-slate-100">벨루나펫 로그인</h1>
-                <p class="text-xs text-slate-400 mt-2">한국애견연맹과 함께하는 회원 전용 서비스를 이용해보세요.</p>
+            <a href="shopping.html" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-amber-400 transition group">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 text-xl mb-4 group-hover:scale-110 transition-transform">🛍️</div>
+                <h3 class="font-bold text-slate-900 text-lg mb-1">쇼핑몰</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">반려동물 사료부터 용품까지 프리미엄 상품을 매일 만나보세요.</p>
+            </a>
+
+            <a href="hanacard.html" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-amber-400 transition group">
+                <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600 text-xl mb-4 group-hover:scale-110 transition-transform">💳</div>
+                <h3 class="font-bold text-slate-900 text-lg mb-1">하나카드 혜택</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">제휴 카드 청구 할인과 마일리지 추가 적립 혜택을 누리세요.</p>
+            </a>
+
+            <a href="insurance.html" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-amber-400 transition group">
+                <div class="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center text-rose-600 text-xl mb-4 group-hover:scale-110 transition-transform">🛡️</div>
+                <h3 class="font-bold text-slate-900 text-lg mb-1">펫보험 정보</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">갑작스러운 병원비 부담을 줄여주는 삼성화재 펫보험 안내.</p>
+            </a>
+        </section>
+
+        <!-- 소개 안내 섹션 -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-8 md:p-10 shadow-sm text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="max-w-3xl space-y-3">
+                <span class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full uppercase tracking-wider">About Belluna Pet</span>
+                <h3 class="text-xl md:text-2xl font-bold text-slate-900">반려인과 아이들을 위한 똑똑한 선택</h3>
+                <p class="text-sm md:text-base text-slate-600 leading-relaxed">
+                    Belluna Pet은 한국애견연맹과 협력하여 반려인에게 저렴한 쇼핑과 다양한 혜택을 제공하는 플랫폼입니다. 공동구매를 통한 저렴한 쇼핑, 하나카드 제휴 혜택, 마일리지 서비스, 그리고 반려생활에 필요한 정보를 한 곳에서 제공하여 더 편리하고 믿을 수 있는 반려생활을 만들어갑니다.
+                </p>
             </div>
-
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">이메일 계정</label>
-                    <input type="email" id="email" required placeholder="example@email.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">비밀번호</label>
-                    <input type="password" id="password" required placeholder="비밀번호 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
-                </div>
-
-                <div class="flex items-center justify-between text-xs text-slate-400 pt-1">
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" id="rememberMe" class="rounded bg-slate-900 border-slate-700 text-amber-400 focus:ring-0">
-                        <span>로그인 상태 유지</span>
-                    </label>
-                    <a href="#" class="hover:text-amber-400 transition">비밀번호 찾기</a>
-                </div>
-
-                <button type="submit" id="submitBtn" class="w-full bg-amber-400 text-slate-950 font-bold py-3.5 rounded-lg text-sm hover:bg-amber-300 transition shadow-lg mt-2">
-                    로그인하기
-                </button>
-            </form>
-
-            <div class="mt-6 text-center text-xs text-slate-400">
-                아직 벨루나펫 회원이 아니신가요? 
-                <a href="signup.html" class="text-amber-400 font-bold hover:underline ml-1">회원가입하기</a>
+            <div class="shrink-0">
+                <a href="membership.html" class="inline-block bg-slate-900 text-amber-400 hover:bg-slate-800 font-bold px-6 py-3.5 rounded-xl text-sm transition shadow-md">
+                    멤버쉽 혜택 더보기
+                </a>
             </div>
-        </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-        © Belluna Pet. All rights reserved.
+    <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            <div class="flex items-center space-x-2">
+                <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-6 w-auto opacity-80">
+                <span class="text-slate-200 font-bold">Belluna Pet (벨루나펫 Alpha Version)</span>
+            </div>
+            <p class="leading-relaxed">Belluna Pet은 한국애견연맹과 협력하여 반려인에게 저렴한 쇼핑과 다양한 혜택을 제공하는 플랫폼입니다. 공동구매를 통한 저렴한 쇼핑, 하나카드 제휴 혜택, 마일리지 서비스, 그리고 반려생활에 필요한 정보를 한 곳에서 제공하여 더 편리하고 믿을 수 있는 반려생활을 만들어갑니다.</p>
+            <p class="text-slate-600 pt-2">© Belluna Pet. All rights reserved.</p>
+        </div>
     </footer>
 
+    <!-- 공통 헤더 스크립트 불러오기 -->
+    <script src="header.js"></script>
+
     <script>
-        // =========================================================
-        // 1. Supabase 연동 정보
-        // =========================================================
-        const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
+        // 모바일 접속 감지 함수
+        function isMobileDevice() {
+            const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isSmallScreen = window.innerWidth <= 768;
+            return isMobileUA || isSmallScreen;
+        }
 
-        // Supabase 클라이언트 생성
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // 새 창(팝업)으로 회원가입 QR코드 출력 함수
+        function openQrWindow(e) {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            // 1. 이미 로그인된 경우 마이페이지로 기본 이동
+            if (isLoggedIn) return;
 
-        // =========================================================
-        // 2. 로그인 처리 함수
-        // =========================================================
-        async function handleLogin(e) {
-            e.preventDefault();
+            // 2. 모바일 환경인 경우 QR창을 열지 않고 바로 signup.html로 이동
+            if (isMobileDevice()) {
+                return; 
+            }
 
-            const emailInput = document.getElementById('email').value.trim();
-            const passwordInput = document.getElementById('password').value;
-            const submitBtn = document.getElementById('submitBtn');
+            // 3. PC 환경인 경우 기본 이동 차단 후 QR코드 팝업 생성
+            if (e) e.preventDefault();
 
-            submitBtn.disabled = true;
-            submitBtn.innerText = '로그인 중...';
+            const signupUrl = new URL('signup.html', window.location.href).href;
+            
+            const width = 400;
+            const height = 480;
+            const left = (window.screen.width / 2) - (width / 2);
+            const top = (window.screen.height / 2) - (height / 2);
 
-            try {
-                // Supabase Auth 비밀번호 로그인 API
-                const { data, error } = await _supabase.auth.signInWithPassword({
-                    email: emailInput,
-                    password: passwordInput
+            const qrWindow = window.open('', 'QRWindow', `width=${width},height=${height},top=${top},left=${left},resizable=no`);
+
+            qrWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="ko">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>회원가입 QR코드</title>
+                    <script src="https://cdn.tailwindcss.com"><\/script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+                    <style>
+                        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+                        body { font-family: 'Pretendard', sans-serif; }
+                    </style>
+                </head>
+                <body class="bg-slate-950 text-slate-100 flex flex-col items-center justify-center min-h-screen p-6 text-center">
+                    <h2 class="text-lg font-bold text-amber-400 mb-1">회원가입 QR코드</h2>
+                    <p class="text-xs text-slate-400 mb-6">스마트폰 카메라로 아래 QR코드를 스캔하면<br>모바일 회원가입 페이지로 바로 이동합니다.</p>
+                    
+                    <div class="p-4 bg-white rounded-2xl shadow-xl border-4 border-amber-400/20 mb-6">
+                        <div id="popup-qrcode"></div>
+                    </div>
+
+                    <a href="${signupUrl}" target="_blank" class="text-xs text-slate-400 hover:text-white underline mb-4">
+                        PC에서 회원가입 계속하기
+                    </a>
+
+                    <button onclick="window.close()" class="w-full bg-slate-800 text-slate-300 font-semibold py-2 rounded-lg text-xs hover:bg-slate-700 transition">
+                        창 닫기
+                    </button>
+
+                    <script>
+                        new QRCode(document.getElementById("popup-qrcode"), {
+                            text: "${signupUrl}",
+                            width: 160,
+                            height: 160
+                        });
+                    <\/script>
+                </body>
+                </html>
+            `);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. 공통 헤더 렌더링 호출 (현재 페이지 'index.html' 전달)
+            renderHeader('index.html');
+
+            // 2. index.html 전용: 첫 번째 배너 액션 버튼 변경
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const bannerActionBtn = document.getElementById('banner-action-btn');
+
+            if (isLoggedIn && bannerActionBtn) {
+                bannerActionBtn.innerText = "마이페이지";
+                bannerActionBtn.href = "my.html";
+                bannerActionBtn.removeAttribute("onclick");
+            }
+
+            // 공통 헤더 내부의 회원가입 버튼 클릭 시 이벤트 연동
+            setTimeout(() => {
+                const headerSignupBtns = document.querySelectorAll('a[href="signup.html"]');
+                headerSignupBtns.forEach(btn => {
+                    if (!isLoggedIn) {
+                        btn.addEventListener('click', openQrWindow);
+                    }
                 });
+            }, 100);
+        });
 
-                if (error) {
-                    alert('로그인 실패: ' + error.message);
-                } else {
-                    // 로그인한 사용자 정보 추출 (회원가입 시 넣은 metadata 이름 포함)
-                    const user = data.user;
-                    const userName = user.user_metadata?.name || '회원';
+        // 3. 메인 배너 슬라이더 전용 스크립트
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const indicator = document.getElementById('slide-indicator');
 
-                    // 브라우저 저장소에 세션 정보 보관
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', user.email);
-                    localStorage.setItem('userName', userName);
-
-                    alert(`${userName}님, 반갑습니다! 로그인되었습니다.`);
-                    window.location.href = 'index.html';
-                }
-            } catch (err) {
-                console.error('Supabase Login Error:', err);
-                alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = '로그인하기';
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) slide.classList.add('active');
+            });
+            if (indicator) {
+                indicator.innerText = `${index + 1} / ${slides.length}`;
             }
         }
+
+        function changeBanner(direction) {
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // 5초 자동 슬라이드
+        let bannerTimer = setInterval(() => changeBanner(1), 5000);
+
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                clearInterval(bannerTimer);
+                bannerTimer = setInterval(() => changeBanner(1), 5000);
+            });
+        });
     </script>
 </body>
 </html>
