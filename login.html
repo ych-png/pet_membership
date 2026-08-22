@@ -6,6 +6,10 @@
     <title>Belluna Pet Alpha - 로그인</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JS SDK (필수) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         body { font-family: 'Pretendard', sans-serif; }
@@ -51,7 +55,7 @@
                     <a href="#" class="hover:text-amber-400 transition">비밀번호 찾기</a>
                 </div>
 
-                <button type="submit" class="w-full bg-amber-400 text-slate-950 font-bold py-3.5 rounded-lg text-sm hover:bg-amber-300 transition shadow-lg mt-2">
+                <button type="submit" id="submitBtn" class="w-full bg-amber-400 text-slate-950 font-bold py-3.5 rounded-lg text-sm hover:bg-amber-300 transition shadow-lg mt-2">
                     로그인하기
                 </button>
             </form>
@@ -69,36 +73,56 @@
     </footer>
 
     <script>
-        function handleLogin(e) {
+        // =========================================================
+        // 1. Supabase 연동 정보
+        // =========================================================
+        const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
+
+        // Supabase 클라이언트 생성
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // =========================================================
+        // 2. 로그인 처리 함수
+        // =========================================================
+        async function handleLogin(e) {
             e.preventDefault();
-            
+
             const emailInput = document.getElementById('email').value.trim();
             const passwordInput = document.getElementById('password').value;
+            const submitBtn = document.getElementById('submitBtn');
 
-            // 1. localStorage에서 저장된 회원 데이터 목록을 가져옴
-            // (signup.html에서 users 키로 저장된 배열 데이터를 연동)
-            const users = JSON.parse(localStorage.getItem('users')) || [];
+            submitBtn.disabled = true;
+            submitBtn.innerText = '로그인 중...';
 
-            // 2. 입력한 이메일과 비밀번호가 일치하는 회원 검색
-            const matchedUser = users.find(user => user.email === emailInput && user.password === passwordInput);
+            try {
+                // Supabase Auth 비밀번호 로그인 API
+                const { data, error } = await _supabase.auth.signInWithPassword({
+                    email: emailInput,
+                    password: passwordInput
+                });
 
-            if (matchedUser) {
-                // 로그인 성공 시 세션 정보 저장
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userEmail', matchedUser.email);
-                localStorage.setItem('userName', matchedUser.name || '회원'); // 이름이 등록되어 있을 경우 저장
-
-                alert(`${matchedUser.name || '회원'}님, 반갑습니다! 로그인되었습니다.`);
-                window.location.href = 'index.html';
-            } else {
-                // 가입 정보가 없거나 비밀번호가 틀린 경우
-                const emailExists = users.some(user => user.email === emailInput);
-                
-                if (emailExists) {
-                    alert('비밀번호가 올바르지 않습니다. 다시 확인해주세요.');
+                if (error) {
+                    alert('로그인 실패: ' + error.message);
                 } else {
-                    alert('가입되지 않은 이메일 계정입니다. 회원가입 후 이용해주세요.');
+                    // 로그인한 사용자 정보 추출 (회원가입 시 넣은 metadata 이름 포함)
+                    const user = data.user;
+                    const userName = user.user_metadata?.name || '회원';
+
+                    // 브라우저 저장소에 세션 정보 보관
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', user.email);
+                    localStorage.setItem('userName', userName);
+
+                    alert(`${userName}님, 반갑습니다! 로그인되었습니다.`);
+                    window.location.href = 'index.html';
                 }
+            } catch (err) {
+                console.error('Supabase Login Error:', err);
+                alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = '로그인하기';
             }
         }
     </script>
