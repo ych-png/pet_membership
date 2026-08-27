@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="flex items-center justify-between text-xs pt-1">
-                    <label class="flex items-center text-slate-400 cursor-pointer">
+                    <label class="flex items-center text-slate-400 cursor-pointer select-none">
                         <input type="checkbox" id="remember-me" class="rounded border-slate-700 bg-slate-900 text-amber-400 focus:ring-amber-400 mr-2">
                         로그인 상태 유지
                     </label>
@@ -74,13 +74,10 @@
 
     <script>
         // =========================================================
-        // 1. Supabase 연동 정보 (signup.html과 동일 설정)
+        // 1. Supabase 연동 정보
         // =========================================================
         const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
-
-        // Supabase 클라이언트 생성
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // =========================================================
         // 2. 로그인 처리 함수
@@ -90,6 +87,7 @@
 
             const emailInput = document.getElementById('email').value.trim();
             const passwordInput = document.getElementById('password').value;
+            const isRememberMe = document.getElementById('remember-me').checked;
             const submitBtn = document.getElementById('submitBtn');
 
             // 버튼 비활성화 (중복 클릭 방지)
@@ -97,8 +95,27 @@
             submitBtn.innerText = '로그인 중...';
 
             try {
+                // 로그인 유지 체크 여부에 따라 storage 분기 처리
+                const targetStorage = isRememberMe ? window.localStorage : window.sessionStorage;
+
+                // 기존 반대쪽 세션 데이터 정리
+                if (isRememberMe) {
+                    window.sessionStorage.clear();
+                } else {
+                    window.localStorage.clear();
+                }
+
+                // 선택된 저장소를 적용한 Supabase 클라이언트 동적 생성
+                const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                    auth: {
+                        storage: targetStorage,
+                        persistSession: true,
+                        autoRefreshToken: true
+                    }
+                });
+
                 // Supabase Auth 비밀번호 로그인 API
-                const { data, error } = await _supabase.auth.signInWithPassword({
+                const { data, error } = await client.auth.signInWithPassword({
                     email: emailInput,
                     password: passwordInput,
                 });
@@ -106,12 +123,12 @@
                 if (error) {
                     alert('로그인 실패: ' + error.message);
                 } else {
-                    // 로그인 성공 시 로컬 스토리지 상태 저장 (메인 페이지 호환용)
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', data.user.email);
+                    // 선택된 targetStorage에 호환용 로그인 정보 저장
+                    targetStorage.setItem('isLoggedIn', 'true');
+                    targetStorage.setItem('userEmail', data.user.email);
                     
                     if (data.user.user_metadata && data.user.user_metadata.name) {
-                        localStorage.setItem('userName', data.user.user_metadata.name);
+                        targetStorage.setItem('userName', data.user.user_metadata.name);
                     }
 
                     alert((data.user.user_metadata?.name || '회원') + '님, 환영합니다!');
