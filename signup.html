@@ -52,13 +52,11 @@
                     <input type="password" id="password" required placeholder="6자 이상 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
                 </div>
 
-                <!-- 추가: 비밀번호 확인 입력란 -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">비밀번호 확인</label>
                     <input type="password" id="confirmPassword" required placeholder="비밀번호 다시 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
                 </div>
 
-                <!-- 수정: 전화번호 자동 하이픈 이벤트 적용 -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">전화번호</label>
                     <input type="tel" id="phone" required maxlength="13" oninput="formatPhoneNumber(this)" placeholder="010-1234-5678" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
@@ -83,7 +81,7 @@
 
     <script>
         // =========================================================
-        // 1. Supabase 연동 정보 입력
+        // 1. Supabase 연동 정보
         // =========================================================
         const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
@@ -92,7 +90,7 @@
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // =========================================================
-        // 2. 전화번호 숫자 전용 및 하이픈(-) 자동 생성 함수
+        // 2. 전화번호 숫자 전용 및 하이픈(-) 자동 생성
         // =========================================================
         function formatPhoneNumber(input) {
             let value = input.value.replace(/[^0-9]/g, '');
@@ -155,11 +153,24 @@
                 });
 
                 if (error) {
-                    alert('회원가입 실패: ' + error.message);
+                    // Supabase 에러 메시지 한글 변환 로직
+                    let errorMessage = '회원가입 처리 중 오류가 발생했습니다.';
+
+                    if (error.message.includes('User already registered') || error.status === 422) {
+                        errorMessage = '이미 가입되어 있는 이메일 주소입니다.';
+                    } else if (error.message.includes('Password should be at least')) {
+                        errorMessage = '비밀번호는 최소 6자 이상이어야 합니다.';
+                    } else if (error.message.includes('Unable to validate email address') || error.message.includes('invalid')) {
+                        errorMessage = '올바른 이메일 형식이 아닙니다.';
+                    } else if (error.message.includes('rate limit')) {
+                        errorMessage = '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.';
+                    }
+
+                    alert(errorMessage);
                 } else {
-                    // Supabase Auth는 이미 등록된 이메일일 경우 identitiy 배열을 빈 값([])으로 반환하거나 기존 유저 반환
+                    // Supabase 설정상 이메일 중복 시 identities가 빈 배열로 넘어오는 경우 처리
                     if (data.user && data.user.identities && data.user.identities.length === 0) {
-                        alert('이미 가입된 이메일 주소입니다. 다른 이메일을 사용해 주세요.');
+                        alert('이미 가입되어 있는 이메일 주소입니다.');
                     } else {
                         alert('회원가입 신청이 완료되었습니다! 로그인 페이지로 이동합니다.');
                         window.location.href = 'login.html';
