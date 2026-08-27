@@ -150,6 +150,11 @@
     <script src="header.js"></script>
 
     <script>
+        // localStorage와 sessionStorage를 모두 확인하는 통합 로그인 판별 함수
+        function checkIsLoggedIn() {
+            return localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+        }
+
         // 모바일 기기 감지
         function isMobileDevice() {
             const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -161,7 +166,7 @@
 
         // 회원가입 버튼 클릭 이벤트 핸들러
         function handleSignupClick(e) {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const isLoggedIn = checkIsLoggedIn();
             if (isLoggedIn) return;
 
             if (isMobileDevice()) {
@@ -223,7 +228,8 @@
             // 1. 공통 헤더 렌더링 호출
             renderHeader('index.html');
 
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            // 통합 로그인 상태 확인
+            const isLoggedIn = checkIsLoggedIn();
 
             // 2. 메인 배너 버튼 처리
             const bannerActionBtn = document.getElementById('banner-action-btn');
