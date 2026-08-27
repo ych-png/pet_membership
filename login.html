@@ -3,112 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인 - Belluna Pet</title>
+    <title>Belluna Pet Alpha - 로그인</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         body { font-family: 'Pretendard', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+<body class="bg-slate-900 text-slate-100 flex flex-col min-h-screen justify-between">
 
-    <!-- 통합 공통 헤더가 삽입될 위치 -->
-    <div id="common-header"></div>
+    <!-- Header -->
+    <header class="border-b border-slate-800 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-8 w-auto">
+                <span class="text-lg font-black text-amber-400">Belluna Pet</span>
+            </a>
+            <a href="signup.html" class="text-xs text-slate-400 hover:text-white transition">📝 회원가입으로 이동</a>
+        </div>
+    </header>
 
-    <!-- 로그인 폼 영역 -->
-    <main class="flex-1 flex items-center justify-center px-4 py-12">
-        <div class="w-full max-w-md bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
-            
-            <!-- 타이틀 영역 -->
+    <!-- Login Form Section -->
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md bg-slate-950 border border-slate-800 rounded-2xl p-8 shadow-2xl">
             <div class="text-center mb-8">
-                <h1 class="text-2xl font-bold text-slate-900 mb-2">반갑습니다!</h1>
-                <p class="text-sm text-slate-500">Belluna Pet 계정으로 로그인해주세요.</p>
+                <h1 class="text-2xl font-bold text-slate-100">벨루나펫 로그인</h1>
+                <p class="text-xs text-slate-400 mt-2">서비스 이용을 위해 계정 정보를 입력해 주세요.</p>
             </div>
 
-            <!-- 로그인 폼 -->
-            <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
+            <form onsubmit="handleSignIn(event)" class="space-y-4">
                 <div>
-                    <label for="email" class="block text-xs font-semibold text-slate-700 mb-1.5">이메일 주소</label>
-                    <input type="email" id="email" required placeholder="example@email.com"
-                           class="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">이메일 계정</label>
+                    <input type="email" id="email" required placeholder="example@email.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
                 </div>
 
                 <div>
-                    <label for="password" class="block text-xs font-semibold text-slate-700 mb-1.5">비밀번호</label>
-                    <input type="password" id="password" required placeholder="비밀번호 입력"
-                           class="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">비밀번호</label>
+                    <input type="password" id="password" required placeholder="비밀번호 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
                 </div>
 
                 <div class="flex items-center justify-between text-xs pt-1">
-                    <label class="flex items-center text-slate-600 cursor-pointer">
-                        <input type="checkbox" id="remember-me" class="rounded border-slate-300 text-amber-500 focus:ring-amber-400 mr-2">
+                    <label class="flex items-center text-slate-400 cursor-pointer">
+                        <input type="checkbox" id="remember-me" class="rounded border-slate-700 bg-slate-900 text-amber-400 focus:ring-amber-400 mr-2">
                         로그인 상태 유지
                     </label>
-                    <a href="#" onclick="alert('비밀번호 재설정 기능 준비 중입니다.'); return false;" class="text-slate-400 hover:text-slate-600 underline">비밀번호 찾기</a>
+                    <a href="#" onclick="alert('비밀번호 재설정 기능은 준비 중입니다.'); return false;" class="text-slate-400 hover:text-slate-200 underline">비밀번호 찾기</a>
                 </div>
 
-                <!-- 로그인 버튼 -->
-                <button type="submit" 
-                        class="w-full bg-slate-900 text-amber-400 font-bold py-3.5 rounded-xl text-sm hover:bg-slate-800 transition shadow-md mt-2">
-                    로그인
+                <button type="submit" id="submitBtn" class="w-full bg-amber-400 text-slate-950 font-bold py-3.5 rounded-lg text-sm hover:bg-amber-300 transition shadow-lg mt-4">
+                    로그인하기
                 </button>
             </form>
 
-            <!-- 회원가입 안내 -->
-            <div class="mt-8 text-center border-t border-slate-100 pt-6">
-                <p class="text-xs text-slate-500 mb-3">아직 벨루나펫 회원이 아니신가요?</p>
-                <a href="signup.html" 
-                   class="inline-block w-full bg-slate-100 text-slate-700 font-semibold py-3 rounded-xl text-xs hover:bg-slate-200 transition">
-                    회원가입 하러가기
-                </a>
+            <div class="mt-6 text-center text-xs text-slate-400">
+                아직 계정이 없으신가요? 
+                <a href="signup.html" class="text-amber-400 font-bold hover:underline ml-1">회원가입하기</a>
             </div>
-
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 space-y-3 text-center md:text-left">
-            <div class="flex items-center justify-center md:justify-start space-x-2">
-                <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-6 w-auto opacity-80" onerror="this.style.display='none'">
-                <span class="text-slate-200 font-bold">Belluna Pet (벨루나펫 Alpha Version)</span>
-            </div>
-            <p class="text-slate-600">© Belluna Pet. All rights reserved.</p>
-        </div>
+    <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+        © Belluna Pet. All rights reserved.
     </footer>
 
-    <!-- 공통 헤더 스크립트 -->
-    <script src="header.js"></script>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // 공통 헤더 렌더링
-            if (typeof renderHeader === 'function') {
-                renderHeader('login.html');
-            }
-        });
+        // =========================================================
+        // 1. Supabase 연동 정보 (signup.html과 동일 설정)
+        // =========================================================
+        const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
 
-        // 로그인 처리 함수
-        function handleLogin(e) {
+        // Supabase 클라이언트 생성
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // =========================================================
+        // 2. 로그인 처리 함수
+        // =========================================================
+        async function handleSignIn(e) {
             e.preventDefault();
 
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
+            const emailInput = document.getElementById('email').value.trim();
+            const passwordInput = document.getElementById('password').value;
+            const submitBtn = document.getElementById('submitBtn');
 
-            if (!email || !password) {
-                alert('이메일과 비밀번호를 입력해주세요.');
-                return;
+            // 버튼 비활성화 (중복 클릭 방지)
+            submitBtn.disabled = true;
+            submitBtn.innerText = '로그인 중...';
+
+            try {
+                // Supabase Auth 비밀번호 로그인 API
+                const { data, error } = await _supabase.auth.signInWithPassword({
+                    email: emailInput,
+                    password: passwordInput,
+                });
+
+                if (error) {
+                    alert('로그인 실패: ' + error.message);
+                } else {
+                    // 로그인 성공 시 로컬 스토리지 상태 저장 (메인 페이지 호환용)
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', data.user.email);
+                    
+                    if (data.user.user_metadata && data.user.user_metadata.name) {
+                        localStorage.setItem('userName', data.user.user_metadata.name);
+                    }
+
+                    alert((data.user.user_metadata?.name || '회원') + '님, 환영합니다!');
+                    window.location.href = 'index.html';
+                }
+            } catch (err) {
+                console.error('Supabase Sign In Error:', err);
+                alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = '로그인하기';
             }
-
-            // 로그인 정보 저장 (index.html의 localStorage 기준과 동기화)
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userEmail', email);
-
-            alert('로그인되었습니다.');
-
-            // 메인 페이지(index.html)로 이동
-            window.location.href = 'index.html';
         }
     </script>
 </body>
