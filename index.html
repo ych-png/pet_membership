@@ -150,7 +150,7 @@
     <script src="header.js"></script>
 
     <script>
-        // 정확한 모바일 기기 감지 (User-Agent + 화면 너비 + Touch 이벤트 검사)
+        // 모바일 기기 감지
         function isMobileDevice() {
             const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             const isSmallWidth = window.innerWidth <= 768;
@@ -162,14 +162,12 @@
         // 회원가입 버튼 클릭 이벤트 핸들러
         function handleSignupClick(e) {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            if (isLoggedIn) return; // 이미 로그인되었으면 기본 링크(my.html) 동작
+            if (isLoggedIn) return;
 
-            // 1. 모바일 환경인 경우: 팝업을 띄우지 않고 기본 동작(signup.html 이동) 수행
             if (isMobileDevice()) {
                 return true; 
             }
 
-            // 2. PC 환경인 경우: 페이지 이동을 취소하고 QR코드 팝업 생성
             if (e) e.preventDefault();
 
             const signupUrl = new URL('signup.html', window.location.href).href;
@@ -225,18 +223,29 @@
             // 1. 공통 헤더 렌더링 호출
             renderHeader('index.html');
 
-            // 2. 로그인 여부에 따른 메인 배너 버튼 수정
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            const bannerActionBtn = document.getElementById('banner-action-btn');
 
+            // 2. 메인 배너 버튼 처리
+            const bannerActionBtn = document.getElementById('banner-action-btn');
             if (isLoggedIn && bannerActionBtn) {
                 bannerActionBtn.innerText = "마이페이지";
                 bannerActionBtn.href = "my.html";
                 bannerActionBtn.removeAttribute("onclick");
             }
 
-            // 3. 공통 헤더 내 회원가입 버튼에도 모바일 판단 로직 연동
+            // 3. 헤더 요소가 DOM에 삽입된 후 바인딩 (setTimeout으로 비동기 대기)
             setTimeout(() => {
+                // 로그인 버튼 바인딩 (로그인 안 된 상태일 경우 login.html 이동)
+                const loginBtns = document.querySelectorAll('a[href="login.html"], button.login-btn, #login-btn');
+                loginBtns.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        if (!isLoggedIn) {
+                            window.location.href = 'login.html';
+                        }
+                    });
+                });
+
+                // 회원가입 버튼 바인딩
                 const headerSignupBtns = document.querySelectorAll('a[href="signup.html"]');
                 headerSignupBtns.forEach(btn => {
                     if (!isLoggedIn) {
@@ -248,7 +257,7 @@
             }, 100);
         });
 
-        // 메인 배너 슬라이더 전용 스크립트
+        // 슬라이더 스크립트
         let currentSlide = 0;
         const slides = document.querySelectorAll('.banner-slide');
         const indicator = document.getElementById('slide-indicator');
