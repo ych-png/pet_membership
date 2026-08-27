@@ -1,7 +1,12 @@
 // header.js - 상단 헤더 및 로그인 상태 공통 관리 스크립트
 
+// 로그인 상태 통합 판별 함수 (localStorage 및 sessionStorage 동시 확인)
+function checkIsLoggedIn() {
+    return localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+}
+
 function renderHeader(activeMenu) {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = checkIsLoggedIn();
     const headerContainer = document.getElementById('common-header');
 
     if (!headerContainer) return;
@@ -76,10 +81,16 @@ function renderHeader(activeMenu) {
     `;
 }
 
-// 로그아웃 공통 함수
+// 로그아웃 공통 함수 (두 저장소 모두 초기화)
 function handleLogout() {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('userEmail');
+    sessionStorage.removeItem('userName');
+
     alert('로그아웃 되었습니다.');
-    window.location.reload();
+    window.location.href = 'index.html';
 }
