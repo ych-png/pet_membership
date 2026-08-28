@@ -149,12 +149,10 @@
     <script src="header.js"></script>
 
     <script>
-        // Supabase 설정
         const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 전화번호 하이픈 자동 포맷 함수
         function formatPhoneNumber(input) {
             let value = input.value.replace(/[^0-9]/g, '');
             if (value.length > 11) value = value.substring(0, 11);
@@ -168,34 +166,31 @@
             return Number(amount || 0).toLocaleString('ko-KR');
         }
 
-        // 로그인된 유저 및 대시보드 데이터 로드 (보완됨)
         async function loadUserDashboardData() {
             try {
-                // 1. Supabase 세션 및 유저 확인
+                // 1. Supabase에서 현재 로그인 세션/유저 가져오기
                 const { data: { session } } = await _supabase.auth.getSession();
-                const currentUser = session?.user || (await _supabase.auth.getUser()).data?.user;
+                const user = session?.user || (await _supabase.auth.getUser()).data?.user;
 
-                // 2. 로컬 스토리지 및 세션 스토리지 fallback 지원
+                // 2. 백업 스토리지(localStorage / sessionStorage) 값 불러오기
                 const storedName = localStorage.getItem('userName') || sessionStorage.getItem('userName');
                 const storedEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+                const storedPhone = localStorage.getItem('userPhone') || sessionStorage.getItem('userPhone');
 
                 let userName = storedName || "회원";
                 let userEmail = storedEmail || "";
-                let userPhone = "";
+                let userPhone = storedPhone || "";
 
-                if (currentUser) {
-                    userEmail = currentUser.email || storedEmail || "";
-                    userName = currentUser.user_metadata?.name || storedName || "회원";
-                    userPhone = currentUser.user_metadata?.phone || "";
+                if (user) {
+                    // Supabase metadata 우선 참조, 없으면 스토리지 참조
+                    userEmail = user.email || storedEmail || "";
+                    userName = user.user_metadata?.name || storedName || "회원";
+                    userPhone = user.user_metadata?.phone || storedPhone || "";
 
-                    // 최신 유저 정보 동기화
-                    if (localStorage.getItem('isLoggedIn') === 'true') {
-                        localStorage.setItem('userName', userName);
-                        localStorage.setItem('userEmail', userEmail);
-                    } else {
-                        sessionStorage.setItem('userName', userName);
-                        sessionStorage.setItem('userEmail', userEmail);
-                    }
+                    // 동기화
+                    localStorage.setItem('userName', userName);
+                    localStorage.setItem('userEmail', userEmail);
+                    localStorage.setItem('userPhone', userPhone);
                 }
 
                 const data = {
@@ -213,7 +208,7 @@
                 document.getElementById('group-saved').textContent = `${formatCurrency(data.savings.group)}원`;
                 document.getElementById('card-saved').textContent = `${formatCurrency(data.savings.card)}원`;
 
-                // 모달 폼 기본값 세팅
+                // 정보 수정 모달 input 엘리먼트에 값 바인딩
                 document.getElementById('edit-email').value = userEmail;
                 document.getElementById('edit-name').value = userName;
                 document.getElementById('edit-phone').value = userPhone;
@@ -225,7 +220,6 @@
             }
         }
 
-        // 회원정보 수정 모달 제어
         function openEditModal() {
             document.getElementById('editModal').classList.remove('hidden');
         }
@@ -235,7 +229,6 @@
             document.getElementById('edit-password').value = '';
         }
 
-        // 회원정보 수정 처리 함수 (Supabase 연동)
         async function handleUpdateProfile(e) {
             e.preventDefault();
 
@@ -271,11 +264,8 @@
                     alert('정보 수정 실패: ' + error.message);
                 } else {
                     alert('회원정보가 성공적으로 수정되었습니다.');
-                    if (localStorage.getItem('isLoggedIn') === 'true') {
-                        localStorage.setItem('userName', newName);
-                    } else {
-                        sessionStorage.setItem('userName', newName);
-                    }
+                    localStorage.setItem('userName', newName);
+                    localStorage.setItem('userPhone', newPhone);
                     closeEditModal();
                     loadUserDashboardData();
                 }
@@ -289,7 +279,9 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            renderHeader('my.html');
+            if (typeof renderHeader === 'function') {
+                renderHeader('my.html');
+            }
             loadUserDashboardData();
         });
     </script>
