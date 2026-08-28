@@ -80,23 +80,13 @@
     </footer>
 
     <script>
-        // =========================================================
-        // 1. Supabase 연동 정보
-        // =========================================================
         const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
-
-        // Supabase 클라이언트 생성
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // =========================================================
-        // 2. 전화번호 숫자 전용 및 하이픈(-) 자동 생성
-        // =========================================================
         function formatPhoneNumber(input) {
             let value = input.value.replace(/[^0-9]/g, '');
-            if (value.length > 11) {
-                value = value.substring(0, 11);
-            }
+            if (value.length > 11) value = value.substring(0, 11);
 
             if (value.length < 4) {
                 input.value = value;
@@ -109,9 +99,6 @@
             }
         }
 
-        // =========================================================
-        // 3. 회원가입 처리 함수
-        // =========================================================
         async function handleSignUp(e) {
             e.preventDefault();
 
@@ -122,25 +109,21 @@
             const phoneInput = document.getElementById('phone').value.trim();
             const submitBtn = document.getElementById('submitBtn');
 
-            // 1) 비밀번호 자릿수 검증
             if (passwordInput.length < 6) {
                 alert('비밀번호는 최소 6자 이상이어야 합니다.');
                 return;
             }
 
-            // 2) 비밀번호 일치 검증
             if (passwordInput !== confirmPasswordInput) {
                 alert('비밀번호가 일치하지 않습니다. 다시 확인해 주세요.');
                 document.getElementById('confirmPassword').focus();
                 return;
             }
 
-            // 버튼 비활성화 (중복 클릭 방지)
             submitBtn.disabled = true;
             submitBtn.innerText = '가입 처리 중...';
 
             try {
-                // 3) Supabase Auth 회원가입 실행
                 const { data, error } = await _supabase.auth.signUp({
                     email: emailInput,
                     password: passwordInput,
@@ -153,9 +136,7 @@
                 });
 
                 if (error) {
-                    // Supabase 에러 메시지 한글 변환 로직
                     let errorMessage = '회원가입 처리 중 오류가 발생했습니다.';
-
                     if (error.message.includes('User already registered') || error.status === 422) {
                         errorMessage = '이미 가입되어 있는 이메일 주소입니다.';
                     } else if (error.message.includes('Password should be at least')) {
@@ -165,13 +146,16 @@
                     } else if (error.message.includes('rate limit')) {
                         errorMessage = '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.';
                     }
-
                     alert(errorMessage);
                 } else {
-                    // Supabase 설정상 이메일 중복 시 identities가 빈 배열로 넘어오는 경우 처리
                     if (data.user && data.user.identities && data.user.identities.length === 0) {
                         alert('이미 가입되어 있는 이메일 주소입니다.');
                     } else {
+                        // 스토리지에 가입 정보 임시 저장 (로그인/마이페이지 동기화용)
+                        localStorage.setItem('userName', nameInput);
+                        localStorage.setItem('userPhone', phoneInput);
+                        localStorage.setItem('userEmail', emailInput);
+
                         alert('회원가입 신청이 완료되었습니다! 로그인 페이지로 이동합니다.');
                         window.location.href = 'login.html';
                     }
