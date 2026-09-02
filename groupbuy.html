@@ -49,7 +49,7 @@
                 <button class="px-3.5 py-2 bg-amber-50 text-amber-800 border border-amber-200 rounded-lg hover:bg-amber-100 transition whitespace-nowrap">⭐ 공동구매 요청</button>
             </div>
 
-            <!-- Products Grid (data-category 속성 추가) -->
+            <!-- Products Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" id="product-grid">
                 
                 <!-- 상품 Card 1 (동물용) -->
@@ -112,7 +112,7 @@
             </div>
         </section>
 
-        <!-- 공동구매 참여 안내 바너 -->
+        <!-- 공동구매 참여 안내 배너 -->
         <section class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-5 text-center md:text-left md:flex justify-between items-center">
             <div>
                 <h4 class="font-bold text-amber-950 text-sm md:text-base">찾으시는 특가 상품이 없으신가요?</h4>
@@ -141,13 +141,17 @@
     <script src="header.js"></script>
 
     <script>
-        // 1. 로그인 여부 확인 및 접근 제한 (인증 보호)
+        // 1. 로그인 여부 확인 및 접근 제한 (localStorage 및 sessionStorage 동시 검사)
         function checkAuth() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; 
+            const localAuth = localStorage.getItem('isLoggedIn') === 'true';
+            const sessionAuth = sessionStorage.getItem('isLoggedIn') === 'true';
+
+            // 양쪽 중 어느 곳에 세션이 저장되어 있어도 로그인 상태로 인정
+            const isLoggedIn = localAuth || sessionAuth;
 
             if (!isLoggedIn) {
                 alert('공동구매 페이지는 회원 전용 서비스입니다.\n로그인 페이지로 이동합니다.');
-                window.location.href = 'login.html'; // 실제 로그인 페이지 경로로 변경
+                window.location.href = 'login.html';
             }
         }
 
