@@ -176,32 +176,24 @@
 
         async function loadUserDashboardData() {
             try {
-                // 1. Supabase에서 현재 로그인 세션/유저 가져오기
+                // 1. Supabase에서 현재 세션 가져오기
                 const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
                 const user = session?.user;
 
-                // 로그인 세션이 없을 경우 로그인 페이지로 리다이렉트하거나 경고 표시
-                if (sessionError || !user) {
-                    console.warn("로그인 세션이 없습니다.");
-                    document.getElementById('user-name').textContent = "비회원";
-                    // 필요 시 주석 해제:
-                    // alert("로그인이 필요한 페이지입니다.");
-                    // window.location.href = "login.html";
-                    return;
-                }
-
+                // 세션 및 저장소 데이터 읽기
                 const storedName = localStorage.getItem('userName');
                 const storedEmail = localStorage.getItem('userEmail');
                 const storedPhone = localStorage.getItem('userPhone');
 
-                let userName = user.user_metadata?.name || storedName || "회원";
-                let userEmail = user.email || storedEmail || "";
-                let userPhone = user.user_metadata?.phone || storedPhone || "";
+                // 사용자 데이터 우선순위: Supabase 메타데이터 > localStorage > 기본값
+                let userName = user?.user_metadata?.name || user?.user_metadata?.full_name || storedName || (user ? "회원" : "비회원");
+                let userEmail = user?.email || storedEmail || "";
+                let userPhone = user?.user_metadata?.phone || storedPhone || "";
 
-                // 동기화
-                localStorage.setItem('userName', userName);
-                localStorage.setItem('userEmail', userEmail);
-                localStorage.setItem('userPhone', userPhone);
+                // 로컬 스토리지 업데이트 (유효한 데이터가 있을 때만)
+                if (userName && userName !== "비회원") localStorage.setItem('userName', userName);
+                if (userEmail) localStorage.setItem('userEmail', userEmail);
+                if (userPhone) localStorage.setItem('userPhone', userPhone);
 
                 const data = {
                     userName: userName,
@@ -218,9 +210,9 @@
                 document.getElementById('group-saved').textContent = `${formatCurrency(data.savings.group)}원`;
                 document.getElementById('card-saved').textContent = `${formatCurrency(data.savings.card)}원`;
 
-                // 정보 수정 모달 input 엘리먼트에 값 바인딩
+                // 수정 모달 input에도 기본값 세팅
                 document.getElementById('edit-email').value = userEmail;
-                document.getElementById('edit-name').value = userName;
+                document.getElementById('edit-name').value = userName !== "비회원" && userName !== "회원" ? userName : "";
                 document.getElementById('edit-phone').value = userPhone;
 
             } catch (error) {
@@ -230,29 +222,34 @@
         }
 
         async function openEditModal() {
-            // 모달 열기 직전 세션 재검증
             const { data: { session } } = await _supabase.auth.getSession();
-            if (!session) {
-                alert("로그인 세션이 만료되었거나 비로그인 상태입니다. 다시 로그인해 주세요.");
+            const user = session?.user;
+
+            // 세션이 없어도 localStorage 데이터가 있으면 모달 열기 허용 (로그인 상태 유지 문제 대응)
+            const storedEmail = localStorage.getItem('userEmail');
+            const storedName = localStorage.getItem('userName');
+            const storedPhone = localStorage.getItem('userPhone');
+
+            if (!user && !storedEmail) {
+                alert("로그인이 필요하거나 인증 세션이 만료되었습니다. 다시 로그인해 주세요.");
                 return;
             }
+
+            document.getElementById('edit-email').value = user?.email || storedEmail || '';
+            document.getElementById('edit-name').value = user?.user_metadata?.name || storedName || '';
+            document.getElementById('edit-phone').value = user?.user_metadata?.phone || storedPhone || '';
+
             document.getElementById('editModal').classList.remove('hidden');
         }
 
         function closeEditModal() {
+            document.getElementById('editModal').classList.hidden = true;
             document.getElementById('editModal').classList.add('hidden');
             document.getElementById('edit-password').value = '';
         }
 
         async function handleUpdateProfile(e) {
             e.preventDefault();
-
-            // 최신 세션 확인
-            const { data: { session } } = await _supabase.auth.getSession();
-            if (!session) {
-                alert("인증 세션을 찾을 수 없습니다. (Auth session missing)\n다시 로그인 후 시도해 주세요.");
-                return;
-            }
 
             const newName = document.getElementById('edit-name').value.trim();
             const newPhone = document.getElementById('edit-phone').value.trim();
@@ -273,6 +270,8 @@
                 if (newPassword) {
                     if (newPassword.length < 6) {
                         alert('새 비밀번호는 최소 6자 이상이어야 합니다.');
+                        updateBtn.disabled = false;
+                        updateBtn.innerText = '저장하기';
                         return;
                     }
                     updateData.password = newPassword;
