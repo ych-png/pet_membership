@@ -1,347 +1,577 @@
 <!DOCTYPE html>
+
 <html lang="ko">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Belluna Pet - MY 대시보드</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     
+
     <!-- Supabase JS SDK -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
+
     <style>
+
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
         body { font-family: 'Pretendard', sans-serif; }
+
     </style>
+
 </head>
+
 <body class="bg-slate-50 text-slate-800 pb-20">
 
+
+
     <!-- 통합 공통 헤더가 삽입될 위치 -->
+
     <div id="common-header"></div>
 
+
+
     <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+
         <!-- MY 대시보드 메인 -->
+
         <section class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+
             <!-- 상단 요약 카드 -->
+
             <div class="bg-slate-900 text-white p-6 border-b border-slate-800">
+
                 <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+
                     <!-- 1. 사용자 이름 표기 및 회원정보 수정 버튼 -->
+
                     <div class="flex items-center space-x-3">
+
                         <h1 class="text-xl font-bold flex items-center">
+
                             <i class="fa-solid fa-circle-user mr-2 text-amber-400"></i>
+
                             <span id="user-name">불러오는 중...</span> 님
+
                         </h1>
+
                         <!-- 회원정보 수정 버튼 -->
+
                         <button onclick="openEditModal()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2.5 py-1 rounded-lg transition flex items-center">
+
                             <i class="fa-solid fa-pen-to-square mr-1"></i> 정보 수정
+
                         </button>
+
                     </div>
+
+
 
                     <span id="user-grade" class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full">
+
                         애견연맹 하나카드 회원
+
                     </span>
+
                 </div>
+
+
 
                 <!-- 이번달 절약금액 표기 (최상단) -->
+
                 <div class="bg-slate-800/80 rounded-xl p-5 border border-slate-700">
+
                     <p class="text-xs text-slate-400 font-medium mb-1">이번달 절약금액</p>
+
                     
+
                     <div id="total-saved" class="text-3xl font-black text-amber-400 mb-4">0 원</div>
+
                     
+
                     <div class="grid grid-cols-3 gap-2 text-center text-xs border-t border-slate-700/80 pt-3">
+
                         <div>
+
                             <span class="block text-slate-400 mb-0.5">회원가 절약</span>
+
                             <span id="member-saved" class="font-bold text-sm text-slate-200">0원</span>
+
                         </div>
+
                         <div class="border-x border-slate-700/80">
+
                             <span class="block text-slate-400 mb-0.5">공동구매 절약</span>
+
                             <span id="group-saved" class="font-bold text-sm text-slate-200">0원</span>
+
                         </div>
+
                         <div>
+
                             <span class="block text-slate-400 mb-0.5">하나카드 혜택</span>
+
                             <span id="card-saved" class="font-bold text-sm text-amber-400">0원</span>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
+
 
             <!-- MY 퀵메뉴 6종 -->
+
             <div class="p-6 grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+
                 <a href="/orders.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+
                     <i class="fa-solid fa-box-open text-slate-900 text-2xl mb-2"></i>
+
                     <span class="text-xs font-bold text-slate-700">내 주문</span>
+
                 </a>
+
                 <a href="/coupons.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+
                     <i class="fa-solid fa-ticket text-slate-900 text-2xl mb-2"></i>
+
                     <span class="text-xs font-bold text-slate-700">내 쿠폰</span>
+
                 </a>
+
                 <a href="/mileage.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+
                     <i class="fa-solid fa-coins text-slate-900 text-2xl mb-2"></i>
+
                     <span class="text-xs font-bold text-slate-700">내 마일리지</span>
+
                 </a>
+
                 <a href="/savings.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+
                     <i class="fa-solid fa-piggy-bank text-slate-900 text-2xl mb-2"></i>
+
                     <span class="text-xs font-bold text-slate-700">내 절약금액</span>
+
                 </a>
+
                 <a href="/group-buy.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+
                     <i class="fa-solid fa-users text-slate-900 text-2xl mb-2"></i>
+
                     <span class="text-xs font-bold text-slate-700">내 공동구매</span>
+
                 </a>
+
                 <a href="/delivery.html" class="p-4 rounded-xl bg-slate-50 hover:bg-amber-500/10 transition border border-slate-100 flex flex-col items-center">
+
                     <i class="fa-solid fa-truck-fast text-slate-900 text-2xl mb-2"></i>
+
                     <span class="text-xs font-bold text-slate-700">내 배송조회</span>
+
                 </a>
+
             </div>
+
         </section>
+
     </main>
 
+
+
     <!-- 회원정보 수정 모달 팝업 -->
+
     <div id="editModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+
         <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl text-slate-100">
+
             <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
+
                 <h3 class="text-lg font-bold text-amber-400">회원정보 수정</h3>
+
                 <button onclick="closeEditModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+
             </div>
+
+
 
             <form onsubmit="handleUpdateProfile(event)" class="space-y-4">
+
                 <div>
+
                     <label class="block text-xs font-semibold text-slate-400 mb-1">이메일 계정 (수정 불가)</label>
+
                     <input type="email" id="edit-email" disabled class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-500 cursor-not-allowed">
+
                 </div>
 
+
+
                 <div>
+
                     <label class="block text-xs font-semibold text-slate-300 mb-1">이름</label>
+
                     <input type="text" id="edit-name" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-amber-400">
+
                 </div>
 
+
+
                 <div>
+
                     <label class="block text-xs font-semibold text-slate-300 mb-1">전화번호</label>
+
                     <input type="tel" id="edit-phone" required maxlength="13" oninput="formatPhoneNumber(this)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-amber-400">
+
                 </div>
+
+
 
                 <div class="border-t border-slate-800 pt-3 mt-3">
+
                     <label class="block text-xs font-semibold text-slate-300 mb-1">새 비밀번호 (변경 시에만 입력)</label>
+
                     <input type="password" id="edit-password" placeholder="6자 이상 입력" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-amber-400">
+
                 </div>
+
+
 
                 <div class="flex space-x-2 pt-4">
+
                     <button type="button" onclick="closeEditModal()" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-lg text-xs font-bold transition">취소</button>
+
                     <button type="submit" id="updateBtn" class="w-1/2 bg-amber-400 hover:bg-amber-300 text-slate-950 py-2.5 rounded-lg text-xs font-bold transition">저장하기</button>
+
                 </div>
+
             </form>
+
         </div>
+
     </div>
 
+
+
     <!-- Footer -->
+
     <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+
         <div class="max-w-7xl mx-auto px-4 space-y-3">
+
             <div class="flex items-center space-x-2">
+
                 <img src="beluna_logo.png" alt="Belluna Pet Logo" class="h-6 w-auto opacity-80">
+
                 <span class="text-slate-200 font-bold">Belluna Pet (벨루나펫 Alpha Version)</span>
+
             </div>
+
             <p class="leading-relaxed">Belluna Pet은 한국애견연맹과 협력하여 반려인에게 저렴한 쇼핑과 다양한 혜택을 제공하는 플랫폼입니다.</p>
+
             <p class="text-slate-600 pt-2">© Belluna Pet. All rights reserved.</p>
+
         </div>
+
     </footer>
 
+
+
     <!-- 공통 헤더 스크립트 불러오기 -->
+
     <script src="header.js"></script>
 
+
+
     <script>
+
         const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
+
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
+
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Supabase DB 커스텀 테이블 이름
-        const CUSTOM_TABLE_NAME = 'profiles'; 
+
 
         function formatPhoneNumber(input) {
-            let value = typeof input === 'string' ? input : input.value;
-            value = value.replace(/[^0-9]/g, '');
+
+            let value = input.value.replace(/[^0-9]/g, '');
+
             if (value.length > 11) value = value.substring(0, 11);
 
-            let formatted = value;
-            if (value.length < 4) formatted = value;
-            else if (value.length < 7) formatted = `${value.substring(0, 3)}-${value.substring(3)}`;
-            else if (value.length < 11) formatted = `${value.substring(0, 3)}-${value.substring(3, 6)}-${value.substring(6)}`;
-            else formatted = `${value.substring(0, 3)}-${value.substring(3, 7)}-${value.substring(7)}`;
+            if (value.length < 4) input.value = value;
 
-            if (typeof input === 'object' && input.value !== undefined) {
-                input.value = formatted;
-            }
-            return formatted;
+            else if (value.length < 7) input.value = `${value.substring(0, 3)}-${value.substring(3)}`;
+
+            else if (value.length < 11) input.value = `${value.substring(0, 3)}-${value.substring(3, 6)}-${value.substring(6)}`;
+
+            else input.value = `${value.substring(0, 3)}-${value.substring(3, 7)}-${value.substring(7)}`;
+
         }
+
+
 
         function formatCurrency(amount) {
+
             return Number(amount || 0).toLocaleString('ko-KR');
+
         }
 
+
+
         async function loadUserDashboardData() {
+
             try {
-                // 1. Supabase에서 현재 로그인 세션 확인
-                const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
-                
-                if (sessionError || !session?.user) {
-                    console.warn("로그인 세션이 없습니다. 로그인 페이지로 이동합니다.");
-                    // 비로그인 상태 시 사용자 이름 처리 후 로그인 페이지 이동 (필요 시 주석 해제)
-                    document.getElementById('user-name').textContent = "비회원";
-                    // window.location.href = 'login.html';
-                    return;
+
+                // 1. Supabase에서 현재 로그인 세션/유저 가져오기
+
+                const { data: { session } } = await _supabase.auth.getSession();
+
+                const user = session?.user || (await _supabase.auth.getUser()).data?.user;
+
+
+
+                // 2. 백업 스토리지(localStorage / sessionStorage) 값 불러오기
+
+                const storedName = localStorage.getItem('userName') || sessionStorage.getItem('userName');
+
+                const storedEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+
+                const storedPhone = localStorage.getItem('userPhone') || sessionStorage.getItem('userPhone');
+
+
+
+                let userName = storedName || "회원";
+
+                let userEmail = storedEmail || "";
+
+                let userPhone = storedPhone || "";
+
+
+
+                if (user) {
+
+                    // Supabase metadata 우선 참조, 없으면 스토리지 참조
+
+                    userEmail = user.email || storedEmail || "";
+
+                    userName = user.user_metadata?.name || storedName || "회원";
+
+                    userPhone = user.user_metadata?.phone || storedPhone || "";
+
+
+
+                    // 동기화
+
+                    localStorage.setItem('userName', userName);
+
+                    localStorage.setItem('userEmail', userEmail);
+
+                    localStorage.setItem('userPhone', userPhone);
+
                 }
 
-                const user = session.user;
 
-                // 2. DB 테이블(CUSTOM_TABLE_NAME)에서 user.id 기준 정보 조회
-                const { data: dbUser, error: dbError } = await _supabase
-                    .from(CUSTOM_TABLE_NAME)
-                    .select('name, email, phone, grade')
-                    .eq('id', user.id)
-                    .maybeSingle();
-
-                if (dbError) {
-                    console.error("DB 유저 정보 조회 실패 (RLS 정책 확인 필요):", dbError.message);
-                }
-
-                // 3. DB 조회값 우선 -> 없으면 auth metadata 참조
-                const userName = dbUser?.name || user.user_metadata?.name || user.user_metadata?.full_name || "회원";
-                const userEmail = dbUser?.email || user.email || "";
-                let userPhone = dbUser?.phone || user.user_metadata?.phone || "";
-                const userGrade = dbUser?.grade || "애견연맹 하나카드 회원";
-
-                // 전화번호 하이픈 포맷 적용
-                if (userPhone) {
-                    userPhone = formatPhoneNumber(userPhone);
-                }
-
-                // 로컬 스토리지 업데이트
-                localStorage.setItem('userName', userName);
-                localStorage.setItem('userEmail', userEmail);
-                localStorage.setItem('userPhone', userPhone);
 
                 const data = {
+
                     userName: userName,
-                    userGrade: userGrade,
+
+                    userGrade: "애견연맹 하나카드 회원",
+
                     savings: { member: 12300, group: 18500, card: 8700 }
+
                 };
+
+
 
                 const totalSavedAmount = data.savings.member + data.savings.group + data.savings.card;
 
-                // 4. 화면 UI에 데이터 표시
+
+
                 document.getElementById('user-name').textContent = data.userName;
+
                 document.getElementById('user-grade').textContent = data.userGrade;
+
                 document.getElementById('total-saved').textContent = `${formatCurrency(totalSavedAmount)} 원`;
+
                 document.getElementById('member-saved').textContent = `${formatCurrency(data.savings.member)}원`;
+
                 document.getElementById('group-saved').textContent = `${formatCurrency(data.savings.group)}원`;
+
                 document.getElementById('card-saved').textContent = `${formatCurrency(data.savings.card)}원`;
 
-                // 정보 수정 모달 input에 값 설정
+
+
+                // 정보 수정 모달 input 엘리먼트에 값 바인딩
+
                 document.getElementById('edit-email').value = userEmail;
+
                 document.getElementById('edit-name').value = userName;
+
                 document.getElementById('edit-phone').value = userPhone;
 
+
+
             } catch (error) {
-                console.error("대시보드 데이터 로드 중 예상치 못한 오류:", error);
-                document.getElementById('user-name').textContent = "회원";
+
+                console.error("대시보드 데이터 로드 실패:", error);
+
+                const fallbackName = localStorage.getItem('userName') || sessionStorage.getItem('userName') || "회원";
+
+                document.getElementById('user-name').textContent = fallbackName;
+
             }
+
         }
+
+
 
         function openEditModal() {
+
             document.getElementById('editModal').classList.remove('hidden');
+
         }
+
+
 
         function closeEditModal() {
+
             document.getElementById('editModal').classList.add('hidden');
+
             document.getElementById('edit-password').value = '';
+
         }
+
+
 
         async function handleUpdateProfile(e) {
+
             e.preventDefault();
 
+
+
             const newName = document.getElementById('edit-name').value.trim();
+
             const newPhone = document.getElementById('edit-phone').value.trim();
+
             const newPassword = document.getElementById('edit-password').value;
+
             const updateBtn = document.getElementById('updateBtn');
 
+
+
             updateBtn.disabled = true;
+
             updateBtn.innerText = '수정 중...';
 
+
+
             try {
-                const { data: { session } } = await _supabase.auth.getSession();
-                const user = session?.user;
 
-                if (!user) {
-                    alert('로그인 세션이 만료되었습니다.');
-                    return;
-                }
+                const updateData = {
 
-                // 1. Supabase DB 테이블(CUSTOM_TABLE_NAME) 업데이트
-                const { error: dbUpdateError } = await _supabase
-                    .from(CUSTOM_TABLE_NAME)
-                    .update({
-                        name: newName,
-                        phone: newPhone
-                    })
-                    .eq('id', user.id);
-
-                if (dbUpdateError) {
-                    console.error("DB 업데이트 오류:", dbUpdateError.message);
-                }
-
-                // 2. Auth 메타데이터 업데이트
-                const authUpdateData = {
                     data: {
+
                         name: newName,
+
                         phone: newPhone
+
                     }
+
                 };
 
+
+
                 if (newPassword) {
+
                     if (newPassword.length < 6) {
+
                         alert('새 비밀번호는 최소 6자 이상이어야 합니다.');
+
                         updateBtn.disabled = false;
+
                         updateBtn.innerText = '저장하기';
+
                         return;
+
                     }
-                    authUpdateData.password = newPassword;
+
+                    updateData.password = newPassword;
+
                 }
 
-                const { error: authError } = await _supabase.auth.updateUser(authUpdateData);
 
-                if (authError) {
-                    alert('정보 수정 실패: ' + authError.message);
+
+                const { data, error } = await _supabase.auth.updateUser(updateData);
+
+
+
+                if (error) {
+
+                    alert('정보 수정 실패: ' + error.message);
+
                 } else {
+
                     alert('회원정보가 성공적으로 수정되었습니다.');
+
                     localStorage.setItem('userName', newName);
+
                     localStorage.setItem('userPhone', newPhone);
-                    
+
                     closeEditModal();
+
                     loadUserDashboardData();
+
                 }
+
             } catch (err) {
+
                 console.error('Update Profile Error:', err);
+
                 alert('수정 처리 중 오류가 발생했습니다.');
+
             } finally {
+
                 updateBtn.disabled = false;
+
                 updateBtn.innerText = '저장하기';
+
             }
+
         }
 
+
+
         document.addEventListener("DOMContentLoaded", function() {
+
             if (typeof renderHeader === 'function') {
+
                 renderHeader('my.html');
+
             }
 
-            // 페이지 로드 즉시 데이터 조회를 시도
             loadUserDashboardData();
 
-            // Supabase 인증 상태 변화 감지 (로그인 세션이 로드된 시점에 데이터 불러오기)
-            _supabase.auth.onAuthStateChange((event, session) => {
-                if (session) {
-                    loadUserDashboardData();
-                }
-            });
         });
+
     </script>
+
 </body>
+
 </html>
