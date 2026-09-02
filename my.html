@@ -153,13 +153,24 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // ⚠️ 수파베이스에 만드신 실제 DB 테이블명을 적어주세요 (예: 'profiles' 또는 'users')
+        const CUSTOM_TABLE_NAME = 'profiles'; 
+
         function formatPhoneNumber(input) {
-            let value = input.value.replace(/[^0-9]/g, '');
+            let value = typeof input === 'string' ? input : input.value;
+            value = value.replace(/[^0-9]/g, '');
             if (value.length > 11) value = value.substring(0, 11);
-            if (value.length < 4) input.value = value;
-            else if (value.length < 7) input.value = `${value.substring(0, 3)}-${value.substring(3)}`;
-            else if (value.length < 11) input.value = `${value.substring(0, 3)}-${value.substring(3, 6)}-${value.substring(6)}`;
-            else input.value = `${value.substring(0, 3)}-${value.substring(3, 7)}-${value.substring(7)}`;
+
+            let formatted = value;
+            if (value.length < 4) formatted = value;
+            else if (value.length < 7) formatted = `${value.substring(0, 3)}-${value.substring(3)}`;
+            else if (value.length < 11) formatted = `${value.substring(0, 3)}-${value.substring(3, 6)}-${value.substring(6)}`;
+            else formatted = `${value.substring(0, 3)}-${value.substring(3, 7)}-${value.substring(7)}`;
+
+            if (typeof input === 'object' && input.value !== undefined) {
+                input.value = formatted;
+            }
+            return formatted;
         }
 
         function formatCurrency(amount) {
@@ -168,39 +179,51 @@
 
         async function loadUserDashboardData() {
             try {
-                // 1. Supabase에서 현재 로그인 세션/유저 가져오기
+                // 1. Supabase에서 현재 로그인 세션 확인
                 const { data: { session } } = await _supabase.auth.getSession();
                 const user = session?.user || (await _supabase.auth.getUser()).data?.user;
 
-                // 2. 백업 스토리지(localStorage / sessionStorage) 값 불러오기
-                const storedName = localStorage.getItem('userName') || sessionStorage.getItem('userName');
-                const storedEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
-                const storedPhone = localStorage.getItem('userPhone') || sessionStorage.getItem('userPhone');
-
-                let userName = storedName || "회원";
-                let userEmail = storedEmail || "";
-                let userPhone = storedPhone || "";
-
-                if (user) {
-                    // Supabase metadata 우선 참조, 없으면 스토리지 참조
-                    userEmail = user.email || storedEmail || "";
-                    userName = user.user_metadata?.name || storedName || "회원";
-                    userPhone = user.user_metadata?.phone || storedPhone || "";
-
-                    // 동기화
-                    localStorage.setItem('userName', userName);
-                    localStorage.setItem('userEmail', userEmail);
-                    localStorage.setItem('userPhone', userPhone);
+                if (!user) {
+                    console.warn("로그인된 사용자가 없습니다.");
+                    return;
                 }
+
+                // 2. DB 테이블(CUSTOM_TABLE_NAME)에서 name, email, phone, grade 조회
+                const { data: dbUser, error: dbError } = await _supabase
+                    .from(CUSTOM_TABLE_NAME)
+                    .select('name, email, phone, grade')
+                    .eq('id', user.id)
+                    .maybeSingle();
+
+                if (dbError) {
+                    console.error("DB 유저 정보 조회 오류:", dbError.message);
+                }
+
+                // DB 조회값 우선 -> 없으면 auth metadata/스토리지 참조
+                const userName = dbUser?.name || user.user_metadata?.name || localStorage.getItem('userName') || "회원";
+                const userEmail = dbUser?.email || user.email || localStorage.getItem('userEmail') || "";
+                let userPhone = dbUser?.phone || user.user_metadata?.phone || localStorage.getItem('userPhone') || "";
+                const userGrade = dbUser?.grade || "애견연맹 하나카드 회원";
+
+                // 전화번호 하이픈 포맷 적용
+                if (userPhone) {
+                    userPhone = formatPhoneNumber(userPhone);
+                }
+
+                // 로컬 스토리지 동기화
+                localStorage.setItem('userName', userName);
+                localStorage.setItem('userEmail', userEmail);
+                localStorage.setItem('userPhone', userPhone);
 
                 const data = {
                     userName: userName,
-                    userGrade: "애견연맹 하나카드 회원",
+                    userGrade: userGrade,
                     savings: { member: 12300, group: 18500, card: 8700 }
                 };
 
                 const totalSavedAmount = data.savings.member + data.savings.group + data.savings.card;
 
+                // UI에 표시
                 document.getElementById('user-name').textContent = data.userName;
                 document.getElementById('user-grade').textContent = data.userGrade;
                 document.getElementById('total-saved').textContent = `${formatCurrency(totalSavedAmount)} 원`;
@@ -208,15 +231,17 @@
                 document.getElementById('group-saved').textContent = `${formatCurrency(data.savings.group)}원`;
                 document.getElementById('card-saved').textContent = `${formatCurrency(data.savings.card)}원`;
 
-                // 정보 수정 모달 input 엘리먼트에 값 바인딩
+                // 정보 수정 모달 input에 값 바인딩
                 document.getElementById('edit-email').value = userEmail;
                 document.getElementById('edit-name').value = userName;
                 document.getElementById('edit-phone').value = userPhone;
 
             } catch (error) {
                 console.error("대시보드 데이터 로드 실패:", error);
-                const fallbackName = localStorage.getItem('userName') || sessionStorage.getItem('userName') || "회원";
+                const fallbackName = localStorage.getItem('userName') || "회원";
+                const fallbackPhone = localStorage.getItem('userPhone') || "";
                 document.getElementById('user-name').textContent = fallbackName;
+                document.getElementById('edit-phone').value = fallbackPhone;
             }
         }
 
@@ -241,7 +266,29 @@
             updateBtn.innerText = '수정 중...';
 
             try {
-                const updateData = {
+                const { data: { session } } = await _supabase.auth.getSession();
+                const user = session?.user || (await _supabase.auth.getUser()).data?.user;
+
+                if (!user) {
+                    alert('로그인 세션이 만료되었습니다.');
+                    return;
+                }
+
+                // 1. 수파베이스 DB 테이블(phone, name 컬럼) 업데이트
+                const { error: dbUpdateError } = await _supabase
+                    .from(CUSTOM_TABLE_NAME)
+                    .update({
+                        name: newName,
+                        phone: newPhone
+                    })
+                    .eq('id', user.id);
+
+                if (dbUpdateError) {
+                    console.error("DB 업데이트 오류:", dbUpdateError);
+                }
+
+                // 2. Auth 메타데이터 및 비밀번호 동시 업데이트
+                const authUpdateData = {
                     data: {
                         name: newName,
                         phone: newPhone
@@ -255,17 +302,18 @@
                         updateBtn.innerText = '저장하기';
                         return;
                     }
-                    updateData.password = newPassword;
+                    authUpdateData.password = newPassword;
                 }
 
-                const { data, error } = await _supabase.auth.updateUser(updateData);
+                const { error: authError } = await _supabase.auth.updateUser(authUpdateData);
 
-                if (error) {
-                    alert('정보 수정 실패: ' + error.message);
+                if (authError) {
+                    alert('정보 수정 실패: ' + authError.message);
                 } else {
                     alert('회원정보가 성공적으로 수정되었습니다.');
                     localStorage.setItem('userName', newName);
                     localStorage.setItem('userPhone', newPhone);
+                    
                     closeEditModal();
                     loadUserDashboardData();
                 }
