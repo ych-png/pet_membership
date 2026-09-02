@@ -153,7 +153,7 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ⚠️ 수파베이스에 만드신 실제 DB 테이블명을 적어주세요 (예: 'profiles' 또는 'users')
+        // Supabase DB 커스텀 테이블 이름
         const CUSTOM_TABLE_NAME = 'profiles'; 
 
         function formatPhoneNumber(input) {
@@ -180,15 +180,19 @@
         async function loadUserDashboardData() {
             try {
                 // 1. Supabase에서 현재 로그인 세션 확인
-                const { data: { session } } = await _supabase.auth.getSession();
-                const user = session?.user || (await _supabase.auth.getUser()).data?.user;
-
-                if (!user) {
-                    console.warn("로그인된 사용자가 없습니다.");
+                const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
+                
+                if (sessionError || !session?.user) {
+                    console.warn("로그인 세션이 없습니다. 로그인 페이지로 이동합니다.");
+                    // 비로그인 상태 시 사용자 이름 처리 후 로그인 페이지 이동 (필요 시 주석 해제)
+                    document.getElementById('user-name').textContent = "비회원";
+                    // window.location.href = 'login.html';
                     return;
                 }
 
-                // 2. DB 테이블(CUSTOM_TABLE_NAME)에서 name, email, phone, grade 조회
+                const user = session.user;
+
+                // 2. DB 테이블(CUSTOM_TABLE_NAME)에서 user.id 기준 정보 조회
                 const { data: dbUser, error: dbError } = await _supabase
                     .from(CUSTOM_TABLE_NAME)
                     .select('name, email, phone, grade')
@@ -196,13 +200,13 @@
                     .maybeSingle();
 
                 if (dbError) {
-                    console.error("DB 유저 정보 조회 오류:", dbError.message);
+                    console.error("DB 유저 정보 조회 실패 (RLS 정책 확인 필요):", dbError.message);
                 }
 
-                // DB 조회값 우선 -> 없으면 auth metadata/스토리지 참조
-                const userName = dbUser?.name || user.user_metadata?.name || localStorage.getItem('userName') || "회원";
-                const userEmail = dbUser?.email || user.email || localStorage.getItem('userEmail') || "";
-                let userPhone = dbUser?.phone || user.user_metadata?.phone || localStorage.getItem('userPhone') || "";
+                // 3. DB 조회값 우선 -> 없으면 auth metadata 참조
+                const userName = dbUser?.name || user.user_metadata?.name || user.user_metadata?.full_name || "회원";
+                const userEmail = dbUser?.email || user.email || "";
+                let userPhone = dbUser?.phone || user.user_metadata?.phone || "";
                 const userGrade = dbUser?.grade || "애견연맹 하나카드 회원";
 
                 // 전화번호 하이픈 포맷 적용
@@ -210,7 +214,7 @@
                     userPhone = formatPhoneNumber(userPhone);
                 }
 
-                // 로컬 스토리지 동기화
+                // 로컬 스토리지 업데이트
                 localStorage.setItem('userName', userName);
                 localStorage.setItem('userEmail', userEmail);
                 localStorage.setItem('userPhone', userPhone);
@@ -223,7 +227,7 @@
 
                 const totalSavedAmount = data.savings.member + data.savings.group + data.savings.card;
 
-                // UI에 표시
+                // 4. 화면 UI에 데이터 표시
                 document.getElementById('user-name').textContent = data.userName;
                 document.getElementById('user-grade').textContent = data.userGrade;
                 document.getElementById('total-saved').textContent = `${formatCurrency(totalSavedAmount)} 원`;
@@ -231,17 +235,14 @@
                 document.getElementById('group-saved').textContent = `${formatCurrency(data.savings.group)}원`;
                 document.getElementById('card-saved').textContent = `${formatCurrency(data.savings.card)}원`;
 
-                // 정보 수정 모달 input에 값 바인딩
+                // 정보 수정 모달 input에 값 설정
                 document.getElementById('edit-email').value = userEmail;
                 document.getElementById('edit-name').value = userName;
                 document.getElementById('edit-phone').value = userPhone;
 
             } catch (error) {
-                console.error("대시보드 데이터 로드 실패:", error);
-                const fallbackName = localStorage.getItem('userName') || "회원";
-                const fallbackPhone = localStorage.getItem('userPhone') || "";
-                document.getElementById('user-name').textContent = fallbackName;
-                document.getElementById('edit-phone').value = fallbackPhone;
+                console.error("대시보드 데이터 로드 중 예상치 못한 오류:", error);
+                document.getElementById('user-name').textContent = "회원";
             }
         }
 
@@ -267,14 +268,14 @@
 
             try {
                 const { data: { session } } = await _supabase.auth.getSession();
-                const user = session?.user || (await _supabase.auth.getUser()).data?.user;
+                const user = session?.user;
 
                 if (!user) {
                     alert('로그인 세션이 만료되었습니다.');
                     return;
                 }
 
-                // 1. 수파베이스 DB 테이블(phone, name 컬럼) 업데이트
+                // 1. Supabase DB 테이블(CUSTOM_TABLE_NAME) 업데이트
                 const { error: dbUpdateError } = await _supabase
                     .from(CUSTOM_TABLE_NAME)
                     .update({
@@ -284,10 +285,10 @@
                     .eq('id', user.id);
 
                 if (dbUpdateError) {
-                    console.error("DB 업데이트 오류:", dbUpdateError);
+                    console.error("DB 업데이트 오류:", dbUpdateError.message);
                 }
 
-                // 2. Auth 메타데이터 및 비밀번호 동시 업데이트
+                // 2. Auth 메타데이터 업데이트
                 const authUpdateData = {
                     data: {
                         name: newName,
@@ -330,7 +331,16 @@
             if (typeof renderHeader === 'function') {
                 renderHeader('my.html');
             }
+
+            // 페이지 로드 즉시 데이터 조회를 시도
             loadUserDashboardData();
+
+            // Supabase 인증 상태 변화 감지 (로그인 세션이 로드된 시점에 데이터 불러오기)
+            _supabase.auth.onAuthStateChange((event, session) => {
+                if (session) {
+                    loadUserDashboardData();
+                }
+            });
         });
     </script>
 </body>
