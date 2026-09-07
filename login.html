@@ -49,7 +49,7 @@
 
                 <div class="flex items-center justify-between text-xs pt-1">
                     <label class="flex items-center text-slate-400 cursor-pointer select-none">
-                        <input type="checkbox" id="remember-me" class="rounded border-slate-700 bg-slate-900 text-amber-400 focus:ring-amber-400 mr-2">
+                        <input type="checkbox" id="remember-me" checked class="rounded border-slate-700 bg-slate-900 text-amber-400 focus:ring-amber-400 mr-2">
                         로그인 상태 유지
                     </label>
                     <a href="#" onclick="alert('비밀번호 재설정 기능은 준비 중입니다.'); return false;" class="text-slate-400 hover:text-slate-200 underline">비밀번호 찾기</a>
@@ -73,18 +73,14 @@
     </footer>
 
     <script>
-        // =========================================================
-        // 1. Supabase 연동 정보
-        // =========================================================
+        // 1. Supabase 연동 정보 및 표준 클라이언트 생성 (localStorage 사용)
         const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // =========================================================
-        // 2. Supabase 에러 메시지 한글 변환 함수
-        // =========================================================
+        // 2. 에러 메시지 한글화
         function getKoreanErrorMessage(error) {
             if (!error || !error.message) return '로그인 중 오류가 발생했습니다.';
-
             const msg = error.message.toLowerCase();
 
             if (msg.includes('invalid login credentials')) {
@@ -103,66 +99,49 @@
             return '로그인에 실패했습니다: ' + error.message;
         }
 
-        // 인증 Key 선택적 삭제 함수
-        function clearAuthKeys(storage) {
-            storage.removeItem('isLoggedIn');
-            storage.removeItem('userEmail');
-            storage.removeItem('userName');
-        }
-
-        // =========================================================
         // 3. 로그인 처리 함수
-        // =========================================================
         async function handleSignIn(e) {
             e.preventDefault();
 
             const emailInput = document.getElementById('email').value.trim();
             const passwordInput = document.getElementById('password').value;
-            const isRememberMe = document.getElementById('remember-me').checked;
             const submitBtn = document.getElementById('submitBtn');
 
             submitBtn.disabled = true;
             submitBtn.innerText = '로그인 중...';
 
             try {
-                // '로그인 상태 유지' 체크 여부에 따라 대상 스토리지 분기
-                const targetStorage = isRememberMe ? window.localStorage : window.sessionStorage;
-                const oppositeStorage = isRememberMe ? window.sessionStorage : window.localStorage;
-
-                clearAuthKeys(oppositeStorage);
-                clearAuthKeys(targetStorage);
-
-                const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-                    auth: {
-                        storage: targetStorage,
-                        persistSession: true,
-                        autoRefreshToken: true
-                    }
-                });
-
-                const { data, error } = await client.auth.signInWithPassword({
+                // 단일 Supabase 인스턴스로 로그인 요청
+                const { data, error } = await _supabase.auth.signInWithPassword({
                     email: emailInput,
                     password: passwordInput,
                 });
 
                 if (error) {
                     alert(getKoreanErrorMessage(error));
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = '로그인하기';
                 } else {
-                    // 세션 및 상태값 저장
-                    targetStorage.setItem('isLoggedIn', 'true');
-                    targetStorage.setItem('userEmail', data.user.email);
-                    
-                    if (data.user.user_metadata && data.user.user_metadata.name) {
-                        targetStorage.setItem('userName', data.user.user_metadata.name);
-                    }
+                    const user = data.user;
+                    const userName = user.user_metadata?.name || user.user_metadata?.full_name || '회원';
+                    const userPhone = user.user_metadata?.phone || '';
 
-                    alert((data.user.user_metadata?.name || '회원') + '님, 환영합니다!');
-                    window.location.href = 'index.html';
+                    // localStorage 동기화
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', user.email);
+                    localStorage.setItem('userName', userName);
+                    if (userPhone) localStorage.setItem('userPhone', userPhone);
+
+                    alert(`${userName}님, 환영합니다!`);
+
+                    // 토큰이 스토리지에 완전히 저장될 수 있도록 시차 부여 후 마이페이지 이동
+                    setTimeout(() => {
+                        window.location.href = 'my.html';
+                    }, 150);
                 }
             } catch (err) {
                 console.error('Supabase Sign In Error:', err);
                 alert('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-            } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = '로그인하기';
             }
