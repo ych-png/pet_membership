@@ -38,6 +38,7 @@ function renderHeader(activeMenu) {
     }).join('');
 
     // 우측 로그인 / 로그아웃 버튼 영역 HTML
+    // 회원가입 버튼에 onclick="handleSignupClick(event)" 속성 추가
     const authAreaHtml = isLoggedIn ? `
         <a href="my.html" class="hover:text-amber-400 transition flex items-center bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 text-xs">
             <i class="fa-solid fa-user mr-1.5 text-amber-400"></i> MY페이지
@@ -48,7 +49,7 @@ function renderHeader(activeMenu) {
     ` : `
         <a href="login.html" class="hover:text-amber-400 transition text-xs">로그인</a>
         <span class="text-slate-700 text-xs">|</span>
-        <a href="signup.html" class="bg-amber-400 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-amber-300 transition shadow">회원가입</a>
+        <a href="signup.html" onclick="handleSignupClick(event)" class="bg-amber-400 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-amber-300 transition shadow">회원가입</a>
     `;
 
     // 전체 Header HTML 렌더링
