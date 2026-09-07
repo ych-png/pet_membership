@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Supabase JS SDK (필수) -->
+    <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
@@ -84,6 +84,7 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // 전화번호 하이픈(-) 자동 삽입 함수
         function formatPhoneNumber(input) {
             let value = input.value.replace(/[^0-9]/g, '');
             if (value.length > 11) value = value.substring(0, 11);
@@ -99,6 +100,7 @@
             }
         }
 
+        // 회원가입 처리 함수
         async function handleSignUp(e) {
             e.preventDefault();
 
@@ -109,6 +111,7 @@
             const phoneInput = document.getElementById('phone').value.trim();
             const submitBtn = document.getElementById('submitBtn');
 
+            // 1. 유효성 검사
             if (passwordInput.length < 6) {
                 alert('비밀번호는 최소 6자 이상이어야 합니다.');
                 return;
@@ -124,6 +127,7 @@
             submitBtn.innerText = '가입 처리 중...';
 
             try {
+                // 2. Supabase Auth 가입 (메타데이터에 name, phone 함께 전달)
                 const { data, error } = await _supabase.auth.signUp({
                     email: emailInput,
                     password: passwordInput,
@@ -148,10 +152,11 @@
                     }
                     alert(errorMessage);
                 } else {
+                    // 중복 가입 체크 (확인 이메일 전송 옵션이 켜져있을 때 대응)
                     if (data.user && data.user.identities && data.user.identities.length === 0) {
                         alert('이미 가입되어 있는 이메일 주소입니다.');
                     } else {
-                        // 스토리지에 가입 정보 임시 저장 (로그인/마이페이지 동기화용)
+                        // 로컬 스토리지 보관
                         localStorage.setItem('userName', nameInput);
                         localStorage.setItem('userPhone', phoneInput);
                         localStorage.setItem('userEmail', emailInput);
