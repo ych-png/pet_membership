@@ -9,6 +9,7 @@
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         body { font-family: 'Pretendard', sans-serif; }
+        html { scroll-behavior: smooth; } /* 클릭 시 부드러운 스크롤 이동 */
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 pb-20">
@@ -17,7 +18,8 @@
     <div id="common-header"></div>
 
     <!-- Main Content Area -->
-    <main class="max-w-7xl mx-auto px-4 py-8">
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+        <!-- 상단 배너 및 서브메뉴 -->
         <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <!-- 메인 슬로건 및 안내 -->
             <div class="bg-slate-900 border border-slate-800 text-slate-100 rounded-xl p-6 mb-8">
@@ -31,11 +33,61 @@
 
             <!-- 서브 메뉴 -->
             <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center text-xs font-bold">
-                <button class="p-4 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600">펫보험이 필요한 이유</button>
-                <button class="p-4 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600">삼성화재 펫보험 소개</button>
-                <button class="p-4 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600">보장내용</button>
-                <button class="p-4 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600">보험료 계산</button>
-                <button class="p-4 bg-amber-400 text-slate-950 font-bold rounded-xl hover:bg-amber-300">가입하기</button>
+                <button onclick="scrollToSection('reason-section')" class="p-4 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition">펫보험이 필요한 이유</button>
+                <button onclick="scrollToSection('intro-section')" class="p-4 border border-amber-400 text-amber-600 bg-amber-50/50 rounded-xl hover:bg-amber-100 transition">삼성화재 펫보험 소개</button>
+                <button onclick="scrollToSection('coverage-section')" class="p-4 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition">보장내용</button>
+                <button onclick="scrollToSection('calc-section')" class="p-4 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition">보험료 계산</button>
+                <button onclick="alert('가입 신청 페이지로 이동합니다.')" class="p-4 bg-amber-400 text-slate-950 font-bold rounded-xl hover:bg-amber-300 transition shadow-sm">가입하기</button>
+            </div>
+        </section>
+
+        <!-- [신규] 삼성화재 펫보험 소개 섹션 -->
+        <section id="intro-section" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-6 border-b border-slate-100 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 font-bold text-lg">
+                    <i class="fa-solid fa-shield-dog"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg md:text-xl font-bold text-slate-900">삼성화재 펫보험 (위풍댕댕 / 애니펫) 소개</h2>
+                    <p class="text-xs text-slate-500">대한민국 대표 보험사 삼성화재가 보장하는 반려견·반려묘 맞춤형 안심 케어</p>
+                </div>
+            </div>
+
+            <!-- 주요 특징 카드 3종 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <div class="text-amber-500 font-bold text-sm mb-1"><i class="fa-solid fa-hospital-user mr-1.5"></i>든든한 의료비 보장</div>
+                    <h3 class="font-extrabold text-slate-800 text-base mb-2">입·통원의료비 및 수술비</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        질병과 상해로 인한 입원, 통원, 수술 비용을 실손 보장하여 부담스러운 동물병원 치료비를 크게 덜어드립니다.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <div class="text-amber-500 font-bold text-sm mb-1"><i class="fa-solid fa-hand-holding-hand mr-1.5"></i>배상책임 보장</div>
+                    <h3 class="font-extrabold text-slate-800 text-base mb-2">반려동물 배상책임 지원</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        반려동물이 타인에게 물림 사고를 입히거나 타인의 물건을 훼손하여 발생하는 법률상 배상책임 손해를 보장합니다.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <div class="text-amber-500 font-bold text-sm mb-1"><i class="fa-solid fa-ribbon mr-1.5"></i>슬개골 & 수술 특약</div>
+                    <h3 class="font-extrabold text-slate-800 text-base mb-2">자주 발생하는 질환 특약</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        소형견에게 흔한 슬개골 및 관절 질환, 피부병, 치과 치료 등 아이에게 필요한 핵심 보장 특약을 자유롭게 구성 가능합니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 하단 안내 문구 및 버튼 -->
+            <div class="bg-amber-50/60 rounded-xl p-4 border border-amber-200/60 flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="text-xs text-slate-700">
+                    <span class="font-bold text-amber-700">💡 Belluna Pet 회원 혜택:</span> 연맹 회원 전용 안내 페이지를 통해 상담 신청 시 간편하게 계산해 드립니다.
+                </div>
+                <button onclick="alert('삼성화재 펫보험 상세 상담/가입 신청 페이지로 이동합니다.')" class="w-full sm:w-auto px-5 py-2.5 bg-slate-900 text-amber-400 font-bold text-xs rounded-lg hover:bg-slate-800 transition whitespace-nowrap">
+                    상세상담 신청하기 <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
             </div>
         </section>
     </main>
@@ -60,6 +112,16 @@
             // 공통 헤더 렌더링 호출 ('insurance.html'을 전달하여 펫보험 메뉴 활성화)
             renderHeader('insurance.html');
         });
+
+        // 특정 섹션으로 스무스하게 스크롤 이동시키는 함수
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                console.log(sectionId + ' 섹션을 찾을 수 없습니다.');
+            }
+        }
     </script>
 </body>
 </html>
