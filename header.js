@@ -15,7 +15,7 @@ function renderHeader(activeMenu) {
     // 메뉴 목록 정의 (href, 라벨)
     const menus = [
         { href: 'index.html', label: '🏠 홈' },
-        { href: 'groupbuy.html', label: '🛒 공동구매' },
+        { href: 'groupbuy.html', label: '🛒 오늘의 핫딜' },
         { href: 'shopping.html', label: '🛍️ 쇼핑몰' },
         { href: 'hanacard.html', label: '💳 하나카드' },
         { href: 'insurance.html', label: '🛡️ 펫보험' },
