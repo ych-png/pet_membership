@@ -58,8 +58,8 @@
 
             <!-- 반려견 본문 영역 -->
             <div class="space-y-6">
-                <!-- 상단 배너 및 일러스트 영역 -->
-                <div class="sf-bg-banner-dog pt-10 pb-20 px-6 text-center relative rounded-3xl overflow-hidden border border-blue-100">
+                <!-- 상단 배너 및 일러스트 영역 (상품개요 스크롤 타겟 추가) -->
+                <div id="intro-section-dog" class="sf-bg-banner-dog pt-10 pb-20 px-6 text-center relative rounded-3xl overflow-hidden border border-blue-100 scroll-mt-20">
                     <div class="space-y-1 z-10">
                         <p class="text-sm md:text-base font-semibold text-slate-600">우리집 <span class="sf-primary-text font-semibold">강아지의 건강</span>을 위한</p>
                         <h2 class="text-2xl md:text-3xl font-semibold text-slate-900 tracking-tight">반려견보험</h2>
@@ -329,6 +329,47 @@
             </div>
         </div>
     </main>
+
+    <!-- 공통 헤더 스크립트 불러오기 -->
+    <script src="header.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof renderHeader === 'function') {
+                renderHeader('insurance.html');
+            }
+        });
+
+        // 반려견 / 반려묘 탭 전환 함수
+        function switchPetTab(type) {
+            const dogTab = document.getElementById('tab-dog');
+            const catTab = document.getElementById('tab-cat');
+            const dogContent = document.getElementById('content-dog');
+            const catContent = document.getElementById('content-cat');
+
+            if (type === 'dog') {
+                dogTab.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-sm";
+                catTab.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-slate-100 text-slate-500 hover:bg-slate-200";
+                
+                dogContent.classList.remove('hidden');
+                if (catContent) catContent.classList.add('hidden');
+            } else if (type === 'cat') {
+                catTab.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-rose-600 text-white shadow-sm";
+                dogTab.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-slate-100 text-slate-500 hover:bg-slate-200";
+                
+                if (catContent) catContent.classList.remove('hidden');
+                dogContent.classList.add('hidden');
+            }
+        }
+
+        // 스크롤 이동 함수
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
 </body>
 </html>
 
