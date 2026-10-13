@@ -303,27 +303,41 @@
 
                 <div id="checkInfo-section-cat" class="space-y-4 pt-6 border-t border-slate-100 scroll-mt-20">
                     
-<!-- 버튼 영역 (상단 카드 영역과 동일한 max-w-xl mx-auto 및 패딩 적용) -->
-<div class="px-4 sm:px-6 max-w-xl mx-auto w-full">
-    <div class="grid grid-cols-2 gap-2 w-full">
-        <!-- 1. 보험금 지급제한사항 버튼 -->
-        <button type="button" onclick="openModal('modal_PP030906_041')" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
-            <span>보험금 지급제한사항</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-        </button>
+  <!-- 유의사항 내부 또는 상단에 들어갈 모달/링크 버튼 그룹 (동일한 크기로 정렬) -->
 
-        <!-- 2. 가입 시 유의사항 버튼 -->
-        <button type="button" onclick="$plugins.uiModal({ id:'modal_'+signingUpNoteModal('longNormal')+'', full:true, link:'https://direct.samsungfire.com/modal/'+signingUpNoteModal('longNormal')+'.html' });" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
-            <span>가입 시 유의사항</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-        </button>
+<div class="grid grid-cols-2 gap-2 w-full">
 
-        <!-- 3. 상품약관 버튼 (보험금 지급제한사항 버튼 바로 밑, 동일한 크기로 배치) -->
-        <a href="https://direct.samsungfire.com/CR_MyAnycarWeb/mall/pdf/long_cat.pdf" target="_blank" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
-            <span>상품약관</span>
-            <i class="fa-solid fa-download text-[10px]"></i>
-        </a>
-    </div>
+    <!-- 1. 보험금 지급제한사항 버튼 -->
+
+    <button type="button" onclick="openModal('modal_PP030906_041')" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+
+        <span>보험금 지급제한사항</span>
+
+        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+
+    </button>
+
+    <!-- 2. 가입 시 유의사항 버튼 -->
+
+    <button type="button" onclick="$plugins.uiModal({ id:'modal_'+signingUpNoteModal('longNormal')+'', full:true, link:'https://direct.samsungfire.com/modal/'+signingUpNoteModal('longNormal')+'.html' });" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+
+        <span>가입 시 유의사항</span>
+
+        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+
+    </button>
+
+
+    <!-- 3. 상품약관 버튼 (보험금 지급제한사항 버튼 바로 밑, 동일한 크기로 배치) -->
+
+    <a href="https://direct.samsungfire.com/CR_MyAnycarWeb/mall/pdf/long_cat.pdf" target="_blank" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+
+        <span>상품약관</span>
+
+        <i class="fa-solid fa-download text-[10px]"></i>
+
+    </a>
+
 </div>
 
 <!-- 보험금 지급제한사항 모달 팝업 창 -->
