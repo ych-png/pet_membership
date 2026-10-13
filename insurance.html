@@ -21,7 +21,7 @@
         .sf-badge-cat-point { background-color: #e11d48; color: #ffffff; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 pb-20">
+<body class="bg-slate-50 text-slate-800 pb-28">
 
     <!-- 통합 공통 헤더가 삽입될 위치 -->
     <div id="common-header"></div>
@@ -52,13 +52,13 @@
                     <button onclick="scrollToSection('point1-section-dog')" class="p-3 border border-blue-600 text-blue-600 bg-blue-50/50 rounded-lg hover:bg-blue-100 transition">보장 혜택</button>
                     <button onclick="scrollToSection('faq-section-dog')" class="p-3 border border-slate-200 rounded-lg hover:border-blue-600 hover:text-blue-600 transition">자주 묻는 질문</button>
                     <button onclick="scrollToSection('checkInfo-section-dog')" class="p-3 border border-slate-200 rounded-lg hover:border-blue-600 hover:text-blue-600 transition">유의사항</button>
-                    <button onclick="alert('반려견 가입 신청 페이지로 이동합니다.')" class="p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-sm">보험료 확인하기</button>
+                    <button onclick="window.open('https://direct.samsungfire.com/ria/product/insurance/petLong/?state=Front&ver=193', '_blank')" class="p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-sm">보험료 확인하기</button>
                 </div>
             </section>
 
             <!-- 반려견 본문 영역 -->
             <div class="space-y-6">
-                <!-- 상단 배너 및 일러스트 영역 (상품개요 스크롤 타겟 추가) -->
+                <!-- 상단 배너 및 일러스트 영역 -->
                 <div id="intro-section-dog" class="sf-bg-banner-dog pt-10 pb-20 px-6 text-center relative rounded-3xl overflow-hidden border border-blue-100 scroll-mt-20">
                     <div class="space-y-1 z-10">
                         <p class="text-sm md:text-base font-semibold text-slate-600">우리집 <span class="sf-primary-text font-semibold">강아지의 건강</span>을 위한</p>
@@ -318,65 +318,11 @@
                         준법감시인확인필 제26-1-1161호 (5959,'26.02.25~'27.02.24)
                     </div>
                 </div>
-
-   <!-- 하단 고정 CTA 버튼 (화면 스크롤 위치에 상관없이 항상 하단 노출) -->
-<div class="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 shadow-lg">
-    <div class="max-w-4xl mx-auto flex justify-center">
-        <button onclick="window.open('https://direct.samsungfire.com/ria/product/insurance/petLong/?state=Front&ver=193', '_blank')" class="w-full sm:w-2/3 py-4 sf-primary-bg text-white font-semibold text-base rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-500/20 flex items-center justify-center space-x-2">
-            <span>반려견 보험료 확인하기</span>
-            <i class="fa-solid fa-chevron-right text-xs"></i>
-        </button>
-    </div>
-</div>
             </div>
         </div>
-    </main>
-
-    <!-- 공통 헤더 스크립트 불러오기 -->
-    <script src="header.js"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            if (typeof renderHeader === 'function') {
-                renderHeader('insurance.html');
-            }
-        });
-
-        // 반려견 / 반려묘 탭 전환 함수
-        function switchPetTab(type) {
-            const dogTab = document.getElementById('tab-dog');
-            const catTab = document.getElementById('tab-cat');
-            const dogContent = document.getElementById('content-dog');
-            const catContent = document.getElementById('content-cat');
-
-            if (type === 'dog') {
-                dogTab.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-sm";
-                catTab.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-slate-100 text-slate-500 hover:bg-slate-200";
-                
-                dogContent.classList.remove('hidden');
-                if (catContent) catContent.classList.add('hidden');
-            } else if (type === 'cat') {
-                catTab.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-rose-600 text-white shadow-sm";
-                dogTab.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-slate-100 text-slate-500 hover:bg-slate-200";
-                
-                if (catContent) catContent.classList.remove('hidden');
-                dogContent.classList.add('hidden');
-            }
-        }
-
-        // 스크롤 이동 함수
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    </script>
-</body>
-</html>
 
         <!-- ========================================== -->
-        <!-- 2. 반려묘보험 콘텐츠 (신규 추가: PP030705_001) -->
+        <!-- 2. 반려묘보험 콘텐츠 -->
         <!-- ========================================== -->
         <div id="content-cat" class="space-y-6 hidden">
             <!-- 상단 서브메뉴 -->
@@ -386,11 +332,11 @@
                     <button onclick="scrollToSection('point1-section-cat')" class="p-3 border border-rose-600 text-rose-600 bg-rose-50/50 rounded-lg hover:bg-rose-100 transition">보장 혜택</button>
                     <button onclick="scrollToSection('faq-section-cat')" class="p-3 border border-slate-200 rounded-lg hover:border-rose-600 hover:text-rose-600 transition">자주 묻는 질문</button>
                     <button onclick="scrollToSection('checkInfo-section-cat')" class="p-3 border border-slate-200 rounded-lg hover:border-rose-600 hover:text-rose-600 transition">유의사항</button>
-                    <button onclick="alert('반려묘 가입 신청 페이지로 이동합니다.')" class="p-3 bg-rose-600 text-white font-semibold rounded-lg hover:bg-rose-700 transition shadow-sm">보험료 확인하기</button>
+                    <button onclick="window.open('https://direct.samsungfire.com/ria/product/insurance/petLong/?state=Front&ver=193', '_blank')" class="p-3 bg-rose-600 text-white font-semibold rounded-lg hover:bg-rose-700 transition shadow-sm">보험료 확인하기</button>
                 </div>
             </section>
 
-<!-- 반려묘 본문 영역 -->
+            <!-- 반려묘 본문 영역 -->
             <div class="space-y-6">
                 <!-- 상단 배너 및 일러스트 영역 -->
                 <div id="intro-section-cat" class="sf-bg-banner-cat pt-10 pb-20 px-6 text-center relative rounded-3xl overflow-hidden border border-rose-100 scroll-mt-20 max-w-xl mx-auto">
@@ -407,7 +353,7 @@
                 <div class="px-4 sm:px-6 max-w-xl mx-auto">
                     <div class="-mt-12 relative z-10 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 p-2 space-y-1">
                         <div class="py-3 px-4 flex items-center space-x-4 rounded-xl">
-                            <div class="w-14 h-14 rounded-full bg-rose-50 flex items-center justify-center shrink-0 overflow-hidden p-3">
+                            <div class="w-14 h-14 rounded-full bg-rose-50 flex items-center justify-center shrink-0 overflow-hidden p-2">
                                 <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-01.png" alt="" class="w-full h-full object-contain" />
                             </div>
                             <div>
@@ -416,7 +362,7 @@
                         </div>
                         <div class="border-t border-slate-100 mx-4"></div>
                         <div class="py-3 px-4 flex items-center space-x-4 rounded-xl">
-                            <div class="w-14 h-14 rounded-full bg-rose-50 flex items-center justify-center shrink-0 overflow-hidden p-3">
+                            <div class="w-14 h-14 rounded-full bg-rose-50 flex items-center justify-center shrink-0 overflow-hidden p-2">
                                 <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-02.png" alt="" class="w-full h-full object-contain" />
                             </div>
                             <div>
@@ -618,8 +564,8 @@
         </div>
     </main>
 
-    <!-- 하단 고정 CTA 버튼 (화면 어느 위치에 있든 항상 하단 고정 노출) -->
-    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200 p-4 shadow-lg">
+    <!-- 하단 고정 CTA 버튼 (화면 스크롤 위치에 상관없이 항상 하단 노출) -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 shadow-lg">
         <div class="max-w-4xl mx-auto flex justify-center">
             <button onclick="window.open('https://direct.samsungfire.com/ria/product/insurance/petLong/?state=Front&ver=193', '_blank')" class="w-full sm:w-2/3 py-4 bg-rose-600 text-white font-semibold text-base rounded-xl hover:bg-rose-700 transition shadow-lg shadow-rose-500/20 flex items-center justify-center space-x-2">
                 <span>반려묘 보험료 확인하기</span>
