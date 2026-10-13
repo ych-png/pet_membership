@@ -303,15 +303,28 @@
 
                 <div id="checkInfo-section-cat" class="space-y-4 pt-6 border-t border-slate-100 scroll-mt-20">
                     
-    <!-- 유의사항 내부 또는 상단에 들어갈 모달/링크 버튼 그룹 -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+    <!-- 유의사항 내부 또는 상단에 들어갈 모달/링크 버튼 그룹 (동일한 크기로 정렬) -->
+<div class="grid grid-cols-2 gap-2 w-full">
     <!-- 1. 보험금 지급제한사항 버튼 -->
-<button type="button" onclick="openModal('modal_PP030906_041')" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
-    <span>보험금 지급제한사항</span>
-    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-</button>
+    <button type="button" onclick="openModal('modal_PP030906_041')" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+        <span>보험금 지급제한사항</span>
+        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+    </button>
 
-<!-- 2. 이미지와 동일한 형태의 테스트용 모달 팝업 창 (페이지 하단 등에 위치) -->
+    <!-- 2. 가입 시 유의사항 버튼 -->
+    <button type="button" onclick="$plugins.uiModal({ id:'modal_'+signingUpNoteModal('longNormal')+'', full:true, link:'https://direct.samsungfire.com/modal/'+signingUpNoteModal('longNormal')+'.html' });" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+        <span>가입 시 유의사항</span>
+        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+    </button>
+
+    <!-- 3. 상품약관 버튼 (보험금 지급제한사항 버튼 바로 밑, 동일한 크기로 배치) -->
+    <a href="https://direct.samsungfire.com/CR_MyAnycarWeb/mall/pdf/long_cat.pdf" target="_blank" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+        <span>상품약관</span>
+        <i class="fa-solid fa-download text-[10px]"></i>
+    </a>
+</div>
+
+<!-- 보험금 지급제한사항 모달 팝업 창 -->
 <div id="modal_PP030906_041" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col shadow-2xl overflow-hidden relative">
         <!-- 상단 타이틀 및 닫기 버튼 -->
@@ -349,15 +362,19 @@
             <p>23. 한방 및 한약(보상하는 상해 또는 질병의 치료를 위한 침술 및 물리치료는 제외합니다), 온천요법, 산소요법, 면역요법 등의 대체적 처치에 의한 치료를 위한 비용</p>
             <p>24. 마이크로칩의 삽입 비용, 안락사를 위한 비용, 장례식비용, 매장비용 등 가입동물의 사망 후에 소요된 비용, 각종 증명서류의 작성비용(운송비 포함)</p>
             <p>25. 펫호텔 비용 또는 위탁료, 산책료, 카운슬링 비용, 상담료, 지도료, 문제행동 교정비용 및 이와 동종의 비용</p>
-            <p>26. 아래의 질병으로 인하여 발생한 손해는 보상하지 않습니다. 다만, 질병의 발생일로부터 과거 1년 이내의 예방접종 기록이 있는 경우에는 보상합니다.
-            <li>고양이범백혈구감소증</li>
-            <li>고양이칼리시바이러스감염증</li>
-            <li>고양이바이러스성비기관지염</li>
-            <li>고양이백혈병바이러스감염증</li></p>
+            <div>
+                <p>26. 아래의 질병으로 인하여 발생한 손해는 보상하지 않습니다. 다만, 질병의 발생일로부터 과거 1년 이내의 예방접종 기록이 있는 경우에는 보상합니다.</p>
+                <ul class="list-disc list-inside ml-2 mt-1 space-y-1">
+                    <li>고양이범백혈구감소증</li>
+                    <li>고양이칼리시바이러스감염증</li>
+                    <li>고양이바이러스성비기관지염</li>
+                    <li>고양이백혈병바이러스감염증</li>
+                </ul>
+            </div>
             <p>27. 왕진료, 가입동물의 이송비, 동물병원에 가지 않고 약제만 배달되는 배달료 및 이와 동종의 비용</p>
             <p>28. 과잉진료행위로 인한 비용</p>
             <p>29. 상병명을 알 수 없는 상해 또는 질병에 대한 치료</p>
-            <p>30. 위에서 정한 조치에 다른 진료를 병행하여 실시한 경우에는 위에서 정한 조치(마취 비용을 포함합니다)에 대한 보험금은 지급하지 않습니다.</p>         
+            <p>30. 위에서 정한 조치에 다른 진료를 병행하여 실시한 경우에는 위에서 정한 조치(마취 비용을 포함합니다)에 대한 보험금은 지급하지 않습니다.</p>
         </div>
 
         <!-- 하단 확인 버튼 -->
@@ -388,19 +405,6 @@
         }
     }
 </script>
-
-        <!-- 2. 가입 시 유의사항 버튼 -->
-        <button type="button" onclick="$plugins.uiModal({ id:'modal_'+signingUpNoteModal('longNormal')+'', full:true, link:'https://direct.samsungfire.com/modal/'+signingUpNoteModal('longNormal')+'.html' });" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
-            <span>가입 시 유의사항</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-        </button>
-
-  <!-- 3. 상품약관 다운로드/링크 버튼 -->
-<a href="https://direct.samsungfire.com/CR_MyAnycarWeb/mall/pdf/long_cat.pdf" target="_blank" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
-    <span>상품약관</span>
-    <i class="fa-solid fa-download text-[10px]"></i>
-</a>
-    </div>
                     
                 <!-- 유의사항 섹션 -->
          <div id="checkInfo-section-dog" class="space-y-4 pt-6 border-t border-slate-100 scroll-mt-20">
@@ -692,17 +696,28 @@
                 </div>
                 
 <div id="checkInfo-section-cat" class="space-y-4 pt-6 border-t border-slate-100 scroll-mt-20">
-    <!-- 유의사항 내부 또는 상단에 들어갈 모달/링크 버튼 그룹 -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-      <!-- 유의사항 내부 또는 상단에 들어갈 모달/링크 버튼 그룹 -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+<!-- 유의사항 내부 또는 상단에 들어갈 모달/링크 버튼 그룹 (동일한 크기로 정렬) -->
+<div class="grid grid-cols-2 gap-2 w-full">
     <!-- 1. 보험금 지급제한사항 버튼 -->
-<button type="button" onclick="openModal('modal_PP030906_041')" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
-    <span>보험금 지급제한사항</span>
-    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-</button>
+    <button type="button" onclick="openModal('modal_PP030906_041')" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+        <span>보험금 지급제한사항</span>
+        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+    </button>
 
-<!-- 2. 이미지와 동일한 형태의 테스트용 모달 팝업 창 (페이지 하단 등에 위치) -->
+    <!-- 2. 가입 시 유의사항 버튼 -->
+    <button type="button" onclick="$plugins.uiModal({ id:'modal_'+signingUpNoteModal('longNormal')+'', full:true, link:'https://direct.samsungfire.com/modal/'+signingUpNoteModal('longNormal')+'.html' });" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+        <span>가입 시 유의사항</span>
+        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+    </button>
+
+    <!-- 3. 상품약관 버튼 (보험금 지급제한사항 버튼 바로 밑, 동일한 크기로 배치) -->
+    <a href="https://direct.samsungfire.com/CR_MyAnycarWeb/mall/pdf/long_cat.pdf" target="_blank" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+        <span>상품약관</span>
+        <i class="fa-solid fa-download text-[10px]"></i>
+    </a>
+</div>
+
+<!-- 보험금 지급제한사항 모달 팝업 창 -->
 <div id="modal_PP030906_041" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col shadow-2xl overflow-hidden relative">
         <!-- 상단 타이틀 및 닫기 버튼 -->
@@ -740,15 +755,19 @@
             <p>23. 한방 및 한약(보상하는 상해 또는 질병의 치료를 위한 침술 및 물리치료는 제외합니다), 온천요법, 산소요법, 면역요법 등의 대체적 처치에 의한 치료를 위한 비용</p>
             <p>24. 마이크로칩의 삽입 비용, 안락사를 위한 비용, 장례식비용, 매장비용 등 가입동물의 사망 후에 소요된 비용, 각종 증명서류의 작성비용(운송비 포함)</p>
             <p>25. 펫호텔 비용 또는 위탁료, 산책료, 카운슬링 비용, 상담료, 지도료, 문제행동 교정비용 및 이와 동종의 비용</p>
-            <p>26. 아래의 질병으로 인하여 발생한 손해는 보상하지 않습니다. 다만, 질병의 발생일로부터 과거 1년 이내의 예방접종 기록이 있는 경우에는 보상합니다.
-            <li>고양이범백혈구감소증</li>
-            <li>고양이칼리시바이러스감염증</li>
-            <li>고양이바이러스성비기관지염</li>
-            <li>고양이백혈병바이러스감염증</li></p>
+            <div>
+                <p>26. 아래의 질병으로 인하여 발생한 손해는 보상하지 않습니다. 다만, 질병의 발생일로부터 과거 1년 이내의 예방접종 기록이 있는 경우에는 보상합니다.</p>
+                <ul class="list-disc list-inside ml-2 mt-1 space-y-1">
+                    <li>고양이범백혈구감소증</li>
+                    <li>고양이칼리시바이러스감염증</li>
+                    <li>고양이바이러스성비기관지염</li>
+                    <li>고양이백혈병바이러스감염증</li>
+                </ul>
+            </div>
             <p>27. 왕진료, 가입동물의 이송비, 동물병원에 가지 않고 약제만 배달되는 배달료 및 이와 동종의 비용</p>
             <p>28. 과잉진료행위로 인한 비용</p>
             <p>29. 상병명을 알 수 없는 상해 또는 질병에 대한 치료</p>
-            <p>30. 위에서 정한 조치에 다른 진료를 병행하여 실시한 경우에는 위에서 정한 조치(마취 비용을 포함합니다)에 대한 보험금은 지급하지 않습니다.</p>         
+            <p>30. 위에서 정한 조치에 다른 진료를 병행하여 실시한 경우에는 위에서 정한 조치(마취 비용을 포함합니다)에 대한 보험금은 지급하지 않습니다.</p>
         </div>
 
         <!-- 하단 확인 버튼 -->
@@ -779,19 +798,6 @@
         }
     }
 </script>
-
-        <!-- 2. 가입 시 유의사항 버튼 -->
-        <button type="button" onclick="$plugins.uiModal({ id:'modal_'+signingUpNoteModal('longNormal')+'', full:true, link:'https://direct.samsungfire.com/modal/'+signingUpNoteModal('longNormal')+'.html' });" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
-            <span>가입 시 유의사항</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-        </button>
-
-        <!-- 3. 상품약관 다운로드/링크 버튼 -->
-<a href="https://direct.samsungfire.com/CR_MyAnycarWeb/mall/pdf/long_cat.pdf" target="_blank" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
-    <span>상품약관</span>
-    <i class="fa-solid fa-download text-[10px]"></i>
-</a>
-    </div>
                 <!-- 유의사항 섹션 -->
             <div id="checkInfo-section-cat" class="space-y-4 pt-6 border-t border-slate-100 scroll-mt-20">
     <details class="group bg-transparent border border-slate-200 rounded-xl overflow-hidden transition-all">
@@ -823,7 +829,6 @@
         <div class="max-w-4xl mx-auto flex justify-center">
             <button onclick="window.open('https://direct.samsungfire.com/ria/product/insurance/petLong/?state=Front&ver=193', '_blank')" class="w-full sm:w-2/3 py-4 sf-primary-bg text-white font-semibold text-base rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-500/20 flex items-center justify-center space-x-2">
                 <span>보험료 확인하기</span>
-                <i class="fa-solid fa-chevron-right text-xs"></i>
             </button>
         </div>
     </div>
