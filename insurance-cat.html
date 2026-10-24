@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belluna Pet - 삼성화재 다이렉트 착 펫보험 (반려묘)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; }
+        html { scroll-behavior: smooth; }
+        
+        /* 삼성화재 다이렉트 착 커스텀 유틸리티 */
+        .sf-bg-banner-cat { background: linear-gradient(135deg, #eef5ff 0%, #d8e8ff 100%); }
+        .sf-primary-text { color: #1c62ed; }
+        .sf-primary-bg { background-color: #1c62ed; }
+        .sf-primary-border { border-color: #1c62ed; }
+        .sf-badge-point { background-color: #3b82f6; color: #ffffff; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 pb-28">
+
+    <!-- 통합 공통 헤더가 삽입될 위치 -->
+    <div id="common-header"></div>
+
+    <!-- Main Content Area -->
+    <main class="max-w-4xl mx-auto px-4 py-8 space-y-6">
+        
+        <!-- 최상단 반려견 / 반려묘 탭 스위처 (반려견 페이지로 링크 연결) -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-2 flex space-x-2">
+            <a href="insurance.html" id="tab-dog" class="flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-slate-100 text-slate-500 hover:bg-slate-200">
+                <i class="fa-solid fa-dog"></i>
+                <span>반려견보험</span>
+            </a>
+            <button id="tab-cat" class="flex-1 py-3 px-4 rounded-xl font-semibold text-base transition duration-200 flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-sm">
+                <i class="fa-solid fa-cat"></i>
+                <span>반려묘보험</span>
+            </button>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 2. 반려묘보험 콘텐츠 -->
+        <!-- ========================================== -->
+        <div id="content-cat" class="space-y-6">
+            <!-- 상단 서브메뉴 -->
+            <div class="max-w-4xl mx-auto w-full">
+                <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-center text-xs font-semibold">
+                        <button onclick="scrollToSection('intro-section-cat')" class="p-3 border border-slate-200 rounded-lg hover:border-blue-600 hover:text-blue-600 transition">상품개요</button>
+                        <button onclick="scrollToSection('point1-section-cat')" class="p-3 border border-slate-200 rounded-lg hover:border-slate-200 transition">보장 혜택</button>
+                        <button onclick="scrollToSection('faq-section-cat')" class="p-3 border border-slate-200 rounded-lg hover:border-blue-600 hover:text-blue-600 transition">자주 묻는 질문</button>
+                        <button onclick="scrollToSection('checkInfo-section-cat')" class="p-3 border border-slate-200 rounded-lg hover:border-blue-600 hover:text-blue-600 transition">유의사항</button>
+                        <button onclick="window.open('https://direct.samsungfire.com/ria/product/insurance/petLong/?state=Front&ver=193', '_blank')" class="p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-sm col-span-2 md:col-span-1">보험료 확인하기</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 반려묘 본문 영역 -->
+            <div class="space-y-6">
+                <!-- 상단 배너 및 일러스트 영역 -->
+                <div class="max-w-4xl mx-auto w-full">
+                    <div id="intro-section-cat" class="sf-bg-banner-cat pt-10 pb-20 px-6 text-center relative rounded-3xl overflow-hidden border border-rose-100 scroll-mt-20">
+                        <div class="space-y-1 z-10">
+                            <p class="text-sm md:text-base font-semibold text-slate-600">우리집 <span class="sf-primary-text font-semibold">고양이의 건강</span>을 위한</p>
+                            <h2 class="text-2xl md:text-3xl font-semibold text-slate-900 tracking-tight">반려묘보험</h2>
+                        </div>
+                        <div class="mt-6 z-10 flex justify-center">
+                            <img src="https://direct.samsungfire.com/resources/images/img-product-pet-cat.png" alt="반려묘 이미지" class="w-44 h-auto object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/180x150/1c62ed/ffffff?text=Cat+Insurance';">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 가입 조건 단일 카드 영역 -->
+                <div class="px-4 sm:px-6 max-w-xl mx-auto">
+                    <div class="-mt-12 relative z-10 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 p-2 space-y-1">
+                        <div class="py-3 px-4 flex items-center space-x-4 rounded-xl">
+                            <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center shrink-0 overflow-hidden p-2">
+                                <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-01.png" alt="" class="w-full h-full object-contain" />
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-900 text-sm md:text-base">만 10세까지 가입 가능</h3>
+                            </div>
+                        </div>
+                        <div class="border-t border-slate-100 mx-4"></div>
+                        <div class="py-3 px-4 flex items-center space-x-4 rounded-xl">
+                            <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center shrink-0 overflow-hidden p-2">
+                                <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-02.png" alt="" class="w-full h-full object-contain" />
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-900 text-sm md:text-base">1년 마다 재가입, 만 20세까지 보장</h3>
+                                <p class="text-xs sf-primary-text font-medium mt-0.5">재가입시 보험료 인상 가능성 있음</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Point 1 -->
+                <div id="point1-section-cat" class="space-y-4 pt-2 border-t border-slate-100 scroll-mt-20">
+                    <div class="text-center">
+                        <div>
+                            <span class="inline-block sf-badge-point text-xs font-semibold px-2.5 py-1 rounded-md mb-2">Point 1</span>
+                            <h3 class="text-xl md:text-2xl font-semibold text-slate-900">갑자기 아프거나 다쳐도 <br/>병원비 든든하게</h3>
+                            <p class="text-sm text-slate-600 mt-1">의료비 보장비율 최대 70% 자기부담금 공제 후 보장비율에 따라 보상해요.</p>
+                        </div>
+                        <div class="text-xs text-slate-500 text-center pt-1">
+                            <p>* 특약 가입 시</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center my-4">
+                        <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-point-01.png" alt="" class="w-14 h-14 object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/56/1c62ed/ffffff?text=Icon';" />
+                    </div>
+
+                    <details class="group bg-transparent border-0 overflow-hidden transition-all">
+                        <summary class="flex justify-center items-center p-4 text-xs font-semibold text-slate-700 cursor-pointer select-none bg-transparent hover:bg-slate-100/50 rounded-xl">
+                            <span>자세한 내용을 확인하세요!</span>
+                            <span class="sf-primary-text font-semibold group-open:hidden ml-1">
+                                &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                            </span>
+                            <span class="sf-primary-text font-semibold hidden group-open:inline ml-1">
+                                &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-chevron-up"></i>
+                            </span>
+                        </summary>
+                        <div class="px-4 sm:px-6 max-w-xl mx-auto">
+                            <div class="text-xs text-slate-600 space-y-2 leading-relaxed mt-2">
+                                <ul class="list-disc list-outside ml-4 space-y-1 text-slate-600">
+                                    <li>의료비는 자기부담금 공제 후 선택한 보장비율(50/70%)을 가입금액 한도로 보상합니다.</li>
+                                    <li>반려묘 의료비(치과및구강질환포함), 반려묘 수술비(치과및구강질환포함)확대보장추가 특별약관은 가입 후 30일간 보장 제외됩니다. (상해로 인한 경우는 계약일부터 보장)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Point 2 -->
+                <div class="space-y-4 pt-6 border-t border-slate-100">
+                    <div class="text-center">
+                        <div>
+                            <span class="inline-block sf-badge-point text-xs font-semibold px-2.5 py-1 rounded-md mb-2">Point 2</span>
+                            <h3 class="text-xl md:text-2xl font-semibold text-slate-900">반복되는 질환은 <br/>보장을 더 꼼꼼하게</h3>
+                            <p class="text-sm text-slate-600 mt-1">피부병·비뇨기과·치과 등 자주 생기는 질환 치료비도 안심할 수 있어요.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs text-slate-500 text-center pt-1">
+                        <p>* 특약 가입 시</p>
+                    </div>
+                    
+                    <div class="px-4 sm:px-6 max-w-xl mx-auto">
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <div class="p-5 rounded-2xl bg-slate-100 border border-slate-200 flex flex-col items-center justify-center text-center space-y-3 shadow-xs">
+                                <div class="w-12 h-12 flex items-center justify-center shrink-0">
+                                    <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-point-02.png" alt="범백혈구감소증" class="w-full h-full object-contain" />
+                                </div>
+                                <p class="font-semibold text-slate-800 text-xs sm:text-sm">범백혈구감소증</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-slate-100 border border-slate-200 flex flex-col items-center justify-center text-center space-y-3 shadow-xs">
+                                <div class="w-12 h-12 flex items-center justify-center shrink-0">
+                                    <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-point-03.png" alt="허피스·칼리시" class="w-full h-full object-contain" />
+                                </div>
+                                <p class="font-semibold text-slate-800 text-xs sm:text-sm">허피스·칼리시</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-slate-100 border border-slate-200 flex flex-col items-center justify-center text-center space-y-3 shadow-xs">
+                                <div class="w-12 h-12 flex items-center justify-center shrink-0">
+                                    <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-point-04.png" alt="비뇨기질환" class="w-full h-full object-contain" />
+                                </div>
+                                <p class="font-semibold text-slate-800 text-xs sm:text-sm">비뇨기질환</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-slate-100 border border-slate-200 flex flex-col items-center justify-center text-center space-y-3 shadow-xs">
+                                <div class="w-12 h-12 flex items-center justify-center shrink-0">
+                                    <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-point-05.png" alt="치과 및 구강질환 치료비" class="w-full h-full object-contain" />
+                                </div>
+                                <p class="font-semibold text-slate-800 text-xs sm:text-sm">치과 및 구강질환 치료비</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <details class="group bg-transparent border-0 overflow-hidden transition-all">
+                        <summary class="flex justify-center items-center p-4 text-xs font-semibold text-slate-700 cursor-pointer select-none bg-transparent hover:bg-slate-100/50 rounded-xl">
+                            <span>자세한 내용을 확인하세요!</span>
+                            <span class="sf-primary-text font-semibold group-open:hidden ml-1">
+                                &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                            </span>
+                            <span class="sf-primary-text font-semibold hidden group-open:inline ml-1">
+                                &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-chevron-up"></i>
+                            </span>
+                        </summary>
+                        <div class="px-4 sm:px-6 max-w-xl mx-auto">
+                            <div class="text-xs text-slate-600 space-y-2 leading-relaxed mt-2">
+                                <ul class="list-disc list-outside ml-4 space-y-1 text-slate-600">
+                                    <li>범백혈구 감소증, 칼리시바이러스 감염증, 허피스바이러스 감염의 경우 질병의 발생일로부터 과거 1년 이내 예방접종 기록이 있는 경우에 보상합니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Point 3 -->
+                <div class="space-y-4 pt-6 border-t border-slate-100">
+                    <div class="text-center">
+                        <span class="inline-block sf-badge-point text-xs font-semibold px-2.5 py-1 rounded-md mb-2">Point 3</span>
+                        <h3 class="text-xl md:text-2xl font-semibold text-slate-900">가입부터 청구까지 <br/>비대면으로 빠르게</h3>
+                    </div>
+
+                    <div class="px-4 sm:px-6 max-w-xl mx-auto">
+                        <div class="grid grid-cols-1 gap-4 pt-2">
+                            <div class="p-5 rounded-2xl border border-slate-200 bg-white shadow-xs flex items-center space-x-4">
+                                <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 p-3">
+                                    <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-point-06.png" alt="" class="w-full h-full object-contain" />
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 font-medium">동물등록증 등록 시</p>
+                                    <p class="font-semibold text-slate-900 text-base sf-primary-text">보장보험료 5% 할인</p>
+                                </div>
+                            </div>
+                            <div class="p-5 rounded-2xl border border-slate-200 bg-white shadow-xs flex items-center space-x-4">
+                                <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 p-3">
+                                    <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-point-07.png" alt="" class="w-full h-full object-contain" />
+                                </div>
+                                <div>   
+                                    <p class="text-xs text-slate-500 font-medium">전신사진 한 장으로</p>
+                                    <p class="font-semibold text-slate-900 text-base">다이렉트 간편 가입</p>
+                                </div>
+                            </div>
+                            <div class="p-5 rounded-2xl border border-slate-200 bg-white shadow-xs flex items-center space-x-4">
+                                <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 p-3">
+                                    <img src="https://direct.samsungfire.com/resources/images/icon-product-pet-cat-point-08.png" alt="" class="w-full h-full object-contain" />
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 font-medium">365일 모바일 청구로</p>
+                                    <p class="font-semibold text-slate-900 text-base">편리한 보험료 지급</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 섹션 -->
+                <div id="faq-section-cat" class="space-y-4 pt-6 border-t border-slate-100 scroll-mt-20">
+                    <div class="text-center pb-4 border-b border-slate-200 max-w-xl mx-auto px-4 sm:px-6">
+                        <h3 class="text-xl font-semibold text-slate-900">어떤 점이 궁금하세요?</h3>
+                    </div>
+
+                    <div class="px-4 sm:px-6 max-w-xl mx-auto">
+                        <div class="divide-y divide-slate-200">
+                            <details class="group py-3 transition-all">
+                                <summary class="flex justify-between items-center py-2 text-sm font-semibold text-slate-800 cursor-pointer select-none hover:text-blue-600">
+                                    <span class="subject text-left">Q. ‘실손보상’은 무엇이고, ‘비례보상’은 무엇인가요?</span>
+                                    <span class="sf-primary-text font-semibold group-open:hidden ml-2 shrink-0">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </span>
+                                    <span class="sf-primary-text font-semibold hidden group-open:inline ml-2 shrink-0">
+                                        <i class="fa-solid fa-chevron-up"></i>
+                                    </span>
+                                </summary>
+                                <div class="p-4 bg-slate-50 rounded-lg mt-2 text-xs md:text-sm text-slate-600 leading-relaxed space-y-2">
+                                    <p>실손보상은 실제 지출한 금액만큼 보상하는 것으로 '실비보상'이라고도 합니다. 비례보상은 보험을 여러 가지 가입하더라도 실제 지출한 금액만큼 각 보험의 가입금액에 비례해 보상하는 것입니다.</p>
+                                </div>
+                            </details>
+
+                            <details class="group py-3 transition-all">
+                                <summary class="flex justify-between items-center py-2 text-sm font-semibold text-slate-800 cursor-pointer select-none hover:text-blue-600">
+                                    <span class="subject text-left">Q. 원하지 않는 담보는 제외하고 가입하고 싶어요. 꼭 플랜으로 가입해야 하나요?</span>
+                                    <span class="sf-primary-text font-semibold group-open:hidden ml-2 shrink-0">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </span>
+                                    <span class="sf-primary-text font-semibold hidden group-open:inline ml-2 shrink-0">
+                                        <i class="fa-solid fa-chevron-up"></i>
+                                    </span>
+                                </summary>
+                                <div class="p-4 bg-slate-50 rounded-lg mt-2 text-xs md:text-sm text-slate-600 leading-relaxed space-y-2">
+                                    <p>아니요, 일부 담보는 담보명 선택 시 가입에서 제외할 수 있습니다.</p>
+                                </div>
+                            </details>
+
+                            <details class="group py-3 transition-all">
+                                <summary class="flex justify-between items-center py-2 text-sm font-semibold text-slate-800 cursor-pointer select-none hover:text-blue-600">
+                                    <span class="subject text-left">Q. 중복보상은 어떤 경우에 받을 수 있나요?</span>
+                                    <span class="sf-primary-text font-semibold group-open:hidden ml-2 shrink-0">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </span>
+                                    <span class="sf-primary-text font-semibold hidden group-open:inline ml-2 shrink-0">
+                                        <i class="fa-solid fa-chevron-up"></i>
+                                    </span>
+                                </summary>
+                                <div class="p-4 bg-slate-50 rounded-lg mt-2 text-xs md:text-sm text-slate-600 leading-relaxed space-y-2">
+                                    <p>정액 보상하는 담보는 중복보상 받을 수 있습니다.</p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 반려묘 유의사항 및 아코디언 영역 -->
+                <div id="checkInfo-section-cat" class="space-y-4 pt-6 border-t border-slate-100 scroll-mt-20">
+                    <div class="px-4 sm:px-6 max-w-xl mx-auto w-full space-y-3">
+                        <div class="grid grid-cols-2 gap-2 w-full">
+                            <!-- 1. 보험금 지급제한사항 버튼 (반려묘 전용 모달 ID 연결) -->
+                            <button type="button" onclick="openModal('modal_cat_restriction')" class="py-2.5 px-2 border border-blue-600 text-blue-600 bg-white text-[11px] sm:text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1 whitespace-nowrap">
+                                <span>보험금 지급제한사항</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                            </button>
+
+                            <!-- 2. 가입 시 유의사항 버튼 (반려묘 전용 유의사항 모달 연결) -->
+                            <button type="button" onclick="openModal('modal_cat_signup_note')" class="py-2.5 px-2 border border-blue-600 text-blue-600 bg-white text-[11px] sm:text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1 whitespace-nowrap">
+                                <span>가입 시 유의사항</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                            </button>
+
+                            <!-- 3. 상품약관 버튼 -->
+                            <a href="https://direct.samsungfire.com/CR_MyAnycarWeb/mall/pdf/long_cat.pdf" target="_blank" class="py-2.5 px-4 border border-blue-600 text-blue-600 bg-white text-xs font-semibold rounded-lg hover:bg-blue-50 transition flex items-center justify-center space-x-1">
+                                <span>상품약관</span>
+                                <i class="fa-solid fa-download text-[10px]"></i>
+                            </a>
+                        </div>
+
+                        <details class="group bg-transparent border border-slate-200 rounded-xl overflow-hidden transition-all w-full">
+                            <summary class="flex justify-between items-center p-4 text-xs md:text-sm font-semibold text-slate-800 cursor-pointer select-none bg-transparent hover:bg-slate-100/50">
+                                <span>꼭 확인하세요</span>
+                                <span class="sf-primary-text font-semibold ml-2 shrink-0">
+                                    <i class="fa-solid fa-chevron-down group-open:hidden"></i>
+                                    <i class="fa-solid fa-chevron-up hidden group-open:inline"></i>
+                                </span>
+                            </summary>
+                            <div class="p-4 border-t border-slate-200 text-xs text-slate-600 leading-relaxed">
+                                <ul class="list-disc list-outside ml-4 space-y-1">
+                                    <li>해당 상품의 상품명은 무배당 삼성화재 다이렉트 반려묘보험 입니다.</li>
+                                    <li>보험계약 전 상품설명서 및 약관을 참고해 주세요.</li>
+                                </ul>
+                            </div>
+                        </details>
+
+                        <div class="text-right text-[11px] text-slate-400 pt-1 w-full">
+                            준법감시인확인필 제26-1-1161호 (5959,'26.02.25~'27.02.24)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 하단 고정 CTA 버튼 -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 shadow-lg">
+        <div class="max-w-4xl mx-auto flex justify-center">
+            <button onclick="window.open('https://direct.samsungfire.com/ria/product/insurance/petLong/?state=Front&ver=193', '_blank')" class="w-full sm:w-2/3 py-4 sf-primary-bg text-white font-semibold text-base rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-500/20 flex items-center justify-center space-x-2">
+                <span>보험료 확인하기</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 반려묘 전용 보험금 지급제한사항 모달 창 (독립 관리) -->
+    <div id="modal_cat_restriction" class="hidden fixed inset-0 z-[9999] bg-black/60 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden relative">
+            <!-- 상단 타이틀 및 닫기 버튼 -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
+                <h3 class="text-base font-semibold text-slate-900">반려묘 보험금 지급제한사항</h3>
+                <button type="button" onclick="closeModal('modal_cat_restriction')" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- 본문 내용 영역 (반려묘 특화 내용 포함) -->
+            <div class="p-6 overflow-y-auto flex-1 text-xs sm:text-sm text-slate-600 space-y-3 leading-relaxed">
+                <p>1. 계약자 및 피보험자, 이들의 가족 또는 사용인의 고의 또는 중대한 과실</p>
+                <p>2. 전쟁, 혁명, 내란, 사변, 테러, 폭동, 소요, 노동쟁의, 기타 이들과 유사한 사태</p>
+                <p>3. 지진, 분화, 홍수, 해일 또는 이와 비슷한 천재지변</p>
+                <p>4. 핵연료물질 또는 핵연료물질에 의하여 오염된 물질의 방사성, 폭발성 또는 그 밖의 유해한 특성 또는 이들 특성에 의한 사고</p>
+                <p>5. 방사선을 쬐는 것 또는 방사능 오염</p>
+                <p>6. 피보험자의 질병, 심신상실 또는 정신질환으로 인한 손해</p>
+                <p>7. 최초계약의 보험계약일 이전에 이미 감염 또는 발병한 상해 및 질병</p>
+                <p>8. 반려묘를 범죄행위, 경주, 수색, 폭약탐지, 구조, 투견, 실험 및 이와 유사한 목적으로 이용함으로써 발생한 손해</p>
+                <p>9. 원인이 어떠한 경우에도 반려동물에 대한 사료제공 또는 급수 등 기본적인 관리에 대한 태만</p>
+                <p>10. 동물보호법 위반 등 동물학대에 기인하는 손해</p>
+                <p>11. 대한민국 이외 지역에서 발생한 사고 및 손해</p>
+                <p>12. 수의사의 치료상의 과오로 생긴 상해 또는 질병, 수의사 자격이 없는 자의 치료행위로 인한 손해(수의사의 소견 및 처방에 의한 경우도 동일) 및 그로 인하여 가중된 손해</p>
+                <p>13. 국가 및 지방자치단체의 명령 또는 법률에 의한 살처분 또는 이와 유사한 사태</p>
+                <p>14. 반려묘의 선천적, 유전적 질병에 의한 손해(보험개시 이전부터 객관적으로 인지할 수 있는 증상을 포함합니다. 다만 보험기간 중 최초로 발견된 경우에는 보상합니다)</p>
+                <p>15. 백신 접종비용 및 기타 질병예방을 위한 검사 또는 투약ㆍ예방 접종비용 및 정기검진, 예방적 검사를 위한 비용</p>
+                <p>16. 임신, 출산(제왕절개를 포함합니다), 인공유산과 관련된 비용 및 출산 후 증상 치료 비용</p>
+                <p>17. 중성화, 불임 및 피임을 목적으로 한 수술 및 처치에 따른 비용</p>
+                <p>18. 손톱의 절제(며느리발톱의 제거 포함), 잔존유치, 잠복고환, 배꼽허니아(배꼽부위탈장), 항문낭 제거 등 건강동물에 실시하는 외과수술 및 기타 검사 또는 손톱깎기 등의 처치비용</p>
+                <p>19. 미용으로 인한 비용</p>
+                <p>20. 귀 성형, 꼬리 성형, 성대 제거 및 미용성형 등 질병치료가 아닌 수술에 소요되는 비용</p>
+                <p>21. 입원중의 식이(食餌)에 해당하지 않는 음식물 및 식이요법, 그리고 수의사가 처방하는 의약품 이외의 것(건강보조식품, 의약품지정이 되어 있지 않은 한방약, 의약부외품 등)</p>
+                <p>22. 목욕 비용(약욕 및 처방샴푸 값 포함) 및 귀 세정제(이어 클리너), 예방 가능한 기생충(벼룩, 진드기, 모낭충 등)의 제거 비용 및 기생충으로 발생한 질병의 치료비</p>
+                <p>23. 한방 및 한약(보상하는 상해 또는 질병의 치료를 위한 침술 및 물리치료는 제외합니다), 온천요법, 산소요법, 면역요법 등의 대체적 처치에 의한 치료를 위한 비용</p>
+                <p>24. 마이크로칩의 삽입 비용, 안락사를 위한 비용, 장례식비용, 매장비용 등 가입동물의 사망 후에 소요된 비용, 각종 증명서류의 작성비용(운송비 포함)</p>
+                <p>25. 펫호텔 비용 또는 위탁료, 산책료, 카운슬링 비용, 상담료, 지도료, 문제행동 교정비용 및 이와 동종의 비용</p>
+                <div>
+                    <p>26. 아래의 질병으로 인하여 발생한 손해는 보상하지 않습니다. 다만, 질병의 발생일로부터 과거 1년 이내의 예방접종 기록이 있는 경우에는 보상합니다.</p>
+                    <ul class="list-disc list-inside ml-2 mt-1 space-y-1">
+                        <li>고양이범백혈구감소증</li>
+                        <li>고양이칼리시바이러스감염증</li>
+                        <li>고양이바이러스성비기관지염</li>
+                        <li>고양이백혈병바이러스감염증</li>
+                    </ul>
+                </div>
+                <p>27. 왕진료, 가입동물의 이송비, 동물병원에 가지 않고 약제만 배달되는 배달료 및 이와 동종의 비용</p>
+                <p>28. 과잉진료행위로 인한 비용</p>
+                <p>29. 상병명을 알 수 없는 상해 또는 질병에 대한 치료</p>
+                <p>30. 위에서 정한 조치에 다른 진료를 병행하여 실시한 경우에는 위에서 정한 조치(마취 비용을 포함합니다)에 대한 보험금은 지급하지 않습니다.</p>
+            </div>
+
+            <!-- 하단 확인 버튼 -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50 shrink-0">
+                <button type="button" onclick="closeModal('modal_cat_restriction')" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition">
+                    확인
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 반려묘 전용 가입 시 유의사항 모달 창 -->
+    <div id="modal_cat_signup_note" class="hidden fixed inset-0 z-[9999] bg-black/60 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden relative">
+            <!-- 상단 타이틀 및 닫기 버튼 -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
+                <h3 class="text-base font-semibold text-slate-900">가입 시 유의사항</h3>
+                <button type="button" onclick="closeModal('modal_cat_signup_note')" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- 본문 내용 영역 -->
+            <div class="p-6 overflow-y-auto flex-1 text-xs sm:text-sm text-slate-600 space-y-6 leading-relaxed">
+                
+                <!-- 상단 강조 제목 -->
+                <div class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-snug">
+                    보험 가입 시 중요내용을<br>꼭 확인해 주세요
+                </div>
+
+                <!-- 1. 예금자보호 안내 -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-900 text-sm">예금자보호 안내</h4>
+                    <div class="flex items-start space-x-3">
+                        <img src="https://direct.samsungfire.com/resources/images/common/img_depositor_mark.png" alt="예금자보호마크" class="w-24 h-auto object-contain shrink-0 mt-0.5">
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            이 보험계약은 예금자보호법에 따라 해약환급금(또는 만기 시 보험금)에 기타지급금을 합한 금액이 1인당 “1억원까지”(본 보험회사의 여타 보호상품과 합산) 보호됩니다. 이와 별도로 본 보험회사 보호상품의 사고보험금을 합산한 금액이 1인당 “1억원까지” 보호됩니다. 다만, 보험계약자 및 보험료 납부자가 법인인 보험계약의 경우에는 보호되지 않습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. 보험계약을 할 때 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">보험계약을 할 때</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>보험계약 청약 시에는 보험상품명, 보험기간, 보험료, 보험료납입기간, 피보험자 등을 반드시 확인하고, 보험약관을 반드시 수령·확인해 주세요.</p>
+                    </div>
+                </div>
+
+                <!-- 3. 자필서명 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">자필서명</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>보험계약 청약 시 계약자와 피보험자가 자필서명(전자서명 포함)을 하셔야 하며, 자필서명을 하지 않은 경우 보험계약의 효력 등과 관련하여 불이익이 있을 수 있습니다. 단, 인터넷을 통해 계약하는 경우 자필서명을 전자서명으로 대체할 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <!-- 4. 무배당 보험 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">무배당 보험</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>이 보험은 무배당 보험상품으로 배당이 발생하지 않는 대신, 배당 상품과 비교하여 일반적으로 보험료가 저렴합니다.</p>
+                    </div>
+                </div>
+
+                <!-- 5. 가입자의 계약 전 알릴 의무 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">가입자의 계약 전 알릴 의무</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>계약자 또는 피보험자는 보험계약 청약 시 청약서(전자문서 포함)의 질문사항에 대하여 알고 있는 내용을 반드시 사실대로 알려야 하며(청약서 또는 전자청약서에 기재), 그렇지 않은 경우 보험금의 지급이 거절될 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <!-- 6. 가입자의 계약 후 알릴 의무 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">가입자의 계약 후 알릴 의무</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>계약자 또는 피보험자는 보험계약을 맺은 후 보험약관에 정한 계약 후 알릴 의무사항이 발생했을 경우 지체 없이 삼성화재에 알려야 합니다. 그렇지 않은 경우 보험금 지급이 거절될 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <!-- 7. 보험료 납입 연체 시 보험계약의 해지 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">보험료 납입 연체 시 보험계약의 해지</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>계약자가 제2회 이후 보험료의 납입을 연체하는 경우 삼성화재는 14일 이상의 기간을 납입최고(독촉)기간으로 정하여 계약자에게 납입최고(독촉)를 합니다. 납입최고 기간까지 해당보험료를 납입하지 않을 경우 계약이 해지됩니다.</p>
+                    </div>
+                </div>
+
+                <!-- 8. 청약철회제도 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">청약철회제도</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>계약자는 보험증권을 받은 날부터 15일 이내(청약을 한 날부터 30일 이내에 한함)에 그 청약을 철회할 수 있으며, 이 경우 3일 이내에 보험료를 돌려 드립니다. 단, 일반금융소비자의 건강상태 진단을 지원하는 보장성 상품, 보장기간이 90일 이내인 금융상품 또는 전문금융소비자가 체결한 계약은 청약을 철회할 수 없습니다. 청약철회 기간 내에 청약철회를 하는 경우 납입한 보험료 전액을 돌려받을 수 있습니다.</p>
+                    </div>
+                    <p class="text-[11px] text-slate-500 pl-3">
+                        (전문금융소비자: 금융상품에 관한 전문성 또는 소유자산규모 등에 비추어 금융상품 계약에 따른 위험감수능력이 있는 금융소비자로서 「금융소비자법」 제2조(정의)에서 정한 각 목의 어느 하나에 해당하는 자)
+                    </p>
+                </div>
+
+                <!-- 9. 품질보증제도 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">품질보증제도</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>계약자가 보험가입 시 보험약관과 청약서 부본을 전달받지 못했거나, 청약서에 자필서명(전자서명 포함) 또는 날인(도장을 찍음)을 하지 않은 경우, 약관의 중요한 내용을 설명 받지 못한 못하였을 때에는 계약이 성립한 날로부터 3개월 이내에 삼성화재에 보험계약의 취소를 요구할 수 있습니다. 단, 「전자거래기본법」 에 의해 인터넷을 통해 계약을 체결한 경우에는 청약서 부본을 드리지 않을 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <!-- 10. 해약환급금이 납입보험료보다 적거나 없는 이유 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">해약환급금이 납입보험료보다 적거나 없는 이유</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>해약환급금이란 보험계약이 중도에 해지될 경우에 지급되는 금액을 말합니다. 보험은 은행의 저축과 달리 위험보장과 저축을 겸비한 제도로서 계약자가 납입한 보험료 중 일부는 불의의 사고를 당한 다른 가입자에게 지급되는 보험금으로, 또 다른 일부는 보험회사 운영에 필요한 경비로 사용되므로 중도해지 시 지급되는 해약환급금은 납입한 보험료보다 적거나 없을 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <!-- 11. 계약해지 후 다른 보험 계약 시 유의사항 -->
+                <div class="space-y-1">
+                    <h4 class="font-bold text-slate-900 text-sm">계약해지 후 다른 보험 계약 시 유의사항</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <p>보험계약자가 기존에 체결했던 보험계약을 해지하고 다른 보험계약을 가입하려는 경우 보험계약이 거절되거나 보험료가 인상되거나 보장내용이 달라질 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <!-- 12. 보험상담 및 분쟁 해결에 관한 사항 -->
+                <div class="space-y-3">
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <div>
+                            가입하신 보험 관련 상담이나 사고접수, 보험처리 등 보험계약 관련 문의 또는 불편사항이 있을 경우 삼성화재로 연락주시면 신속히 해결해 드리겠습니다.<br>
+                            &lt;삼성화재해상보험&gt;<br>
+                            전화: 1588-5114 / 인터넷: <a href="https://www.samsungfire.com" target="_blank" class="text-blue-600 underline hover:text-blue-800">www.samsungfire.com</a>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <div>
+                            삼성화재의 처리 결과에 이의가 있는 경우 금융감독원 민원상담전화나 홈페이지를 통해 민원 또는 분쟁조정 등을 신청하실 수 있습니다.<br>
+                            &lt;금융감독원 민원상담&gt;<br>
+                            전화: 국번 없이 1332 / 인터넷: <a href="https://www.fss.or.kr" target="_blank" class="text-blue-600 underline hover:text-blue-800">www.fss.or.kr</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 13. 금융감독원 신고센터 안내 -->
+                <div class="space-y-3 pt-2">
+                    <h4 class="font-bold text-slate-900 text-sm">금융감독원 신고센터 안내</h4>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <div>
+                            보험계약과 관련된 보험질서 문란행위는 「보험업법」에 의해 처벌받을 수 있습니다.<br>
+                            &lt;보험모집질서위반 신고센터&gt;<br>
+                            전화: 국번 없이 1332 / 인터넷: <a href="https://www.fss.or.kr" target="_blank" class="text-blue-600 underline hover:text-blue-800">www.fss.or.kr</a>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <span class="shrink-0">•</span>
+                        <div>
+                            보험사기는 「보험사기방지특별법」 제8조(보험사기죄)에 따라 10년 이하의 징역 또는 5천만원 이하의 벌금에 처해지며, 보험범죄를 교사한 경우에도 동일한 처벌을 받을 수 있습니다.<br>
+                            &lt;보험사기 신고센터&gt;<br>
+                            전화: 국번 없이 1332 / 인터넷: <a href="https://www.fss.or.kr" target="_blank" class="text-blue-600 underline hover:text-blue-800">www.fss.or.kr</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 하단 안내 문구 (왼쪽 정렬 및 파란색 글자 적용) -->
+                <div class="pt-4 border-t border-slate-200 font-semibold text-blue-600 text-left">
+                    보험계약 체결 전 상품설명서 및 약관을 확인해 주세요
+                </div>
+            </div>
+
+            <!-- 하단 확인 버튼 -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50 shrink-0">
+                <button type="button" onclick="closeModal('modal_cat_signup_note')" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition">
+                    확인
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="header.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof renderHeader === 'function') {
+                renderHeader('insurance-cat.html');
+            }
+        });
+
+        // 스크롤 이동 함수
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // 모달 열기 함수
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // 모달 닫기 함수
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
+</body>
+</html>
