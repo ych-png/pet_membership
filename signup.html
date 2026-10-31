@@ -10,6 +10,9 @@
     <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
+    <!-- Daum(Kakao) 우편번호 서비스 공식 스크립트 -->
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         body { font-family: 'Pretendard', sans-serif; }
@@ -30,45 +33,98 @@
 
     <!-- Signup Form Section -->
     <main class="flex-grow flex items-center justify-center px-4 py-12">
-        <div class="w-full max-w-md bg-slate-950 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+        <div class="w-full max-w-lg bg-slate-950 border border-slate-800 rounded-2xl p-8 shadow-2xl">
             <div class="text-center mb-8">
                 <h1 class="text-2xl font-bold text-slate-100">벨루나펫 회원가입</h1>
                 <p class="text-xs text-slate-400 mt-2">한국애견연맹과 함께하는 회원 전용 서비스를 이용해보세요.</p>
             </div>
 
             <form onsubmit="handleSignUp(event)" class="space-y-4">
+                <!-- 이름 -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">이름</label>
-                    <input type="text" id="name" required placeholder="홍길동" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                    <input type="text" id="name" required oninput="validateForm()" placeholder="홍길동" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
                 </div>
 
+                <!-- 아이디 및 중복확인 버튼 -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">아이디</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="username" required oninput="onUsernameInput()" placeholder="영문/숫자 조합 4~12자" class="flex-grow bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                        <button type="button" onclick="checkUsernameDuplicate()" id="usernameCheckBtn" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 text-xs font-bold px-4 rounded-lg transition whitespace-nowrap">
+                            중복확인
+                        </button>
+                    </div>
+                    <p id="usernameStatus" class="text-xs mt-1.5 hidden flex items-center gap-1"></p>
+                </div>
+
+                <!-- 비밀번호 -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">비밀번호</label>
+                    <input type="password" id="password" required oninput="onPasswordInput()" placeholder="6자 이상 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                </div>
+
+                <!-- 비밀번호 확인 -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">비밀번호 확인</label>
+                    <input type="password" id="confirmPassword" required oninput="onPasswordInput()" placeholder="비밀번호 다시 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                    <!-- 비밀번호 일치 여부 메시지 -->
+                    <p id="passwordMatchStatus" class="text-xs mt-1.5 hidden flex items-center gap-1"></p>
+                </div>
+
+                <!-- 이메일 및 인증번호 발송 -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">이메일 계정</label>
-                    <input type="email" id="email" required onblur="checkEmailDuplicate()" oninput="clearEmailError()" placeholder="example@email.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
-                    <!-- 이메일 오류/중복 메시지 표시 영역 -->
+                    <div class="flex gap-2">
+                        <input type="email" id="email" required oninput="onEmailInput()" placeholder="example@email.com" class="flex-grow bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                        <button type="button" onclick="sendEmailVerification()" id="emailVerifyBtn" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 text-xs font-bold px-4 rounded-lg transition whitespace-nowrap">
+                            인증번호 발송
+                        </button>
+                    </div>
+                    <!-- 이메일 오류/형식 에러/중복 메시지 표시 영역 -->
                     <p id="emailError" class="text-xs text-red-400 mt-1.5 hidden flex items-center gap-1">
                         <i class="fa-solid fa-circle-exclamation"></i>
                         <span id="emailErrorText">이미 가입된 이메일입니다.</span>
                     </p>
+                    <!-- 이메일 인증 완료 시 표시되는 문구 -->
+                    <p id="emailSuccessText" class="text-xs text-green-400 font-semibold mt-1.5 hidden flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check"></i> 이메일 인증이 완료되었습니다.
+                    </p>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">비밀번호</label>
-                    <input type="password" id="password" required placeholder="6자 이상 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                <!-- 인증번호 입력 영역 (발송 시 나타나고, 인증 완료 시 숨겨짐) -->
+                <div id="emailVerifyArea" class="hidden space-y-2 bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+                    <div class="flex gap-2">
+                        <input type="text" id="emailVerifyCode" maxlength="8" placeholder="이메일로 전송된 인증번호 8자리" class="flex-grow bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                        <button type="button" onclick="confirmEmailVerification()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold px-4 rounded-lg transition">
+                            확인
+                        </button>
+                    </div>
+                    <p id="emailVerifyStatusText" class="text-xs text-amber-400"></p>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">비밀번호 확인</label>
-                    <input type="password" id="confirmPassword" required placeholder="비밀번호 다시 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
-                </div>
-
+                <!-- 전화번호 -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">전화번호</label>
-                    <input type="tel" id="phone" required maxlength="13" oninput="formatPhoneNumber(this)" placeholder="010-1234-5678" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                    <input type="tel" id="phone" required maxlength="13" oninput="formatPhoneNumber(this); validateForm();" placeholder="010-1234-5678" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
                 </div>
 
-                <button type="submit" id="submitBtn" class="w-full bg-amber-400 text-slate-950 font-bold py-3.5 rounded-lg text-sm hover:bg-amber-300 transition shadow-lg mt-4">
-                    가입하기
+                <!-- 주소 (카카오 우편번호 검색 및 상세주소) -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">주소</label>
+                    <div class="flex gap-2 mb-2">
+                        <input type="text" id="postcode" readonly placeholder="우편번호" class="w-32 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:outline-none">
+                        <button type="button" onclick="execDaumPostcode()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-4 rounded-lg transition whitespace-nowrap">
+                            <i class="fa-solid fa-magnifying-glass mr-1"></i> 우편번호 검색
+                        </button>
+                    </div>
+                    <input type="text" id="address" readonly placeholder="기본 주소" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:outline-none mb-2">
+                    <input type="text" id="detailAddress" required oninput="validateForm()" placeholder="상세 주소를 입력해 주세요" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                </div>
+
+                <!-- 필수 항목 완료 전에는 비활성화(disabled)되는 가입 버튼 -->
+                <button type="submit" id="submitBtn" disabled class="w-full bg-slate-700 text-slate-400 font-bold py-3.5 rounded-lg text-sm transition shadow-lg mt-4 cursor-not-allowed">
+                    모든 항목을 입력하고 아이디 중복확인 및 이메일 인증을 완료해주세요
                 </button>
             </form>
 
@@ -89,7 +145,16 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 전화번호 하이픈(-) 자동 삽입
+        let isUsernameChecked = false;
+        let isEmailVerified = false;
+
+        // 이메일 형식 정규식 검사 함수
+        function isValidEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        // 전화번호 하이픈 자동 입력
         function formatPhoneNumber(input) {
             let value = input.value.replace(/[^0-9]/g, '');
             if (value.length > 11) value = value.substring(0, 11);
@@ -105,123 +170,312 @@
             }
         }
 
-        // 이메일 입력 중 에러 메시지 숨기기 및 스타일 원복
-        function clearEmailError() {
-            const emailInput = document.getElementById('email');
-            const emailError = document.getElementById('emailError');
-            
-            emailError.classList.add('hidden');
-            emailInput.classList.remove('border-red-500', 'focus:border-red-500');
-            emailInput.classList.add('border-slate-700', 'focus:border-amber-400');
+        // 아이디 입력 변경 시 중복 확인 상태 초기화
+        function onUsernameInput() {
+            isUsernameChecked = false;
+            const status = document.getElementById('usernameStatus');
+            status.classList.add('hidden');
+            validateForm();
         }
 
-        // 이메일 중복 에러 메시지 표시 함수
-        function showEmailError(message) {
-            const emailInput = document.getElementById('email');
-            const emailError = document.getElementById('emailError');
-            const emailErrorText = document.getElementById('emailErrorText');
+        // 아이디 중복 확인 기능
+        async function checkUsernameDuplicate() {
+            const usernameInput = document.getElementById('username').value.trim();
+            const status = document.getElementById('usernameStatus');
 
-            emailErrorText.innerText = message;
-            emailError.classList.remove('hidden');
-            emailInput.classList.remove('border-slate-700', 'focus:border-amber-400');
-            emailInput.classList.add('border-red-500', 'focus:border-red-500');
-        }
-
-        // 이메일 입력 포커스가 해제될 때(blur) profiles 테이블에서 실시간 중복 체크
-        async function checkEmailDuplicate() {
-            const emailInput = document.getElementById('email').value.trim();
-            if (!emailInput) return;
+            if (!usernameInput || usernameInput.length < 4) {
+                status.className = "text-xs text-red-400 mt-1.5 flex items-center gap-1";
+                status.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> 아이디는 4자 이상 입력해 주세요.`;
+                status.classList.remove('hidden');
+                return;
+            }
 
             try {
                 const { data, error } = await _supabase
                     .from('profiles')
-                    .select('email')
-                    .eq('email', emailInput)
+                    .select('username')
+                    .eq('username', usernameInput)
                     .maybeSingle();
 
                 if (data) {
-                    showEmailError('이미 가입된 이메일입니다.');
+                    isUsernameChecked = false;
+                    status.className = "text-xs text-red-400 mt-1.5 flex items-center gap-1";
+                    status.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> 이미 사용 중인 아이디입니다.`;
+                    status.classList.remove('hidden');
+                } else {
+                    isUsernameChecked = true;
+                    status.className = "text-xs text-green-400 mt-1.5 flex items-center gap-1";
+                    status.innerHTML = `<i class="fa-solid fa-check"></i> 사용 가능한 아이디입니다.`;
+                    status.classList.remove('hidden');
+                    validateForm();
                 }
             } catch (err) {
-                console.error('이메일 중복 체크 에러:', err);
+                console.error('아이디 중복 체크 에러:', err);
+                alert('중복 체크 중 오류가 발생했습니다.');
             }
         }
 
-        // 회원가입 처리 함수
-        async function handleSignUp(e) {
-            e.preventDefault();
-            clearEmailError();
+        // 비밀번호 및 비밀번호 확인 실시간 검사 함수
+        function onPasswordInput() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const matchStatus = document.getElementById('passwordMatchStatus');
 
-            const nameInput = document.getElementById('name').value.trim();
+            if (confirmPassword.length > 0) {
+                matchStatus.classList.remove('hidden');
+                if (password === confirmPassword) {
+                    matchStatus.className = "text-xs text-green-400 mt-1.5 flex items-center gap-1";
+                    matchStatus.innerHTML = `<i class="fa-solid fa-check"></i> 비밀번호가 일치합니다.`;
+                } else {
+                    matchStatus.className = "text-xs text-red-400 mt-1.5 flex items-center gap-1";
+                    matchStatus.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> 비밀번호가 일치하지 않습니다.`;
+                }
+            } else {
+                matchStatus.classList.add('hidden');
+            }
+
+            validateForm();
+        }
+
+        // 이메일 입력 중 변경 시 인증 상태 초기화 및 실시간 형식 검사
+        function onEmailInput() {
+            isEmailVerified = false;
+            document.getElementById('emailVerifyBtn').innerText = "인증번호 발송";
+            document.getElementById('emailVerifyBtn').disabled = false;
+            document.getElementById('emailVerifyArea').classList.add('hidden');
+            document.getElementById('emailSuccessText').classList.add('hidden');
+            
             const emailInput = document.getElementById('email').value.trim();
-            const passwordInput = document.getElementById('password').value;
-            const confirmPasswordInput = document.getElementById('confirmPassword').value;
-            const phoneInput = document.getElementById('phone').value.trim();
-            const submitBtn = document.getElementById('submitBtn');
+            const emailError = document.getElementById('emailError');
+            const emailErrorText = document.getElementById('emailErrorText');
 
-            // 1. 비밀번호 검수
-            if (passwordInput.length < 6) {
-                alert('비밀번호는 최소 6자 이상이어야 합니다.');
+            if (emailInput.length > 0 && !isValidEmail(emailInput)) {
+                emailErrorText.innerText = '이메일의 형식이 아닙니다.';
+                emailError.classList.remove('hidden');
+            } else {
+                emailError.classList.add('hidden');
+            }
+            
+            validateForm();
+        }
+
+        // [인증번호 발송 버튼 클릭 시] DB에 유저 생성을 유발하지 않는 signInWithOtp 사용 (shouldCreateUser: false)
+        async function sendEmailVerification() {
+            const emailInput = document.getElementById('email').value.trim().toLowerCase();
+            const emailError = document.getElementById('emailError');
+            const emailErrorText = document.getElementById('emailErrorText');
+            const emailVerifyBtn = document.getElementById('emailVerifyBtn');
+
+            // 1. 이메일 형식 체크
+            if (!emailInput || !isValidEmail(emailInput)) {
+                emailErrorText.innerText = '이메일의 형식이 아닙니다.';
+                emailError.classList.remove('hidden');
+                document.getElementById('email').focus();
                 return;
             }
 
-            if (passwordInput !== confirmPasswordInput) {
-                alert('비밀번호가 일치하지 않습니다. 다시 확인해 주세요.');
-                document.getElementById('confirmPassword').focus();
-                return;
+            // 2. 이메일 중복 체크 (RPC 함수 호출)
+            try {
+                const { data: emailExists, error } = await _supabase.rpc('check_email_exists', {
+                    email_input: emailInput
+                });
+
+                if (emailExists) {
+                    emailErrorText.innerText = '이미 가입된 이메일입니다.';
+                    emailError.classList.remove('hidden');
+                    document.getElementById('email').focus();
+                    return;
+                }
+            } catch (err) {
+                console.error('중복 체크 에러:', err);
             }
 
-            submitBtn.disabled = true;
-            submitBtn.innerText = '가입 처리 중...';
+            emailError.classList.add('hidden');
+            emailVerifyBtn.innerText = '발송 중...';
+            emailVerifyBtn.disabled = true;
 
             try {
-                // 2. Supabase Auth 가입 진행
+                // shouldCreateUser를 false로 주어 인증번호 발송 단계에서 DB에 유저가 사전 생성되는 것을 방지
+                const { data, error } = await _supabase.auth.signInWithOtp({
+                    email: emailInput,
+                    options: {
+                        shouldCreateUser: false
+                    }
+                });
+
+                if (error) {
+                    alert('인증번호 발송 실패: ' + error.message);
+                    emailVerifyBtn.innerText = '인증번호 발송';
+                    emailVerifyBtn.disabled = false;
+                    return;
+                }
+
+                document.getElementById('emailVerifyArea').classList.remove('hidden');
+                document.getElementById('emailVerifyStatusText').innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i> 입력하신 이메일로 인증번호가 발송되었습니다. 메일함(스팸함 포함)을 확인해주세요.`;
+                
+                alert('이메일로 인증번호가 발송되었습니다. 메일함을 확인해주세요!');
+
+            } catch (err) {
+                console.error('OTP 발송 에러:', err);
+                alert('이메일 발송 중 오류가 발생했습니다.');
+                emailVerifyBtn.innerText = '인증번호 발송';
+                emailVerifyBtn.disabled = false;
+            }
+        }
+
+        // [인증번호 확인 버튼 클릭 시] 입력한 8자리 코드 검증 (`verifyOtp` type: 'email')
+        async function confirmEmailVerification() {
+            const emailInput = document.getElementById('email').value.trim().toLowerCase();
+            const userCode = document.getElementById('emailVerifyCode').value.trim();
+            const statusText = document.getElementById('emailVerifyStatusText');
+
+            if (!userCode || userCode.length !== 8) {
+                statusText.className = "text-xs text-red-400";
+                statusText.innerText = "✕ 8자리 인증번호를 정확히 입력해 주세요.";
+                return;
+            }
+
+            try {
+                const { data, error } = await _supabase.auth.verifyOtp({
+                    email: emailInput,
+                    token: userCode,
+                    type: 'email'
+                });
+
+                if (error) {
+                    isEmailVerified = false;
+                    statusText.className = "text-xs text-red-400";
+                    statusText.innerText = "✕ 인증번호가 일치하지 않거나 만료되었습니다.";
+                    return;
+                }
+
+                // 인증 성공 시 (이 시점에는 코드 검증만 통과하고 실제 계정은 아직 생성되지 않음)
+                isEmailVerified = true;
+                document.getElementById('emailVerifyArea').classList.add('hidden');
+                document.getElementById('emailSuccessText').classList.remove('hidden');
+                
+                document.getElementById('emailVerifyBtn').innerText = "인증완료";
+                document.getElementById('emailVerifyBtn').disabled = true;
+                document.getElementById('email').readOnly = true;
+                document.getElementById('password').readOnly = true;
+                document.getElementById('confirmPassword').readOnly = true;
+                
+                alert('이메일 인증이 성공적으로 완료되었습니다!');
+                validateForm();
+
+            } catch (err) {
+                console.error('OTP 확인 에러:', err);
+                statusText.className = "text-xs text-red-400";
+                statusText.innerText = "✕ 인증 처리 중 오류가 발생했습니다.";
+            }
+        }
+
+        // 카카오 우편번호 팝업 호출
+        function execDaumPostcode() {
+            if (typeof daum === 'undefined' || !daum.Postcode) {
+                alert('우편번호 서비스 스크립트가 아직 로드되지 않았습니다. 잠시 후 다시 시도해 주세요.');
+                return;
+            }
+
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
+                    document.getElementById('postcode').value = data.zonecode;
+                    document.getElementById('address').value = addr;
+                    document.getElementById('detailAddress').focus();
+                    validateForm();
+                }
+            }).open();
+        }
+
+        // 필수 항목 작성 및 아이디 중복확인, 이메일 인증 완료 여부 검사
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phone = document.getElementById('phone').value.trim();
+            const postcode = document.getElementById('postcode').value.trim();
+            const detailAddress = document.getElementById('detailAddress').value.trim();
+            
+            const submitBtn = document.getElementById('submitBtn');
+
+            const isAllFilled = name && username && email && password && confirmPassword && phone && postcode && detailAddress;
+            const isPasswordValid = password.length >= 6 && (password === confirmPassword);
+
+            if (isAllFilled && isPasswordValid && isUsernameChecked && isEmailVerified) {
+                submitBtn.disabled = false;
+                submitBtn.className = "w-full bg-amber-400 text-slate-950 font-bold py-3.5 rounded-lg text-sm hover:bg-amber-300 transition shadow-lg mt-4 cursor-pointer";
+                submitBtn.innerText = "가입 완료하기";
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.className = "w-full bg-slate-700 text-slate-400 font-bold py-3.5 rounded-lg text-sm transition shadow-lg mt-4 cursor-not-allowed";
+                
+                if (!isUsernameChecked) {
+                    submitBtn.innerText = "아이디 중복확인을 진행해 주세요";
+                } else if (!isEmailVerified) {
+                    submitBtn.innerText = "이메일 인증을 완료해 주세요";
+                } else if (!isAllFilled) {
+                    submitBtn.innerText = "모든 필수 항목을 입력해 주세요";
+                } else if (password.length < 6) {
+                    submitBtn.innerText = "비밀번호는 6자 이상이어야 합니다";
+                } else if (password !== confirmPassword) {
+                    submitBtn.innerText = "비밀번호가 일치하지 않습니다";
+                }
+            }
+        }
+
+        ['name', 'detailAddress'].forEach(id => {
+            document.getElementById(id).addEventListener('input', validateForm);
+        });
+
+        // ★ [회원가입 최종 완료 버튼 클릭 시] 이때 처음으로 실제 계정을 생성하며 메타데이터(이름, 휴대폰, 주소, 아이디)를 함께 전달하여 DB에 저장
+        async function handleSignUp(e) {
+            e.preventDefault();
+
+            const nameInput = document.getElementById('name').value.trim();
+            const usernameInput = document.getElementById('username').value.trim();
+            const emailInput = document.getElementById('email').value.trim().toLowerCase();
+            const passwordInput = document.getElementById('password').value;
+            const phoneInput = document.getElementById('phone').value.trim();
+            const postcode = document.getElementById('postcode').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const detailAddress = document.getElementById('detailAddress').value.trim();
+
+            const fullAddress = `[${postcode}] ${address} ${detailAddress}`;
+
+            try {
+                // 최종 가입 시점에 Supabase Auth에 정식 계정 생성 및 메타데이터 저장 (트리거를 통해 profiles 테이블에 자동 동기화됨)
                 const { data, error } = await _supabase.auth.signUp({
                     email: emailInput,
                     password: passwordInput,
                     options: {
                         data: {
                             name: nameInput,
-                            phone: phoneInput
+                            username: usernameInput,
+                            phone: phoneInput,
+                            address: fullAddress
                         }
                     }
                 });
 
                 if (error) {
-                    // 이메일 중복 및 관련 에러 시 필드 하단에 안내 메시지 출력
-                    if (error.message.includes('User already registered') || error.status === 422) {
-                        showEmailError('이미 가입된 이메일입니다.');
-                        document.getElementById('email').focus();
-                    } else if (error.message.includes('Unable to validate email address') || error.message.includes('invalid')) {
-                        showEmailError('올바른 이메일 형식이 아닙니다.');
-                        document.getElementById('email').focus();
-                    } else if (error.message.includes('Password should be at least')) {
-                        alert('비밀번호는 최소 6자 이상이어야 합니다.');
-                    } else if (error.message.includes('rate limit')) {
-                        alert('요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.');
-                    } else {
-                        alert('회원가입 처리 중 오류가 발생했습니다.');
-                    }
-                } else {
-                    // 이미 존재하는 계정인 경우 (Supabase 메일 확인 세팅 상황 대응)
-                    if (data.user && data.user.identities && data.user.identities.length === 0) {
-                        showEmailError('이미 가입된 이메일입니다.');
-                        document.getElementById('email').focus();
-                    } else {
-                        localStorage.setItem('userName', nameInput);
-                        localStorage.setItem('userPhone', phoneInput);
-                        localStorage.setItem('userEmail', emailInput);
-
-                        alert('회원가입 신청이 완료되었습니다! 로그인 페이지로 이동합니다.');
-                        window.location.href = 'login.html';
-                    }
+                    alert('회원가입 처리 실패: ' + error.message);
+                    return;
                 }
+
+                localStorage.setItem('userName', nameInput);
+                localStorage.setItem('userPhone', phoneInput);
+                localStorage.setItem('userEmail', emailInput);
+                localStorage.setItem('userUsername', usernameInput);
+
+                alert('회원가입이 성공적으로 완료되었습니다! 로그인 페이지로 이동합니다.');
+                window.location.href = 'login.html';
+
             } catch (err) {
-                console.error('Supabase Sign Up Error:', err);
-                alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = '가입하기';
+                console.error('최종 가입 에러:', err);
+                alert('회원가입 중 오류가 발생했습니다.');
             }
         }
     </script>
