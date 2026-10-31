@@ -331,7 +331,7 @@
             }).open();
         }
 
-        // 회원정보 수정 제출 처리
+        // 회원정보 수정 제출 처리 (비밀번호 변경 포함)
         async function handleUpdateProfile(e) {
             e.preventDefault();
 
@@ -363,6 +363,7 @@
                     address: fullAddress
                 };
 
+                // 새 비밀번호가 입력된 경우에만 포함 (DB 트리거가 update 시에도 자동 암호화 처리)
                 if (newPassword) {
                     if (newPassword.length < 6) {
                         alert('새 비밀번호는 최소 6자 이상이어야 합니다.');
@@ -373,7 +374,7 @@
                     updateData.password = newPassword;
                 }
 
-                // profiles 테이블 업데이트
+                // profiles 테이블 직접 업데이트
                 const { error: profileError } = await _supabase
                     .from('profiles')
                     .update(updateData)
