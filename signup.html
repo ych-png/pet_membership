@@ -259,9 +259,10 @@
             validateForm();
         }
 
-        // [인증번호 발송 버튼 클릭 시] DB에 유저 생성을 유발하지 않는 signInWithOtp 사용 (shouldCreateUser: false)
+        // ★ [인증번호 발송 버튼 클릭 시] 표준 signUp을 임시 호출하여 인증 코드를 발송하되, 실제 DB 데이터 저장은 최종 가입 시점에 이루어지도록 함
         async function sendEmailVerification() {
             const emailInput = document.getElementById('email').value.trim().toLowerCase();
+            const passwordInput = document.getElementById('password').value;
             const emailError = document.getElementById('emailError');
             const emailErrorText = document.getElementById('emailErrorText');
             const emailVerifyBtn = document.getElementById('emailVerifyBtn');
@@ -274,7 +275,14 @@
                 return;
             }
 
-            // 2. 이메일 중복 체크 (RPC 함수 호출)
+            // 2. 비밀번호 입력 체크 (인증 발송 시 필요)
+            if (!passwordInput || passwordInput.length < 6) {
+                alert('비밀번호를 6자 이상 먼저 입력해 주세요.');
+                document.getElementById('password').focus();
+                return;
+            }
+
+            // 3. 이메일 중복 체크 (RPC 함수 호출)
             try {
                 const { data: emailExists, error } = await _supabase.rpc('check_email_exists', {
                     email_input: emailInput
@@ -295,12 +303,10 @@
             emailVerifyBtn.disabled = true;
 
             try {
-                // shouldCreateUser를 false로 주어 인증번호 발송 단계에서 DB에 유저가 사전 생성되는 것을 방지
-                const { data, error } = await _supabase.auth.signInWithOtp({
+                // Supabase에서 인증 메일과 8자리 코드를 발송하는 표준 signUp 요청
+                const { data, error } = await _supabase.auth.signUp({
                     email: emailInput,
-                    options: {
-                        shouldCreateUser: false
-                    }
+                    password: passwordInput
                 });
 
                 if (error) {
@@ -323,7 +329,7 @@
             }
         }
 
-        // [인증번호 확인 버튼 클릭 시] 입력한 8자리 코드 검증 (`verifyOtp` type: 'email')
+        // [인증번호 확인 버튼 클릭 시] 입력한 8자리 코드 검증 (`verifyOtp` type: 'signup')
         async function confirmEmailVerification() {
             const emailInput = document.getElementById('email').value.trim().toLowerCase();
             const userCode = document.getElementById('emailVerifyCode').value.trim();
@@ -339,7 +345,7 @@
                 const { data, error } = await _supabase.auth.verifyOtp({
                     email: emailInput,
                     token: userCode,
-                    type: 'email'
+                    type: 'signup'
                 });
 
                 if (error) {
@@ -349,7 +355,7 @@
                     return;
                 }
 
-                // 인증 성공 시 (이 시점에는 코드 검증만 통과하고 실제 계정은 아직 생성되지 않음)
+                // 인증 성공 시
                 isEmailVerified = true;
                 document.getElementById('emailVerifyArea').classList.add('hidden');
                 document.getElementById('emailSuccessText').classList.remove('hidden');
@@ -430,14 +436,13 @@
             document.getElementById(id).addEventListener('input', validateForm);
         });
 
-        // ★ [회원가입 최종 완료 버튼 클릭 시] 이때 처음으로 실제 계정을 생성하며 메타데이터(이름, 휴대폰, 주소, 아이디)를 함께 전달하여 DB에 저장
+        // ★ [회원가입 최종 완료 버튼 클릭 시] 인증된 계정에 추가 메타데이터(이름, 휴대폰, 주소, 아이디)를 업데이트하여 profiles 테이블에 최종 반영
         async function handleSignUp(e) {
             e.preventDefault();
 
             const nameInput = document.getElementById('name').value.trim();
             const usernameInput = document.getElementById('username').value.trim();
             const emailInput = document.getElementById('email').value.trim().toLowerCase();
-            const passwordInput = document.getElementById('password').value;
             const phoneInput = document.getElementById('phone').value.trim();
             const postcode = document.getElementById('postcode').value.trim();
             const address = document.getElementById('address').value.trim();
@@ -446,22 +451,18 @@
             const fullAddress = `[${postcode}] ${address} ${detailAddress}`;
 
             try {
-                // 최종 가입 시점에 Supabase Auth에 정식 계정 생성 및 메타데이터 저장 (트리거를 통해 profiles 테이블에 자동 동기화됨)
-                const { data, error } = await _supabase.auth.signUp({
-                    email: emailInput,
-                    password: passwordInput,
-                    options: {
-                        data: {
-                            name: nameInput,
-                            username: usernameInput,
-                            phone: phoneInput,
-                            address: fullAddress
-                        }
+                // 이미 인증된 상태이므로 updateUser를 통해 메타데이터를 채워넣고 트리거로 profiles 테이블에 전송
+                const { data, error } = await _supabase.auth.updateUser({
+                    data: {
+                        name: nameInput,
+                        username: usernameInput,
+                        phone: phoneInput,
+                        address: fullAddress
                     }
                 });
 
                 if (error) {
-                    alert('회원가입 처리 실패: ' + error.message);
+                    alert('회원가입 정보 저장 실패: ' + error.message);
                     return;
                 }
 
