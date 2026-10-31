@@ -78,28 +78,7 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 2. 에러 메시지 한글화
-        function getKoreanErrorMessage(error) {
-            if (!error || !error.message) return '로그인 중 오류가 발생했습니다.';
-            const msg = error.message.toLowerCase();
-
-            if (msg.includes('invalid login credentials')) {
-                return '아이디 또는 비밀번호가 일치하지 않습니다.';
-            }
-            if (msg.includes('email not confirmed')) {
-                return '이메일 인증이 완료되지 않았습니다. 이메일을 확인해 주세요.';
-            }
-            if (msg.includes('user not found')) {
-                return '등록되지 않은 아이디입니다.';
-            }
-            if (msg.includes('too many requests') || msg.includes('rate limit')) {
-                return '시도 횟수가 너무 많습니다. 잠시 후 다시 시도해 주세요.';
-            }
-
-            return '로그인에 실패했습니다: ' + error.message;
-        }
-
-        // 3. 로그인 처리 함수 (아이디 기반으로 이메일을 조회 후 로그인)
+        // 2. 로그인 처리 함수 (profiles 테이블에서 아이디와 비밀번호 직접 대조)
         async function handleSignIn(e) {
             e.preventDefault();
 
@@ -107,8 +86,8 @@
             const passwordInput = document.getElementById('password').value;
             const submitBtn = document.getElementById('submitBtn');
 
-            if (!usernameInput) {
-                alert('아이디를 입력해 주세요.');
+            if (!usernameInput || !passwordInput) {
+                alert('아이디와 비밀번호를 모두 입력해 주세요.');
                 return;
             }
 
@@ -116,53 +95,44 @@
             submitBtn.innerText = '로그인 중...';
 
             try {
-                // Step A: profiles 테이블에서 입력한 username에 해당하는 이메일 주소 찾기
-                const { data: profileData, error: profileError } = await _supabase
+                // profiles 테이블에서 입력한 username과 일치하는 사용자 조회
+                const { data, error } = await _supabase
                     .from('profiles')
-                    .select('email')
+                    .select('*')
                     .eq('username', usernameInput)
                     .maybeSingle();
 
-                if (profileError || !profileData || !profileData.email) {
-                    alert('등록되지 않은 아이디입니다.');
+                if (error) {
+                    console.error('로그인 조회 에러:', error);
+                    alert('로그인 중 오류가 발생했습니다.');
                     submitBtn.disabled = false;
                     submitBtn.innerText = '로그인하기';
                     return;
                 }
 
-                const userEmail = profileData.email;
-
-                // Step B: 찾아낸 이메일과 비밀번호로 Supabase Auth 로그인 요청
-                const { data, error } = await _supabase.auth.signInWithPassword({
-                    email: userEmail,
-                    password: passwordInput,
-                });
-
-                if (error) {
-                    alert(getKoreanErrorMessage(error));
+                // 등록된 아이디가 없거나 비밀번호가 일치하지 않는 경우
+                if (!data || data.password !== passwordInput) {
+                    alert('아이디 또는 비밀번호가 일치하지 않습니다.');
                     submitBtn.disabled = false;
                     submitBtn.innerText = '로그인하기';
-                } else {
-                    const user = data.user;
-                    const userName = user.user_metadata?.name || user.user_metadata?.full_name || '회원';
-                    const userPhone = user.user_metadata?.phone || '';
-
-                    // localStorage 동기화
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', user.email);
-                    localStorage.setItem('userName', userName);
-                    localStorage.setItem('userUsername', usernameInput);
-                    if (userPhone) localStorage.setItem('userPhone', userPhone);
-
-                    alert(`${userName}님, 환영합니다!`);
-
-                    // 토큰 저장 시차 부여 후 마이페이지 이동
-                    setTimeout(() => {
-                        window.location.href = 'my.html';
-                    }, 150);
+                    return;
                 }
+
+                // 로그인 성공 시 로컬스토리지에 회원 정보 저장
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userName', data.name);
+                localStorage.setItem('userPhone', data.phone || '');
+                localStorage.setItem('userUsername', data.username);
+
+                alert(`${data.name}님, 환영합니다!`);
+
+                // 메인 페이지 또는 마이페이지로 이동
+                setTimeout(() => {
+                    window.location.href = 'index.html'; // 또는 'my.html'
+                }, 150);
+
             } catch (err) {
-                console.error('Supabase Sign In Error:', err);
+                console.error('로그인 실행 예외:', err);
                 alert('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
                 submitBtn.disabled = false;
                 submitBtn.innerText = '로그인하기';
