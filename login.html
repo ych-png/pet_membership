@@ -78,7 +78,7 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 2. 로그인 처리 함수 (profiles 테이블에서 아이디와 비밀번호 직접 대조)
+        // 2. 로그인 처리 함수 (DB의 verify_password 함수를 통해 암호화된 비밀번호 검증)
         async function handleSignIn(e) {
             e.preventDefault();
 
@@ -95,40 +95,41 @@
             submitBtn.innerText = '로그인 중...';
 
             try {
-                // profiles 테이블에서 입력한 username과 일치하는 사용자 조회
-                const { data, error } = await _supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('username', usernameInput)
-                    .maybeSingle();
+                // 데이터베이스의 보안 함수(verify_password) 호출
+                const { data, error } = await _supabase.rpc('verify_password', {
+                    input_username: usernameInput,
+                    input_password: passwordInput
+                });
 
                 if (error) {
-                    console.error('로그인 조회 에러:', error);
+                    console.error('로그인 검증 에러:', error);
                     alert('로그인 중 오류가 발생했습니다.');
                     submitBtn.disabled = false;
                     submitBtn.innerText = '로그인하기';
                     return;
                 }
 
-                // 등록된 아이디가 없거나 비밀번호가 일치하지 않는 경우
-                if (!data || data.password !== passwordInput) {
+                // 일치하는 계정이 없거나 비밀번호가 틀린 경우
+                if (!data || data.length === 0 || !data[0].matched) {
                     alert('아이디 또는 비밀번호가 일치하지 않습니다.');
                     submitBtn.disabled = false;
                     submitBtn.innerText = '로그인하기';
                     return;
                 }
 
+                const userInfo = data[0];
+
                 // 로그인 성공 시 로컬스토리지에 회원 정보 저장
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userName', data.name);
-                localStorage.setItem('userPhone', data.phone || '');
-                localStorage.setItem('userUsername', data.username);
+                localStorage.setItem('userName', userInfo.user_name);
+                localStorage.setItem('userPhone', userInfo.user_phone || '');
+                localStorage.setItem('userUsername', usernameInput);
 
-                alert(`${data.name}님, 환영합니다!`);
+                alert(`${userInfo.user_name}님, 환영합니다!`);
 
-                // 메인 페이지 또는 마이페이지로 이동
+                // 메인 페이지로 이동
                 setTimeout(() => {
-                    window.location.href = 'index.html'; // 또는 'my.html'
+                    window.location.href = 'index.html';
                 }, 150);
 
             } catch (err) {
