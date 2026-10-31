@@ -38,8 +38,8 @@
 
             <form onsubmit="handleSignIn(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">이메일 계정</label>
-                    <input type="email" id="email" required placeholder="example@email.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">아이디</label>
+                    <input type="text" id="username" required placeholder="아이디 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 transition">
                 </div>
 
                 <div>
@@ -73,7 +73,7 @@
     </footer>
 
     <script>
-        // 1. Supabase 연동 정보 및 표준 클라이언트 생성 (localStorage 사용)
+        // 1. Supabase 연동 정보 및 표준 클라이언트 생성
         const SUPABASE_URL = 'https://qemfpmnsywfzuyzozkqj.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_m6B4hq2B-txvZ09ha5bLrQ_CG7HcnhS';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -84,13 +84,13 @@
             const msg = error.message.toLowerCase();
 
             if (msg.includes('invalid login credentials')) {
-                return '이메일 또는 비밀번호가 일치하지 않습니다.';
+                return '아이디 또는 비밀번호가 일치하지 않습니다.';
             }
             if (msg.includes('email not confirmed')) {
                 return '이메일 인증이 완료되지 않았습니다. 이메일을 확인해 주세요.';
             }
             if (msg.includes('user not found')) {
-                return '등록되지 않은 이메일 계정입니다.';
+                return '등록되지 않은 아이디입니다.';
             }
             if (msg.includes('too many requests') || msg.includes('rate limit')) {
                 return '시도 횟수가 너무 많습니다. 잠시 후 다시 시도해 주세요.';
@@ -99,21 +99,42 @@
             return '로그인에 실패했습니다: ' + error.message;
         }
 
-        // 3. 로그인 처리 함수
+        // 3. 로그인 처리 함수 (아이디 기반으로 이메일을 조회 후 로그인)
         async function handleSignIn(e) {
             e.preventDefault();
 
-            const emailInput = document.getElementById('email').value.trim();
+            const usernameInput = document.getElementById('username').value.trim();
             const passwordInput = document.getElementById('password').value;
             const submitBtn = document.getElementById('submitBtn');
+
+            if (!usernameInput) {
+                alert('아이디를 입력해 주세요.');
+                return;
+            }
 
             submitBtn.disabled = true;
             submitBtn.innerText = '로그인 중...';
 
             try {
-                // 단일 Supabase 인스턴스로 로그인 요청
+                // Step A: profiles 테이블에서 입력한 username에 해당하는 이메일 주소 찾기
+                const { data: profileData, error: profileError } = await _supabase
+                    .from('profiles')
+                    .select('email')
+                    .eq('username', usernameInput)
+                    .maybeSingle();
+
+                if (profileError || !profileData || !profileData.email) {
+                    alert('등록되지 않은 아이디입니다.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = '로그인하기';
+                    return;
+                }
+
+                const userEmail = profileData.email;
+
+                // Step B: 찾아낸 이메일과 비밀번호로 Supabase Auth 로그인 요청
                 const { data, error } = await _supabase.auth.signInWithPassword({
-                    email: emailInput,
+                    email: userEmail,
                     password: passwordInput,
                 });
 
@@ -130,11 +151,12 @@
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('userEmail', user.email);
                     localStorage.setItem('userName', userName);
+                    localStorage.setItem('userUsername', usernameInput);
                     if (userPhone) localStorage.setItem('userPhone', userPhone);
 
                     alert(`${userName}님, 환영합니다!`);
 
-                    // 토큰이 스토리지에 완전히 저장될 수 있도록 시차 부여 후 마이페이지 이동
+                    // 토큰 저장 시차 부여 후 마이페이지 이동
                     setTimeout(() => {
                         window.location.href = 'my.html';
                     }, 150);
