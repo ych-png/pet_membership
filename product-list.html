@@ -1,0 +1,250 @@
+<section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6 pb-20">
+    <div id="product-list-top" class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-4">
+        <div>
+            <h2 class="text-lg font-bold text-slate-900">📦 상품 목록</h2>
+            <span id="product-count" class="text-xs text-slate-500 font-medium mt-1 block">총 0개 상품</span>
+        </div>
+        
+        <!-- 상품 검색 입력창 -->
+        <div class="relative w-full sm:w-72">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input type="text" id="search-input" placeholder="상품 이름 또는 브랜드 검색..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:bg-white transition">
+        </div>
+    </div>
+
+    <!-- 상품 카드 그리드 -->
+    <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <p class="col-span-full text-center text-slate-400 py-10 text-sm">상품을 불러오는 중입니다...</p>
+    </div>
+
+    <!-- 페이지네이션 번호 버튼 영역 (하단 고정) -->
+    <div id="pagination-container" class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-slate-200 py-3 px-4 z-40 shadow-lg flex justify-center items-center">
+        <div id="pagination" class="flex justify-center items-center gap-1.5 text-xs max-w-7xl w-full mx-auto"></div>
+    </div>
+</section>
+
+<script>
+    (function() {
+        let allProducts = []; 
+        let filteredProducts = []; 
+        let currentPage = 1;
+        const itemsPerPage = 20; 
+
+        fetch('products.json')
+            .then(response => response.json())
+            .then(products => {
+                allProducts = products;
+                filteredProducts = products; 
+                updateDisplay();
+            })
+            .catch(error => {
+                console.error('상품 데이터를 불러오는 중 오류 발생:', error);
+                const grid = document.getElementById('product-grid');
+                if(grid) {
+                    grid.innerHTML = '<p class="col-span-full text-center text-red-500 py-10">상품 데이터를 불러오지 못했습니다. Live Server로 열려있는지 확인해 주세요.</p>';
+                }
+            });
+
+        function scrollToProductTop() {
+            const topElement = document.getElementById('product-list-top');
+            if (topElement) {
+                topElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function updateDisplay() {
+            const grid = document.getElementById('product-grid');
+            const countLabel = document.getElementById('product-count');
+            
+            if (!grid) return;
+
+            grid.innerHTML = '';
+            countLabel.innerText = `총 ${filteredProducts.length}개 상품`;
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-slate-400 py-10">검색된 상품이 없습니다.</p>';
+                const pagination = document.getElementById('pagination');
+                if (pagination) pagination.innerHTML = '';
+                return;
+            }
+
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const currentItems = filteredProducts.slice(startIndex, endIndex);
+
+            currentItems.forEach((item) => {
+                const originalIndex = allProducts.indexOf(item);
+
+                const card = document.createElement('div');
+                card.className = "bg-white p-2 sm:p-4 border-0 sm:border sm:border-slate-200 rounded-none sm:rounded-xl shadow-none sm:shadow-sm hover:shadow-md transition flex flex-col justify-between";
+                
+                card.innerHTML = `
+                    <a href="detail.html?id=${originalIndex}" class="block">
+                        <div class="w-full h-36 sm:h-48 bg-slate-100 rounded-lg overflow-hidden mb-2 sm:mb-3">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300?text=No+Image';">
+                        </div>
+                        <span class="text-[10px] sm:text-xs text-blue-600 font-semibold">${item.brand}</span>
+                        <h3 class="text-xs sm:text-sm font-bold text-slate-900 truncate mt-0.5 sm:mt-1">${item.name}</h3>
+                    </a>
+                    <div class="mt-2 sm:mt-3 pt-1.5 sm:pt-2 border-t border-slate-100 flex items-center justify-end">
+                        <span class="text-xs sm:text-sm font-extrabold text-black-600">${Number(item.price).toLocaleString()}원</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            if (!pagination) return;
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            const isMobile = window.innerWidth < 640;
+
+            if (isMobile) {
+                // [모바일 환경]: 이전, 현재/전체 (클릭 이동), 다음
+                const prevBtn = document.createElement('button');
+                prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left mr-1"></i> 이전';
+                prevBtn.className = `px-3 py-1.5 rounded-lg border text-xs font-semibold transition ${currentPage === 1 ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`;
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updateDisplay();
+                        scrollToProductTop();
+                    }
+                });
+                pagination.appendChild(prevBtn);
+
+                const pageIndicator = document.createElement('button');
+                pageIndicator.innerHTML = `<strong class="text-blue-600">${currentPage}</strong> / ${totalPages} <span class="text-[10px] text-slate-400 ml-1">(이동)</span>`;
+                pageIndicator.className = "px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 transition shadow-xs";
+                pageIndicator.addEventListener('click', () => {
+                    const input = prompt(`이동할 페이지 번호를 입력하세요 (1 ~ ${totalPages}):`, currentPage);
+                    if (input !== null) {
+                        const targetPage = parseInt(input.trim(), 10);
+                        if (!isNaN(targetPage) && targetPage >= 1 && targetPage <= totalPages) {
+                            currentPage = targetPage;
+                            updateDisplay();
+                            scrollToProductTop();
+                        } else {
+                            alert(`1부터 ${totalPages} 사이의 올바른 숫자만 입력해 주세요.`);
+                        }
+                    }
+                });
+                pagination.appendChild(pageIndicator);
+
+                const nextBtn = document.createElement('button');
+                nextBtn.innerHTML = '다음 <i class="fa-solid fa-chevron-right ml-1"></i>';
+                nextBtn.className = `px-3 py-1.5 rounded-lg border text-xs font-semibold transition ${currentPage === totalPages ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`;
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updateDisplay();
+                        scrollToProductTop();
+                    }
+                });
+                pagination.appendChild(nextBtn);
+
+            } else {
+                // [PC 환경]: 맨 앞으로(<<), 이전(<), 5개 번호 구간, 다음(>), 맨 뒤로(>>)
+                const firstBtn = document.createElement('button');
+                firstBtn.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
+                firstBtn.className = `px-2.5 py-1.5 rounded-lg border text-xs font-semibold transition ${currentPage === 1 ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`;
+                firstBtn.disabled = currentPage === 1;
+                firstBtn.addEventListener('click', () => {
+                    currentPage = 1;
+                    updateDisplay();
+                    scrollToProductTop();
+                });
+                pagination.appendChild(firstBtn);
+
+                const prevBtn = document.createElement('button');
+                prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+                prevBtn.className = `px-3 py-1.5 rounded-lg border text-xs font-semibold transition ${currentPage === 1 ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`;
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updateDisplay();
+                        scrollToProductTop();
+                    }
+                });
+                pagination.appendChild(prevBtn);
+
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, startPage + 4);
+                if (endPage - startPage < 4) {
+                    startPage = Math.max(1, endPage - 4);
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.innerText = i;
+                    pageBtn.className = `px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${i === currentPage ? 'bg-blue-600 text-white shadow-xs' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'}`;
+                    pageBtn.addEventListener('click', () => {
+                        currentPage = i;
+                        updateDisplay();
+                        scrollToProductTop();
+                    });
+                    pagination.appendChild(pageBtn);
+                }
+
+                const nextBtn = document.createElement('button');
+                nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+                nextBtn.className = `px-3 py-1.5 rounded-lg border text-xs font-semibold transition ${currentPage === totalPages ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`;
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updateDisplay();
+                        scrollToProductTop();
+                    }
+                });
+                pagination.appendChild(nextBtn);
+
+                const lastBtn = document.createElement('button');
+                lastBtn.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
+                lastBtn.className = `px-2.5 py-1.5 rounded-lg border text-xs font-semibold transition ${currentPage === totalPages ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`;
+                lastBtn.disabled = currentPage === totalPages;
+                lastBtn.addEventListener('click', () => {
+                    currentPage = totalPages;
+                    updateDisplay();
+                    scrollToProductTop();
+                });
+                pagination.appendChild(lastBtn);
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            renderPagination(totalPages);
+        });
+
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const keyword = e.target.value.toLowerCase().trim();
+                
+                filteredProducts = allProducts.filter(item => {
+                    const nameMatch = item.name && item.name.toLowerCase().includes(keyword);
+                    const brandMatch = item.brand && item.brand.toLowerCase().includes(keyword);
+                    return nameMatch || brandMatch;
+                });
+
+                currentPage = 1; 
+                updateDisplay();
+            });
+        }
+    })();
+</script>
