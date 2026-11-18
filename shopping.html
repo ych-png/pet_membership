@@ -23,17 +23,17 @@
                 <p class="text-xs text-slate-500 mt-1">친누 쇼핑몰 연동 관리 & 결제 시스템 적용</p>
             </div>
 
-            <!-- 메인 카테고리 필터 버튼 영역 -->
+            <!-- 메인 카테고리 필터 버튼 영역 (data-cat 속성 추가 완료) -->
             <div>
                 <h2 class="text-sm font-bold text-slate-900 mb-3">카테고리 선택</h2>
                 <div class="grid grid-cols-3 gap-3 text-center text-xs font-semibold">
-                    <button onclick="filterMainCategory('all', this)" class="p-3.5 border rounded-xl transition main-cat-btn bg-amber-500 text-white border-amber-500 shadow-xs">
+                    <button onclick="filterMainCategory('all', this)" class="p-3.5 border rounded-xl transition main-cat-btn bg-amber-500 text-white border-amber-500 shadow-xs" data-cat="all">
                         전체 상품
                     </button>
-                    <button onclick="filterMainCategory('pet', this)" class="p-3.5 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition main-cat-btn bg-white text-slate-700">
+                    <button onclick="filterMainCategory('pet', this)" class="p-3.5 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition main-cat-btn bg-white text-slate-700" data-cat="pet">
                         🐾 애견용품 (내츄럴코어)
                     </button>
-                    <button onclick="filterMainCategory('human', this)" class="p-3.5 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition main-cat-btn bg-white text-slate-700">
+                    <button onclick="filterMainCategory('human', this)" class="p-3.5 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition main-cat-btn bg-white text-slate-700" data-cat="human">
                         👤 반려인을 위한 생활용품
                     </button>
                 </div>
@@ -95,18 +95,12 @@
     <script src="header.js"></script>
 
     <script>
-        // 로그인 여부 판단 함수
         function checkIsLoggedIn() {
             return localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
         }
 
-        // --- 골라담기(장바구니) 상태 관리 함수 ---
         function getCart() {
-            try {
-                return JSON.parse(localStorage.getItem('belluna_cart')) || [];
-            } catch (e) {
-                return [];
-            }
+            try { return JSON.parse(localStorage.getItem('belluna_cart')) || []; } catch (e) { return []; }
         }
 
         function saveCart(cart) {
@@ -212,13 +206,20 @@
             }
         }
 
-        // --- 메인 카테고리 필터 연동 함수 ---
-        function filterMainCategory(categoryType, btnElement) {
+        // 카테고리 버튼 UI 활성화 상태 동기화 함수
+        function updateCategoryUI(categoryType) {
             document.querySelectorAll('.main-cat-btn').forEach(btn => {
-                btn.className = "p-3.5 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition main-cat-btn bg-white text-slate-700";
+                if (btn.getAttribute('data-cat') === categoryType) {
+                    btn.className = "p-3.5 border rounded-xl transition main-cat-btn bg-amber-500 text-white border-amber-500 shadow-xs";
+                } else {
+                    btn.className = "p-3.5 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition main-cat-btn bg-white text-slate-700";
+                }
             });
-            btnElement.className = "p-3.5 border rounded-xl transition main-cat-btn bg-amber-500 text-white border-amber-500 shadow-xs";
+        }
 
+        // 메인 카테고리 필터 클릭 이벤트 함수
+        function filterMainCategory(categoryType, btnElement) {
+            updateCategoryUI(categoryType);
             window.initialCategoryFilter = categoryType;
             if (typeof window.applyExternalCategoryFilter === 'function') {
                 window.applyExternalCategoryFilter(categoryType);
@@ -228,13 +229,23 @@
         document.addEventListener("DOMContentLoaded", function() {
             renderHeader('shopping.html');
 
-            // 로그인 상태 체크 후 골라담기 버튼 노출 처리
             const isLoggedIn = checkIsLoggedIn();
             const cartContainer = document.getElementById('cart-floating-container');
             if (isLoggedIn && cartContainer) {
                 cartContainer.classList.remove('hidden');
                 updateCartBadge();
             }
+
+            // URL 파라미터에서 이전 카테고리, 페이지, 검색어 복원
+            const urlParams = new URLSearchParams(window.location.search);
+            const savedCat = urlParams.get('cat') || 'all';
+            const savedPage = parseInt(urlParams.get('page'), 10) || 1;
+            const savedKeyword = urlParams.get('keyword') || '';
+
+            window.initialCategoryFilter = savedCat;
+            window.initialPage = savedPage;
+            window.initialKeyword = savedKeyword;
+            updateCategoryUI(savedCat);
 
             // product-list.html을 비동기로 불러와서 컨테이너에 삽입하고 내부 스크립트 실행
             fetch('product-list.html')
