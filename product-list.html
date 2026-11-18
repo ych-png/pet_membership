@@ -137,11 +137,8 @@
                         <span class="text-[10px] sm:text-xs text-blue-600 font-semibold">${item.brand}</span>
                         <h3 class="text-xs sm:text-sm font-bold text-slate-900 truncate mt-0.5 sm:mt-1">${item.name}</h3>
                     </a>
-                    <div class="mt-2 sm:mt-3 pt-1.5 sm:pt-2 border-t border-slate-100 flex items-center justify-between">
+                    <div class="mt-2 sm:mt-3 pt-1.5 sm:pt-2 border-t border-slate-100 flex items-center justify-end">
                         <span class="text-xs sm:text-sm font-extrabold text-slate-900">${Number(item.price).toLocaleString()}원</span>
-                        <button onclick='addToCart(${JSON.stringify(item)})' class="px-2.5 py-1 bg-blue-50 text-blue-600 hover:bg-blue-100 text-[10px] font-bold rounded-lg transition flex items-center gap-1">
-                            <i class="fa-solid fa-basket-shopping"></i> 담기
-                        </button>
                     </div>
                 `;
                 grid.appendChild(card);
