@@ -38,12 +38,31 @@
                 allProducts = products;
                 filteredProducts = products; 
                 
-                // 만약 외부(shopping.html)에서 먼저 선택된 카테고리 필터가 있다면 즉시 적용
-                if (window.initialCategoryFilter) {
-                    applyExternalCategoryFilter(window.initialCategoryFilter);
-                } else {
-                    updateDisplay();
+                // 쇼핑몰(shopping.html)에서 넘어온 초기 검색어 복원
+                if (window.initialKeyword) {
+                    const searchInput = document.getElementById('search-input');
+                    if (searchInput) {
+                        searchInput.value = window.initialKeyword;
+                        const keyword = window.initialKeyword.toLowerCase().trim();
+                        filteredProducts = allProducts.filter(item => {
+                            const nameMatch = item.name && item.name.toLowerCase().includes(keyword);
+                            const brandMatch = item.brand && item.brand.toLowerCase().includes(keyword);
+                            return nameMatch || brandMatch;
+                        });
+                    }
                 }
+
+                // 초기 카테고리 필터 적용
+                if (window.initialCategoryFilter) {
+                    window.applyExternalCategoryFilter(window.initialCategoryFilter);
+                }
+
+                // 초기 페이지 복원
+                if (window.initialPage) {
+                    currentPage = window.initialPage;
+                }
+
+                updateDisplay();
             })
             .catch(error => {
                 console.error('상품 데이터를 불러오는 중 오류 발생:', error);
@@ -53,18 +72,15 @@
                 }
             });
 
-        // shopping.html에서 호출할 수 있는 외부 카테고리 필터 함수 등록
         window.applyExternalCategoryFilter = function(categoryType) {
+            window.currentSelectedCategory = categoryType;
             if (!allProducts || allProducts.length === 0) return;
 
             if (categoryType === 'pet') {
-                // 애견용품: brand가 '내츄럴코어'인 상품만 필터링
                 filteredProducts = allProducts.filter(item => item.brand && item.brand.trim() === '내츄럴코어');
             } else if (categoryType === 'human') {
-                // 반려인을 위한 생활용품: brand가 '내츄럴코어'가 아닌 나머지 상품들
                 filteredProducts = allProducts.filter(item => !item.brand || item.brand.trim() !== '내츄럴코어');
             } else {
-                // 전체 보기
                 filteredProducts = allProducts;
             }
 
@@ -104,12 +120,17 @@
 
             currentItems.forEach((item) => {
                 const originalIndex = allProducts.indexOf(item);
+                const currentCat = window.currentSelectedCategory || 'all';
+                const currentKeyword = document.getElementById('search-input') ? document.getElementById('search-input').value : '';
+                
+                // 상세 페이지로 이동할 때 현재 페이지, 카테고리, 검색어를 파라미터로 함께 전달
+                const detailUrl = `detail.html?id=${originalIndex}&page=${currentPage}&cat=${encodeURIComponent(currentCat)}&keyword=${encodeURIComponent(currentKeyword)}`;
 
                 const card = document.createElement('div');
                 card.className = "bg-white p-2 sm:p-4 border-0 sm:border sm:border-slate-200 rounded-none sm:rounded-xl shadow-none sm:shadow-sm hover:shadow-md transition flex flex-col justify-between";
                 
                 card.innerHTML = `
-                    <a href="detail.html?id=${originalIndex}" class="block">
+                    <a href="${detailUrl}" class="block">
                         <div class="w-full h-36 sm:h-48 bg-slate-100 rounded-lg overflow-hidden mb-2 sm:mb-3">
                             <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300?text=No+Image';">
                         </div>
