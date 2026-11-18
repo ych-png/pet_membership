@@ -23,37 +23,19 @@
                 <p class="text-xs text-slate-500 mt-1">친누 쇼핑몰 연동 관리 & 결제 시스템 적용</p>
             </div>
 
-            <!-- 카테고리 A (애견용품) -->
+            <!-- 메인 카테고리 필터 버튼 영역 -->
             <div>
-                <h2 class="text-sm font-bold text-slate-900 bg-amber-400/20 border border-amber-400/30 px-3 py-1.5 rounded-md inline-block mb-3">A. 애견용품</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-6 gap-3 text-center text-xs font-semibold">
-                    <a href="#" class="p-3 border rounded-lg transition category-btn-a bg-amber-500 text-white border-amber-500 shadow-xs" data-category="all">전체</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="feed">사료</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="treat">간식</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="supplement">영양제</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="health">건강관리</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="toy">장난감</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="walk">산책</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="grooming">미용</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="toilet">배변</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="house">하우스</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:text-amber-600 transition category-btn-a bg-white text-slate-700" data-category="carrier">이동장</a>
-                </div>
-            </div>
-
-            <!-- 카테고리 B (반려인을 위한 생활용품) -->
-            <div>
-                <h2 class="text-sm font-bold text-slate-900 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-md inline-block mb-3">B. 반려인을 위한 생활용품</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center text-xs font-semibold">
-                    <a href="#" class="p-3 border rounded-lg transition category-btn-b bg-slate-900 text-white border-slate-900 shadow-xs" data-category="all">전체</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-slate-800 hover:text-slate-900 transition category-btn-b bg-white text-slate-700" data-category="human-health">건강식품</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-slate-800 hover:text-slate-900 transition category-btn-b bg-white text-slate-700" data-category="living">생활용품</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-slate-800 hover:text-slate-900 transition category-btn-b bg-white text-slate-700" data-category="kitchen">주방</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-slate-800 hover:text-slate-900 transition category-btn-b bg-white text-slate-700" data-category="bath">욕실</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-slate-800 hover:text-slate-900 transition category-btn-b bg-white text-slate-700" data-category="car">자동차</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-slate-800 hover:text-slate-900 transition category-btn-b bg-white text-slate-700" data-category="camping">캠핑</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-slate-800 hover:text-slate-900 transition category-btn-b bg-white text-slate-700" data-category="travel">여행</a>
-                    <a href="#" class="p-3 border border-slate-200 rounded-lg hover:border-slate-800 hover:text-slate-900 transition category-btn-b bg-white text-slate-700" data-category="appliance">가전</a>
+                <h2 class="text-sm font-bold text-slate-900 mb-3">카테고리 선택</h2>
+                <div class="grid grid-cols-3 gap-3 text-center text-xs font-semibold">
+                    <button onclick="filterMainCategory('all', this)" class="p-3.5 border rounded-xl transition main-cat-btn bg-amber-500 text-white border-amber-500 shadow-xs">
+                        전체 상품
+                    </button>
+                    <button onclick="filterMainCategory('pet', this)" class="p-3.5 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition main-cat-btn bg-white text-slate-700">
+                        🐾 애견용품 (내츄럴코어)
+                    </button>
+                    <button onclick="filterMainCategory('human', this)" class="p-3.5 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition main-cat-btn bg-white text-slate-700">
+                        👤 반려인을 위한 생활용품
+                    </button>
                 </div>
             </div>
         </section>
@@ -62,7 +44,7 @@
         <div id="product-list-container"></div>
     </main>
 
-    <!-- [추가] 로그인 상태일 때만 노출되는 우측 하단 고정 골라담기 플로팅 버튼 -->
+    <!-- [로그인 상태일 때만 노출] 우측 하단 고정 골라담기 플로팅 버튼 -->
     <div id="cart-floating-container" class="fixed bottom-6 right-6 z-50 hidden">
         <button onclick="openCartModal()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-transform hover:scale-105 font-bold text-xs sm:text-sm">
             <i class="fa-solid fa-basket-shopping text-base"></i>
@@ -71,7 +53,7 @@
         </button>
     </div>
 
-    <!-- [추가] 골라담기 목록 모달 팝업 -->
+    <!-- 골라담기 목록 모달 팝업 -->
     <div id="cart-modal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[85vh] flex flex-col overflow-hidden">
             <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
@@ -230,6 +212,19 @@
             }
         }
 
+        // --- 메인 카테고리 필터 연동 함수 ---
+        function filterMainCategory(categoryType, btnElement) {
+            document.querySelectorAll('.main-cat-btn').forEach(btn => {
+                btn.className = "p-3.5 border border-slate-200 rounded-xl hover:border-amber-400 hover:text-amber-600 transition main-cat-btn bg-white text-slate-700";
+            });
+            btnElement.className = "p-3.5 border rounded-xl transition main-cat-btn bg-amber-500 text-white border-amber-500 shadow-xs";
+
+            window.initialCategoryFilter = categoryType;
+            if (typeof window.applyExternalCategoryFilter === 'function') {
+                window.applyExternalCategoryFilter(categoryType);
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             renderHeader('shopping.html');
 
@@ -248,7 +243,6 @@
                     const container = document.getElementById('product-list-container');
                     container.innerHTML = html;
 
-                    // 동적으로 삽입된 HTML 내부에 포함된 script 태그들을 찾아 실행
                     const scripts = container.querySelectorAll('script');
                     scripts.forEach(script => {
                         const newScript = document.createElement('script');
