@@ -23,7 +23,7 @@
                 <p class="text-xs text-slate-500 mt-1">친누 쇼핑몰 연동 관리 & 결제 시스템 적용</p>
             </div>
 
-            <!-- 메인 카테고리 필터 버튼 영역 (data-cat 속성 추가 완료) -->
+            <!-- 메인 카테고리 필터 버튼 영역 -->
             <div>
                 <h2 class="text-sm font-bold text-slate-900 mb-3">카테고리 선택</h2>
                 <div class="grid grid-cols-3 gap-3 text-center text-xs font-semibold">
@@ -44,8 +44,8 @@
         <div id="product-list-container"></div>
     </main>
 
-    <!-- [로그인 상태일 때만 노출] 우측 하단 고정 골라담기 플로팅 버튼 -->
-    <div id="cart-floating-container" class="fixed bottom-6 right-6 z-50 hidden">
+    <!-- [수정됨] 모바일 하단 페이지네이션 바와 겹치지 않도록 bottom 위치를 위로 조정함 -->
+    <div id="cart-floating-container" class="fixed bottom-20 sm:bottom-6 right-6 z-50 hidden">
         <button onclick="openCartModal()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-transform hover:scale-105 font-bold text-xs sm:text-sm">
             <i class="fa-solid fa-basket-shopping text-base"></i>
             <span>골라담기</span>
@@ -206,7 +206,6 @@
             }
         }
 
-        // 카테고리 버튼 UI 활성화 상태 동기화 함수
         function updateCategoryUI(categoryType) {
             document.querySelectorAll('.main-cat-btn').forEach(btn => {
                 if (btn.getAttribute('data-cat') === categoryType) {
@@ -217,7 +216,6 @@
             });
         }
 
-        // 메인 카테고리 필터 클릭 이벤트 함수
         function filterMainCategory(categoryType, btnElement) {
             updateCategoryUI(categoryType);
             window.initialCategoryFilter = categoryType;
@@ -236,7 +234,6 @@
                 updateCartBadge();
             }
 
-            // URL 파라미터에서 이전 카테고리, 페이지, 검색어 복원
             const urlParams = new URLSearchParams(window.location.search);
             const savedCat = urlParams.get('cat') || 'all';
             const savedPage = parseInt(urlParams.get('page'), 10) || 1;
@@ -247,7 +244,6 @@
             window.initialKeyword = savedKeyword;
             updateCategoryUI(savedCat);
 
-            // product-list.html을 비동기로 불러와서 컨테이너에 삽입하고 내부 스크립트 실행
             fetch('product-list.html')
                 .then(response => response.text())
                 .then(html => {
